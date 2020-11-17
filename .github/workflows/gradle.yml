@@ -1,6 +1,12 @@
-name: Build on push or pull request
+name: Build on push or pull request (proguard-tests)
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - proguard-tests
+  pull_request:
+    branches:
+      - proguard-tests
 
 jobs:
   build:
@@ -14,6 +20,8 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 8
+    - name: Install advancecomp
+      run: sudo apt-get install advancecomp
     - name: Build with Gradle
       uses: eskatos/gradle-command-action@v1
       with:
@@ -22,6 +30,8 @@ jobs:
         dependencies-cache-enabled: true
         configuration-cache-enabled: true
         arguments: build
+    - name: Run advzip on built .jar files
+      run: advzip --shrink-insane --iter 5000 -k -p -z build/libs/*.jar
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

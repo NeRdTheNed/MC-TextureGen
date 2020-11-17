@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        jcenter()
+        google()
+    }
+    dependencies {
+        classpath 'com.guardsquare:proguard-gradle:7.0.1'
+    }
+}
+
 plugins {
     id 'application'
     id 'maven-publish'
@@ -11,17 +21,39 @@ tasks.withType(AbstractArchiveTask) {
 
 apply plugin: 'java'
 
+def compiler = javaToolchains.compilerFor {
+    languageVersion = JavaLanguageVersion.of(7)
+}
+
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(7)
+        compiler
     }
 }
 
 tasks.withType(JavaCompile) {
     // Ensures that the encoding of source files is set to UTF-8, see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
     options.encoding = "UTF-8"
-    // Tells Gradle not to include debug information in the compiled .class files. This reduces the file size.
-    options.debug = false
+}
+
+task ('proguard', type: proguard.gradle.ProGuardTask) {
+    dependsOn "jar"
+    // Workaround for ProGuard seemingly not recognising that when the output .jar file doesn't exist
+    outputs.upToDateWhen { false }
+
+    verbose
+
+    injars "build/libs/MCTextureGenerator-debug.jar"
+    outjars "build/libs/MCTextureGenerator.jar"
+
+    // Get the location of rt.jar from the provided toolchain.
+    // Note to self: probably support building with not outdated versions of Java in the future.
+    libraryjars compiler.get().metadata.installationPath.asFile.absolutePath + "/lib/rt.jar"
+    // Dumb MacOS workaround, rt.jar is not in the standard place
+    libraryjars compiler.get().metadata.installationPath.asFile.absolutePath + "/jre/lib/rt.jar"
+
+    // The rest of the configs are in this file
+    configuration 'guard.pro'
 }
 
 task sourcesJar(type: Jar) {
@@ -29,16 +61,23 @@ task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
 }
 
+def obfsJar = artifacts.add('archives', file(proguard.outputs.files.singleFile)) {
+    type('jar')
+    builtBy(proguard)
+}
+
 artifacts {
     archives sourcesJar
+    archives obfsJar
 }
 
 jar {
     manifest {
         attributes (
-            'Main-Class': 'mcTextureGen.TextureGenerationManager'
+            'Main-Class': 'mcTextureGenerator.MCTextureGenerator'
         )
     }
+    classifier = "debug"
 }
 
 publishing {
@@ -50,6 +89,7 @@ publishing {
             artifact(sourcesJar) {
                 builtBy sourcesJar
             }
+            artifact obfsJar
         }
     }
 }
