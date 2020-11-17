@@ -22,6 +22,8 @@ jobs:
         java-version: 8
     - name: Install advancecomp
       run: sudo apt-get install advancecomp
+    - name: Install strip-nondeterminism
+      run: sudo apt-get install strip-nondeterminism
     - name: Build with Gradle
       uses: eskatos/gradle-command-action@v1
       with:
@@ -30,6 +32,8 @@ jobs:
         dependencies-cache-enabled: true
         configuration-cache-enabled: true
         arguments: build
+    - name: Run strip-nondeterminism on built .jar files
+      run: strip-nondeterminism build/libs/*.jar
     - name: Run advzip on built .jar files
       run: advzip --shrink-insane --iter 10000 -k -p -z build/libs/*.jar
     - name: Upload artifacts
