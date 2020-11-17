@@ -1,5 +1,3 @@
-package mcTextureGen;
-
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,14 +10,14 @@ import mcTextureGen.data.TextureGroup;
 import mcTextureGen.generators.MC4k1Generator;
 import mcTextureGen.generators.TextureGenerator;
 
-public class TextureGenerationManager {
+public class MCTextureGenerator {
 
     public static TextureGenerator[] getTextureGenerators() {
         return new TextureGenerator[] {new MC4k1Generator()};
     }
 
     public static void main(String[] args) {
-        System.out.println(System.lineSeparator() + "MC Texture Generator" + System.lineSeparator() + "- Generates and saves runtime-generated textures from various Minecraft versions as PNG files." + System.lineSeparator() + System.lineSeparator() + "Generating all textures..." + System.lineSeparator());
+        System.out.println(System.lineSeparator() + "MCTextureGenerator" + System.lineSeparator() + "- Generates and saves runtime-generated textures from various Minecraft versions as PNG files." + System.lineSeparator() + System.lineSeparator() + "Generating all textures..." + System.lineSeparator());
         String currentDir = System.getProperty("user.dir");
         FileSystem fileSystem = FileSystems.getDefault();
         String baseTextureOutputPath = currentDir + fileSystem.getSeparator() + "GeneratedTextures";
@@ -56,6 +54,7 @@ public class TextureGenerationManager {
         }
 
         System.out.println("All images have been generated and saved! Program will now terminate." + System.lineSeparator());
+        System.exit(0);
     }
 
     public static void verifyDirectory(String path) {
