@@ -31,7 +31,7 @@ jobs:
         configuration-cache-enabled: true
         arguments: build
     - name: Run advzip on built .jar files
-      run: advzip --shrink-insane --iter 5000 -k -p -z build/libs/*.jar
+      run: advzip --shrink-insane --iter 10000 -k -p -z build/libs/*.jar
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
