@@ -1,5 +1,9 @@
 -verbose
 
+# We're a bit oldschool
+
+-target 1.7
+
 # Preserve all annotations.
 
 -keepattributes *Annotation*
