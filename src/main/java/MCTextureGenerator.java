@@ -17,31 +17,31 @@ public class MCTextureGenerator {
     }
 
     public static void main(String[] args) {
+        // TODO: Clean up regex spam
         System.out.println(System.lineSeparator() + "MCTextureGenerator" + System.lineSeparator() + "- Generates and saves runtime-generated textures from various Minecraft versions as PNG files." + System.lineSeparator() + System.lineSeparator() + "Generating all textures..." + System.lineSeparator());
-        String currentDir = System.getProperty("user.dir");
-        FileSystem fileSystem = FileSystems.getDefault();
-        String baseTextureOutputPath = currentDir + fileSystem.getSeparator() + "GeneratedTextures";
+        final String currentDir = System.getProperty("user.dir");
+        final FileSystem fileSystem = FileSystems.getDefault();
+        final String baseTextureOutputPath = currentDir + fileSystem.getSeparator() + "GeneratedTextures";
 
-        for (TextureGenerator generator : getTextureGenerators()) {
+        for (final TextureGenerator generator : getTextureGenerators()) {
             System.out.println("Generating all texture groups for the texture generator " + generator.getGeneratorName() + "..." + System.lineSeparator());
-            String textureGeneratorOutputPath = baseTextureOutputPath + fileSystem.getSeparator() + generator.getGeneratorName().replaceAll("[^a-zA-Z0-9-_\\.]", "");
+            final String textureGeneratorOutputPath = baseTextureOutputPath + fileSystem.getSeparator() + generator.getGeneratorName().replaceAll("[^a-zA-Z0-9-_\\.]", "");
 
-            for (TextureGroup group : generator.getTextureGroups()) {
-                //String saferTextureGroupName = URLEncoder.encode(group.textureGroupName);
-                String saferTextureGroupName = group.textureGroupName.replace(' ', '_').replaceAll("[^a-zA-Z0-9-_\\.]", "");
-                String textureGroupOutputPath = textureGeneratorOutputPath + fileSystem.getSeparator() + saferTextureGroupName;
+            for (final TextureGroup group : generator.getTextureGroups()) {
+                final String saferTextureGroupName = group.textureGroupName.replace(' ', '_').replaceAll("[^a-zA-Z0-9-_\\.]", "");
+                final String textureGroupOutputPath = textureGeneratorOutputPath + fileSystem.getSeparator() + saferTextureGroupName;
                 System.out.println("Generating all texures in the texture group " + group.textureGroupName + "...");
                 verifyDirectory(textureGroupOutputPath);
 
-                for (int i = 1; i < group.textureImages.length + 1; i++) {
-                    RenderedImage textureImage = group.textureImages[i - 1];
-                    String outFileName = textureGroupOutputPath + fileSystem.getSeparator() + saferTextureGroupName + "_" + i + ".png";
-                    File textureFile = new File(outFileName);
+                for (int i = 1; i < (group.textureImages.length + 1); i++) {
+                    final RenderedImage textureImage = group.textureImages[i - 1];
+                    final String outFileName = textureGroupOutputPath + fileSystem.getSeparator() + saferTextureGroupName + "_" + i + ".png";
+                    final File textureFile = new File(outFileName);
 
                     try {
                         ImageIO.write(textureImage, "png", textureFile);
                         System.out.println("Saved " + group.textureGroupName + " " + i + " to " + textureFile.getPath());
-                    } catch ( IOException e) {
+                    } catch (final IOException e) {
                         System.out.println("Failed to save " + group.textureGroupName + " " + i + " to " + textureFile.getPath() + ":");
                         e.printStackTrace();
                     }
@@ -58,7 +58,7 @@ public class MCTextureGenerator {
     }
 
     public static void verifyDirectory(String path) {
-        File file = new File(path);
+        final File file = new File(path);
 
         if (!file.exists()) {
             file.mkdirs();
