@@ -28,11 +28,11 @@ public class MC4k1Generator implements TextureGenerator {
 
         for (int tileLightLevel = 0; tileLightLevel <= maxLightLevel; tileLightLevel++) {
             final BufferedImage tile = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_BYTE_GRAY);
-            final byte[] tileIntData = ((DataBufferByte) tile.getRaster().getDataBuffer()).getData();
+            final byte[] tileByteData = ((DataBufferByte) tile.getRaster().getDataBuffer()).getData();
 
             for (int tileX = 0; tileX < tileSize; tileX++) {
                 for (int tileY = 0; tileY < tileSize; tileY++) {
-                    tileIntData[(tileX * tileSize) + tileY] = (byte) ((((((tileX ^ tileY) * 8) + 128) & unsignedByteMax) * (int) ((1.0F - (tileLightLevel * 0.2F)) * unsignedByteMaxAsFloat)) / unsignedByteMax);
+                    tileByteData[(tileX * tileSize) + tileY] = (byte) ((((((tileX ^ tileY) * 8) + 128) & unsignedByteMax) * (int) ((1.0F - (tileLightLevel * 0.2F)) * unsignedByteMaxAsFloat)) / unsignedByteMax);
                 }
             }
 
