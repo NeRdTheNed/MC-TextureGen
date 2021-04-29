@@ -54,7 +54,7 @@ public class MC4k2Generator implements TextureGenerator {
         for (int outerLoop = 1; outerLoop < 16; ++outerLoop) {
             int randRes = 255 - rand.nextInt(96);
 
-            for (int middleLoop = 0; middleLoop < 48; ++middleLoop) {
+            for (int middleLoop = 0; middleLoop < 16 * 3; ++middleLoop) {
                 for (int innerLoop = 0; innerLoop < 16; ++innerLoop) {
                     if ((outerLoop != 4) || (rand.nextInt(3) == 0)) {
                         randRes = 255 - rand.nextInt(96);
