@@ -28,5 +28,5 @@ build
 # mac os
 .DS_Store
 
-# tile gen
-GeneratedTiles/
+# texture gen
+GeneratedTextures/

@@ -8,15 +8,16 @@ import javax.imageio.ImageIO;
 
 import mcTextureGen.data.TextureGroup;
 import mcTextureGen.generators.MC4k1Generator;
+import mcTextureGen.generators.MC4k2Generator;
 import mcTextureGen.generators.TextureGenerator;
 
 public class MCTextureGenerator {
 
     public static TextureGenerator[] getTextureGenerators() {
-        return new TextureGenerator[] {new MC4k1Generator()};
+        return new TextureGenerator[] {new MC4k1Generator(), new MC4k2Generator()};
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         // TODO: Clean up regex spam
         System.out.println(System.lineSeparator() + "MCTextureGenerator" + System.lineSeparator() + "- Generates and saves runtime-generated textures from various Minecraft versions as PNG files." + System.lineSeparator() + System.lineSeparator() + "Generating all textures..." + System.lineSeparator());
         final String currentDir = System.getProperty("user.dir");
@@ -57,7 +58,7 @@ public class MCTextureGenerator {
         System.exit(0);
     }
 
-    public static void verifyDirectory(String path) {
+    public static void verifyDirectory(final String path) {
         final File file = new File(path);
 
         if (!file.exists()) {

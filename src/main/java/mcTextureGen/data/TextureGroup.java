@@ -7,11 +7,11 @@ public class TextureGroup {
     public final String textureGroupName;
     public final RenderedImage[] textureImages;
 
-    public TextureGroup(String textureName, RenderedImage textureImage) {
+    public TextureGroup(final String textureName, final RenderedImage textureImage) {
         textureGroupName = textureName;
         textureImages = new RenderedImage[] {textureImage};
     }
-    public TextureGroup(String textureName, RenderedImage[] textureImages) {
+    public TextureGroup(final String textureName, final RenderedImage[] textureImages) {
         textureGroupName = textureName;
         this.textureImages = textureImages;
     }
