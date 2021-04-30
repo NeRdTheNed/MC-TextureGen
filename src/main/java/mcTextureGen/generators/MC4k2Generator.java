@@ -2,7 +2,6 @@ package mcTextureGen.generators;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.util.ArrayList;
 import java.util.Random;
 /*
 import java.lang.reflect.Field;
@@ -42,12 +41,12 @@ public class MC4k2Generator implements TextureGenerator {
 
     @Override
     public TextureGroup[] getTextureGroups() {
-        return new TextureGroup[] {rawTextureDump()};
+        return rawTextureDump();
     }
 
-    /** TODO WIP, need to split into individual texture groups */
-    public TextureGroup rawTextureDump() {
-        final ArrayList<BufferedImage> textureTemp = new ArrayList<>();
+    /** TODO refactor */
+    public TextureGroup[] rawTextureDump() {
+        final TextureGroup[] textureGroups = new TextureGroup[MAX_TEXTURE_IDS - TEXTURE_OFFSET];
         final Random rand; //= new Random();
         /*rand.setSeed(18295169L);
         //final int[] useLess = new int[0x40000];
@@ -58,14 +57,44 @@ public class MC4k2Generator implements TextureGenerator {
         }*/
         // https://stackoverflow.com/a/29278559 was used to extract the value of the seed after these calls had been made, which turned out to be 151924357153274.
         rand = new Random(151924357153274L);
-        final BufferedImage tile = new BufferedImage(TEXTURE_SIZE, TEXTURE_SIZE * MAX_TEXTURE_IDS * TEXTURES_PER_ID, BufferedImage.TYPE_INT_ARGB);
-        final int[] textureData = ((DataBufferInt) tile.getRaster().getDataBuffer()).getData();
 
         // Generate textures
         for (int textureID = TEXTURE_OFFSET; textureID < MAX_TEXTURE_IDS; textureID++) {
             int randomVariation = 0xFF - rand.nextInt(0x60);
+            final BufferedImage[] blockTexturesForID = new BufferedImage[TEXTURES_PER_ID];
+            final String textureGroupName;
+
+            // TODO repeated code
+            switch (textureID) {
+            case TEXTURE_STONE:
+                textureGroupName = "STONE";
+                break;
+
+            case TEXTURE_BRICK:
+                textureGroupName = "BRICK";
+                break;
+
+            case TEXTURE_LOG:
+                textureGroupName = "LOG";
+                break;
+
+            case TEXTURE_LEAF:
+                textureGroupName = "LEAF";
+                break;
+
+            case TEXTURE_GRASS:
+                textureGroupName = "GRASS";
+                break;
+
+            default:
+                textureGroupName = "DIRT";
+                break;
+            }
 
             for (int subTexture = 0; subTexture < TEXTURES_PER_ID; subTexture++) {
+                final BufferedImage tile = new BufferedImage(TEXTURE_SIZE, TEXTURE_SIZE, BufferedImage.TYPE_INT_ARGB);
+                final int[] textureData = ((DataBufferInt) tile.getRaster().getDataBuffer()).getData();
+
                 for (int yPixel = 0; yPixel < TEXTURE_SIZE; yPixel++) {
                     for (int xPixel = 0; xPixel < TEXTURE_SIZE; xPixel++) {
                         // The stone texture generates "stripes" by only varying the texture 1/4 of the time this loop runs.
@@ -171,18 +200,21 @@ public class MC4k2Generator implements TextureGenerator {
                         }
 
                         // Modify RGB data & merge into textureData
-                        textureData[xPixel + (yPixel * TEXTURE_SIZE) + (textureID * TEXTURE_SIZE * TEXTURE_SIZE * TEXTURES_PER_ID) + (subTexture * TEXTURE_SIZE * TEXTURE_SIZE)] =
+                        textureData[xPixel + (yPixel * TEXTURE_SIZE)] =
                             (colour            & 0xFF000000)                                               |
                             (((((colour >> 16) & 0xFF) * randomVariationWithBlockSideLight) / 0xFF) << 16) |
                             (((((colour >> 8)  & 0xFF) * randomVariationWithBlockSideLight) / 0xFF) <<  8) |
                             (((  colour        & 0xFF) * randomVariationWithBlockSideLight) / 0xFF);
                     }
                 }
+
+                blockTexturesForID[subTexture] = tile;
             }
+
+            textureGroups[textureID - TEXTURE_OFFSET] = new TextureGroup("ID-" + textureID + "-" + textureGroupName, blockTexturesForID);
         }
 
-        textureTemp.add(tile);
-        return new TextureGroup ("rawTextureDump", textureTemp.toArray(new BufferedImage[] {new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB)}));
+        return textureGroups;
     }
 
 }
