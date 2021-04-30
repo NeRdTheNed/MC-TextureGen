@@ -1,9 +1,9 @@
-name: Build on release
+name: Draft release
 
 on:
-  release:
-    types:
-      - published
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags: 'v*'
 
 jobs:
   build:
@@ -39,9 +39,20 @@ jobs:
     - name: Run strip-nondeterminism on built .jar files
       run: strip-nondeterminism build/libs/*.jar
     - name: Run advzip on built .jar files
-      run: advzip --shrink-insane --iter 20000 -k -p -z build/libs/*.jar
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      run: advzip --shrink-insane --iter 99999 -k -p -z build/libs/*.jar
+    - name: Draft release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: Package
-        path: build/libs
+        tag_name: ${{ github.ref }}
+        release_name: Draft release ${{ github.ref }}
+        body: Replace this text with the description of this release!
+        draft: true
+        prerelease: false
+    - name: Upload draft release assets
+      uses: shogo82148/actions-upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: build/libs/*.jar
