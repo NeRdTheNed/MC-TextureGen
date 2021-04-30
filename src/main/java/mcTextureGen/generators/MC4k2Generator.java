@@ -24,6 +24,17 @@ public class MC4k2Generator implements TextureGenerator {
     private static final int COLOUR_RED = 0xFFB53A15;
     private static final int COLOUR_NONE = 0x00000000;
 
+    private static final int TEXTURE_GRASS = 1;
+    private static final int TEXTURE_STONE = 4;
+    private static final int TEXTURE_BRICK = 5;
+    private static final int TEXTURE_LOG = 7;
+    private static final int TEXTURE_LEAF = 8;
+
+    private static final int MAX_TEXTURE_IDS = 16;
+    private static final int TEXTURE_SIZE = 16;
+    private static final int TEXTURES_PER_ID = 3;
+    private static final int TEXTURE_OFFSET = 1;
+
     @Override
     public String getGeneratorName() {
         return "Minecraft 4k-2";
@@ -41,35 +52,40 @@ public class MC4k2Generator implements TextureGenerator {
         /*rand.setSeed(18295169L);
         //final int[] useLess = new int[0x40000];
 
-        for (int i = 0; i < 0x40000; ++i) {
+        for (int i = 0; i < 0x40000; i++) {
             //useLess[i] = ((i / 64) % 64) > (32 + rand.nextInt(8)) ? rand.nextInt(8) + 1 : 0;
         	int useLess = ((i / 64) % 64) > (32 + rand.nextInt(8)) ? rand.nextInt(8) + 1 : 0;
         }*/
         // https://stackoverflow.com/a/29278559 was used to extract the value of the seed after these calls had been made, which turned out to be 151924357153274.
         rand = new Random(151924357153274L);
-        final BufferedImage tile = new BufferedImage(16, 768, BufferedImage.TYPE_INT_ARGB);
+        final BufferedImage tile = new BufferedImage(TEXTURE_SIZE, (TEXTURE_SIZE * MAX_TEXTURE_IDS * TEXTURES_PER_ID), BufferedImage.TYPE_INT_ARGB);
         final int[] textureData = ((DataBufferInt) tile.getRaster().getDataBuffer()).getData();
 
         // Generate textures
-        for (int outerLoop = 1; outerLoop < 16; ++outerLoop) {
-            int randRes = 255 - rand.nextInt(96);
+        for (int textureID = TEXTURE_OFFSET; textureID < MAX_TEXTURE_IDS; textureID++) {
+            int randomVariation = 0xFF - rand.nextInt(0x60);
 
-            for (int middleLoop = 0; middleLoop < 16 * 3; ++middleLoop) {
-                for (int innerLoop = 0; innerLoop < 16; ++innerLoop) {
-                    if ((outerLoop != 4) || (rand.nextInt(3) == 0)) {
-                        randRes = 255 - rand.nextInt(96);
+            for (int yPixel = 0; yPixel < (TEXTURE_SIZE * TEXTURES_PER_ID); yPixel++) {
+                for (int xPixel = 0; xPixel < TEXTURE_SIZE; xPixel++) {
+                    // The stone texture generates "stripes" by only varying the texture 1/4 of the time this loop runs.
+                    // Otherwise, the same "variation" is used in this position as the last X position.
+                    if ((textureID != TEXTURE_STONE) || (rand.nextInt(3) == 0)) {
+                        randomVariation = 0xFF - rand.nextInt(0x60);
                     }
 
-                    final boolean isTransparentPixelOnLeaf = ((outerLoop == 8) && (rand.nextInt(2) == 0));
+                    // TODO refactor
+                    final boolean isTransparentPixelOnLeaf = (textureID == TEXTURE_LEAF) && (rand.nextInt(2) == 0);
                     final int colour;
 
-                    switch (outerLoop) {
-                    case 4: // Stone
+                    switch (textureID) {
+                    case TEXTURE_STONE:
                         colour = COLOUR_GREY;
                         break;
 
-                    case 5: // Brick
-                        if ((((innerLoop + ((middleLoop / 4) * 4)) % 8) == 0) || ((middleLoop % 4) == 0)) {
+                    case TEXTURE_BRICK:
+
+                        // These generate the horizontal & vertical lines on brick textures respectively.
+                        if ((((xPixel + ((yPixel / 4) * 4)) % 8) == 0) || ((yPixel % 4) == 0)) {
                             colour = COLOUR_LIGHT_GREY;
                         } else {
                             colour = COLOUR_RED;
@@ -77,17 +93,20 @@ public class MC4k2Generator implements TextureGenerator {
 
                         break;
 
-                    case 7: // Log
-                        if ((innerLoop <= 0) || (innerLoop >= 15) || (((middleLoop <= 0) || (middleLoop >= 15)) && ((middleLoop <= 32) || (middleLoop >= 47)))) {
+                    case TEXTURE_LOG:
+
+                        // Log texture generation depends on what side of the log texture is being generated.
+                        // TODO refactor
+                        if ((xPixel <= 0) || (xPixel >= 15) || (((yPixel <= 0) || (yPixel >= 15)) && ((yPixel <= 32) || (yPixel >= 47)))) {
                             colour = COLOUR_DARK_BROWN;
 
                             if (rand.nextInt(2) == 0) {
-                                randRes = (randRes * (150 - ((innerLoop & 1) * 100))) / 100;
+                                randomVariation = (randomVariation * (150 - ((xPixel & 1) * 100))) / 100;
                             }
                         } else {
                             colour = COLOUR_LIGHT_BROWN;
-                            int tempOne = innerLoop - 7;
-                            int tempTwo = (middleLoop & 15) - 7;
+                            int tempOne = xPixel - 7;
+                            int tempTwo = (yPixel & 15) - 7;
 
                             if (tempOne < 0) {
                                 tempOne = 1 - tempOne;
@@ -101,12 +120,12 @@ public class MC4k2Generator implements TextureGenerator {
                                 tempOne = tempTwo;
                             }
 
-                            randRes = (0xC4 - rand.nextInt(32)) + ((tempOne % 3) * 32);
+                            randomVariation = (0xC4 - rand.nextInt(32)) + ((tempOne % 3) * 32);
                         }
 
                         break;
 
-                    case 8: // Leaf
+                    case TEXTURE_LEAF:
                         if (isTransparentPixelOnLeaf) {
                             colour = COLOUR_NONE;
                         } else {
@@ -115,34 +134,47 @@ public class MC4k2Generator implements TextureGenerator {
 
                         break;
 
-                    case 1: // Grass
-                        final int grassCheck = ((((innerLoop * innerLoop * 3) + (innerLoop * 81)) >> 2) & 3);
+                    case TEXTURE_GRASS:
+                        // On the side of the grass block, grass elements only generate until a certain threshold.
+                        final int grassCheck = (((xPixel * xPixel * 3) + (xPixel * 81)) >> 2) & 3;
 
-                        if (middleLoop < (grassCheck + 18)) {
+                        if (yPixel < (grassCheck + 18)) {
                             colour = COLOUR_GREEN;
                             break;
                         }
 
-                        if (middleLoop < (grassCheck + 19)) {
-                            randRes = (randRes * 2) / 3;
+                        // If this threshold has just been exceeded, "blend" the grass texture into the dirt texture by darkening the dirt below the grass.
+                        if (yPixel < (grassCheck + 19)) {
+                            randomVariation = (randomVariation * 2) / 3;
                         }
 
-                    default: // Dirt
+                    // The fall through allows grass texture generation to re-use the dirt texture generation code for non-grass elements.
+
+                    default:
+                        // The dirt texture is generated for any texture without an explicitly defined case.
+                        // It therefore occupies block IDs 2, 3, 6 and 9-15.
+                        // Each dirt texture is actually used in game, as each ID is allowed during world generation.
                         colour = COLOUR_BROWN;
                         break;
                     }
 
-                    final int randAlter;
+                    final int randomVariationWithBlockSideLight;
 
+                    // TODO refactor
                     if (isTransparentPixelOnLeaf) {
-                        randAlter = 255;
-                    } else if (middleLoop >= 32) {
-                        randAlter = randRes / 2;
+                        randomVariationWithBlockSideLight = 0xFF;
+                    } else if (yPixel >= ((TEXTURES_PER_ID - 1) * TEXTURE_SIZE)) { // If this is the third texture (the underneath of a block) of any ID, darken it.
+                        randomVariationWithBlockSideLight = randomVariation / 2;
                     } else {
-                        randAlter = randRes;
+                        randomVariationWithBlockSideLight = randomVariation;
                     }
 
-                    textureData[innerLoop + (middleLoop * 16) + (outerLoop * 256 * 3)] = (colour & 0xFF000000) | (((((colour >> 16) & 255) * randAlter) / 255) << 16) | (((((colour >> 8) & 255) * randAlter) / 255) << 8) | (((colour & 255) * randAlter) / 255);
+                    // Modify RGB data & merge into textureData
+                    textureData[xPixel + (yPixel * TEXTURE_SIZE) + (textureID * TEXTURE_SIZE * TEXTURE_SIZE * TEXTURES_PER_ID)] =
+                        (colour            & 0xFF000000)                                               |
+                        (((((colour >> 16) & 0xFF) * randomVariationWithBlockSideLight) / 0xFF) << 16) |
+                        (((((colour >> 8)  & 0xFF) * randomVariationWithBlockSideLight) / 0xFF) <<  8) |
+                        (((  colour        & 0xFF) * randomVariationWithBlockSideLight) / 0xFF);
                 }
             }
         }
