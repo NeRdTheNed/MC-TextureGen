@@ -4,46 +4,86 @@
 
 -target 1.7
 
-# Preserve all annotations.
+# Make sure to check everything always, can't hurt.
 
--keepattributes *Annotation*
+-dontskipnonpubliclibraryclasses
+-dontskipnonpubliclibraryclassmembers
+-forceprocessing
 
-# Preserve all public applications.
+# Adapt any changed strings
 
--keepclasseswithmembers public class * {
+#-adaptclassstrings
+#-adaptresourcefilenames
+#-adaptresourcefilecontents
+-adaptresourcefilecontents **.MF
+
+# Preserve main entrypoint, but remove class name.
+
+-keepclasseswithmembers,allowoptimization,allowobfuscation public class MCTextureGenerator {
     public static void main(java.lang.String[]);
 }
 
-# Preserve all native method names and the names of their classes.
-
--keepclasseswithmembernames,includedescriptorclasses class * {
-    native <methods>;
+-keepclassmembers public class MCTextureGenerator {
+    public static void main(java.lang.String[]);
+    #public static boolean hasDebugInfo;
 }
 
-# Preserve the special static methods that are required in all enumeration
-# classes.
+# Strip debug code
 
--keepclassmembers,allowoptimization enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
+-assumevalues class MCTextureGenerator {
+    boolean hasDebugInfo = false;
 }
 
-# Explicitly preserve all serialization members. The Serializable interface
-# is only a marker interface, so it wouldn't save them.
-# You can comment this out if your application doesn't use serialization.
-# If your code contains serializable classes that have to be backward
-# compatible, please refer to the manual.
-
--keepclassmembers class * implements java.io.Serializable {
-    static final long serialVersionUID;
-    static final java.io.ObjectStreamField[] serialPersistentFields;
-    private void writeObject(java.io.ObjectOutputStream);
-    private void readObject(java.io.ObjectInputStream);
-    java.lang.Object writeReplace();
-    java.lang.Object readResolve();
+-assumenosideeffects class java.lang.Class {
+    public boolean desiredAssertionStatus();
 }
 
-# bonus optimisations
+# TODO Replace the above with something like this
+
+#-assumevalues class java.lang.Class {
+#    public boolean desiredAssertionStatus return false;
+#}
+
+# Remove any traces of debug code
+
+-assumenoexternalsideeffects class java.lang.StringBuilder {
+    public java.lang.StringBuilder();
+    public java.lang.StringBuilder(int);
+    public java.lang.StringBuilder(java.lang.String);
+    public java.lang.StringBuilder append(java.lang.Object);
+    public java.lang.StringBuilder append(java.lang.String);
+    public java.lang.StringBuilder append(java.lang.StringBuffer);
+    public java.lang.StringBuilder append(char[]);
+    public java.lang.StringBuilder append(char[], int, int);
+    public java.lang.StringBuilder append(boolean);
+    public java.lang.StringBuilder append(char);
+    public java.lang.StringBuilder append(int);
+    public java.lang.StringBuilder append(long);
+    public java.lang.StringBuilder append(float);
+    public java.lang.StringBuilder append(double);
+    public java.lang.String toString();
+}
+
+-assumenoexternalreturnvalues public final class java.lang.StringBuilder {
+    public java.lang.StringBuilder append(java.lang.Object);
+    public java.lang.StringBuilder append(java.lang.String);
+    public java.lang.StringBuilder append(java.lang.StringBuffer);
+    public java.lang.StringBuilder append(char[]);
+    public java.lang.StringBuilder append(char[], int, int);
+    public java.lang.StringBuilder append(boolean);
+    public java.lang.StringBuilder append(char);
+    public java.lang.StringBuilder append(int);
+    public java.lang.StringBuilder append(long);
+    public java.lang.StringBuilder append(float);
+    public java.lang.StringBuilder append(double);
+}
+
+# Debug ProGuard
+
+-printusage
+-whyareyoukeeping class MCTextureGenerator.**
+
+# Bonus optimisations
 
 -optimizationpasses 64
 -allowaccessmodification

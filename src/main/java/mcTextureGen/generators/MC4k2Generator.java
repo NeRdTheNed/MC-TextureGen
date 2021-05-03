@@ -36,7 +36,7 @@ public class MC4k2Generator implements TextureGenerator {
 
     @Override
     public String getGeneratorName() {
-        return "Minecraft 4k-2";
+        return "Minecraft_4k_2";
     }
 
     @Override
@@ -211,7 +211,7 @@ public class MC4k2Generator implements TextureGenerator {
                 blockTexturesForID[subTexture] = tile;
             }
 
-            textureGroups[textureID - TEXTURE_OFFSET] = new TextureGroup("ID-" + textureID + "-" + textureGroupName, blockTexturesForID);
+            textureGroups[textureID - TEXTURE_OFFSET] = new TextureGroup("ID_" + textureID + "_" + textureGroupName, blockTexturesForID);
         }
 
         return textureGroups;

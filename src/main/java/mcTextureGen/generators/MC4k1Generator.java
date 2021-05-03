@@ -14,7 +14,7 @@ public class MC4k1Generator implements TextureGenerator {
 
     @Override
     public String getGeneratorName() {
-        return "Minecraft 4k-1";
+        return "Minecraft_4k_1";
     }
 
     @Override
@@ -39,7 +39,7 @@ public class MC4k1Generator implements TextureGenerator {
             xorImages[tileLightLevel] = tile;
         }
 
-        return new TextureGroup ("XOR Block Texture", xorImages);
+        return new TextureGroup ("XOR_Block_Texture", xorImages);
     }
 
 }
