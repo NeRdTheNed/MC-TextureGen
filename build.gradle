@@ -4,7 +4,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.guardsquare:proguard-gradle:7.0.1'
+        classpath 'com.guardsquare:proguard-gradle:7.1.0'
     }
 }
 
@@ -21,10 +21,14 @@ tasks.withType(AbstractArchiveTask) {
 
 apply plugin: 'java'
 
+// Defines a Java 7 compatible JDK
+// Note to self: probably support building with not outdated versions of Java in the future.
 def compiler = javaToolchains.compilerFor {
     languageVersion = JavaLanguageVersion.of(7)
 }
 
+// Use the provisioned Java 7 compatible JDK as the main toolchain
+// Note to self: probably support building with not outdated versions of Java in the future.
 java {
     toolchain {
         compiler
@@ -34,6 +38,9 @@ java {
 tasks.withType(JavaCompile) {
     // Ensures that the encoding of source files is set to UTF-8, see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
     options.encoding = "UTF-8"
+    // Use the provisioned Java 7 compatible JDK to compile the program
+    // Note to self: probably support building with not outdated versions of Java in the future.
+    javaCompiler = compiler
 }
 
 task ('proguard', type: proguard.gradle.ProGuardTask) {
