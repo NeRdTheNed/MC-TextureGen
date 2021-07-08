@@ -2,9 +2,9 @@ package mcTextureGen.generators;
 
 import mcTextureGen.data.TextureGroup;
 
-public interface TextureGenerator {
+public abstract class TextureGenerator {
 
-    String getGeneratorName();
-    TextureGroup[] getTextureGroups();
+    public abstract String getGeneratorName();
+    public abstract TextureGroup[] getTextureGroups();
 
 }

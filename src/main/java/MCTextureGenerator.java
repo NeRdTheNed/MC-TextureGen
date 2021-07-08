@@ -11,12 +11,12 @@ import mcTextureGen.generators.MC4k1Generator;
 import mcTextureGen.generators.MC4k2Generator;
 import mcTextureGen.generators.TextureGenerator;
 
-public class MCTextureGenerator {
+public final class MCTextureGenerator {
 
     // TODO Find a better way to do this with ProGuard
-    public static boolean hasDebugInfo = true;
+    private static boolean hasDebugInfo = true;
 
-    public static TextureGenerator[] getTextureGenerators() {
+    private static TextureGenerator[] getTextureGenerators() {
         return new TextureGenerator[] {new MC4k1Generator(), new MC4k2Generator()};
     }
 
@@ -68,7 +68,7 @@ public class MCTextureGenerator {
         System.out.println("All images have been generated and saved!");
     }
 
-    public static void verifyDirectory(final String path) {
+    private static void verifyDirectory(final String path) {
         final File file = new File(path);
 
         if (!file.exists()) {

@@ -30,7 +30,7 @@
 
 # Strip debug code
 
--assumevalues class MCTextureGenerator {
+-assumevalues public class MCTextureGenerator {
     boolean hasDebugInfo = false;
 }
 

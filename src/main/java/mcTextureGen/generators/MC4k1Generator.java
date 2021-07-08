@@ -5,7 +5,7 @@ import java.awt.image.DataBufferByte;
 
 import mcTextureGen.data.TextureGroup;
 
-public class MC4k1Generator implements TextureGenerator {
+public final class MC4k1Generator extends TextureGenerator {
 
     private static final int maxLightLevel = 2;
     private static final int tileSize = 16;

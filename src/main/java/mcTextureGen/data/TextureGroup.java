@@ -2,7 +2,7 @@ package mcTextureGen.data;
 
 import java.awt.image.RenderedImage;
 
-public class TextureGroup {
+public final class TextureGroup {
 
     public final String textureGroupName;
     public final RenderedImage[] textureImages;
