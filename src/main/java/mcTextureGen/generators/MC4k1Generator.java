@@ -19,11 +19,11 @@ public final class MC4k1Generator extends TextureGenerator {
 
     @Override
     public TextureGroup[] getTextureGroups() {
-        return new TextureGroup[] {xorTextures()};
+        return new TextureGroup[] { xorTextures() };
     }
 
     /** Minecraft 4k-1's "XOR fractal" texture generation, for each light level */
-    public TextureGroup xorTextures() {
+    private TextureGroup xorTextures() {
         final BufferedImage[] xorImages = new BufferedImage[maxLightLevel + 1];
 
         for (int tileLightLevel = 0; tileLightLevel <= maxLightLevel; tileLightLevel++) {
@@ -39,7 +39,7 @@ public final class MC4k1Generator extends TextureGenerator {
             xorImages[tileLightLevel] = tile;
         }
 
-        return new TextureGroup ("XOR_Block_Texture", xorImages);
+        return new TextureGroup("XOR_Block_Texture", xorImages);
     }
 
 }

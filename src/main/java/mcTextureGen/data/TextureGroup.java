@@ -9,12 +9,12 @@ public final class TextureGroup {
 
     public TextureGroup(final String textureName, final RenderedImage textureImage) {
         textureGroupName = textureName;
-        textureImages = new RenderedImage[] {textureImage};
+        textureImages = new RenderedImage[] { textureImage };
     }
+
     public TextureGroup(final String textureName, final RenderedImage[] textureImages) {
         textureGroupName = textureName;
         this.textureImages = textureImages;
     }
-
 
 }

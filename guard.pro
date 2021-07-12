@@ -1,8 +1,9 @@
 -verbose
 
-# We're a bit oldschool
+# dontpreverify should only be used when targeting Java 6 or below.
 
--target 1.7
+-target 1.6
+-dontpreverify
 
 # Make sure to check everything always, can't hurt.
 
@@ -19,18 +20,18 @@
 
 # Preserve main entrypoint, but remove class name.
 
--keepclasseswithmembers,allowoptimization,allowobfuscation public class MCTextureGenerator {
+-keepclasseswithmembers,allowoptimization,allowobfuscation public class mcTextureGen.MCTextureGenerator {
     public static void main(java.lang.String[]);
 }
 
--keepclassmembers public class MCTextureGenerator {
+-keepclassmembers public class mcTextureGen.MCTextureGenerator {
     public static void main(java.lang.String[]);
     #public static boolean hasDebugInfo;
 }
 
 # Strip debug code
 
--assumevalues public class MCTextureGenerator {
+-assumevalues public class mcTextureGen.MCTextureGenerator {
     boolean hasDebugInfo = false;
 }
 
@@ -81,7 +82,7 @@
 # Debug ProGuard
 
 -printusage
--whyareyoukeeping class MCTextureGenerator.**
+-whyareyoukeeping class mcTextureGen.**
 
 # Bonus optimisations
 

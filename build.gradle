@@ -9,6 +9,7 @@ buildscript {
 }
 
 plugins {
+    id 'java'
     id 'application'
     id 'maven-publish'
 }
@@ -21,13 +22,13 @@ tasks.withType(AbstractArchiveTask) {
 
 apply plugin: 'java'
 
-// Defines a Java 7 compatible JDK
+// Defines a Java 6 compatible JDK
 // Note to self: probably support building with not outdated versions of Java in the future.
 def compiler = javaToolchains.compilerFor {
-    languageVersion = JavaLanguageVersion.of(7)
+    languageVersion = JavaLanguageVersion.of(6)
 }
 
-// Use the provisioned Java 7 compatible JDK as the main toolchain
+// Use the provisioned Java 6 compatible JDK as the main toolchain
 // Note to self: probably support building with not outdated versions of Java in the future.
 java {
     toolchain {
@@ -38,9 +39,38 @@ java {
 tasks.withType(JavaCompile) {
     // Ensures that the encoding of source files is set to UTF-8, see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
     options.encoding = "UTF-8"
-    // Use the provisioned Java 7 compatible JDK to compile the program
+}
+
+compileJava {
+    // Use the provisioned Java 6 compatible JDK to compile the program
     // Note to self: probably support building with not outdated versions of Java in the future.
     javaCompiler = compiler
+}
+
+compileTestJava {
+    // Use a Java 8 compatible JDK to compile the tests for the program,
+    // as JUnit does not support outdated versions of Java
+    javaCompiler = javaToolchains.compilerFor {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+}
+
+test {
+    // Use a Java 8 compatible JDK / JRE to run the tests for the program,
+    // as JUnit does not support outdated versions of Java
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+    useJUnitPlatform()
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation group: 'org.junit.jupiter',
+    name: 'junit-jupiter', version: '5.7.2'
 }
 
 task ('proguard', type: proguard.gradle.ProGuardTask) {
@@ -56,8 +86,10 @@ task ('proguard', type: proguard.gradle.ProGuardTask) {
     // Get the location of rt.jar from the provided toolchain.
     // Note to self: probably support building with not outdated versions of Java in the future.
     libraryjars compiler.get().metadata.installationPath.asFile.absolutePath + "/lib/rt.jar"
-    // Dumb MacOS workaround, rt.jar is not in the standard place
+    // rt.jar is sometimes only in a JRE folder
     libraryjars compiler.get().metadata.installationPath.asFile.absolutePath + "/jre/lib/rt.jar"
+    // Dumb MacOS stuff, Apple's Legacy JDK 6 "rt.jar" equivalent is not in any standard place
+    libraryjars compiler.get().metadata.installationPath.asFile.absolutePath + "/../Classes/classes.jar"
 
     // The rest of the configs are in this file
     configuration 'guard.pro'
@@ -81,7 +113,7 @@ artifacts {
 jar {
     manifest {
         attributes (
-            'Main-Class': 'MCTextureGenerator'
+            'Main-Class': 'mcTextureGen.MCTextureGenerator'
         )
     }
     classifier = "debug"

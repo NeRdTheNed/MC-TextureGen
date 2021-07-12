@@ -45,7 +45,7 @@ public final class MC4k2Generator extends TextureGenerator {
     }
 
     /** TODO refactor */
-    public TextureGroup[] rawTextureDump() {
+    private TextureGroup[] rawTextureDump() {
         final TextureGroup[] textureGroups = new TextureGroup[MAX_TEXTURE_IDS - TEXTURE_OFFSET];
         final Random rand; //= new Random();
         /*rand.setSeed(18295169L);
@@ -127,7 +127,7 @@ public final class MC4k2Generator extends TextureGenerator {
 
                             // Log texture generation depends on what side of the log texture is being generated.
                             // TODO refactor
-                            if ((xPixel <= 0) || (xPixel >= 15) || (yPixel <= 0) || (yPixel >= 15)  || (subTexture == 1)) {
+                            if ((xPixel <= 0) || (xPixel >= 15) || (yPixel <= 0) || (yPixel >= 15) || (subTexture == 1)) {
                                 colour = COLOUR_DARK_BROWN;
 
                                 if (rand.nextInt(2) == 0) {
