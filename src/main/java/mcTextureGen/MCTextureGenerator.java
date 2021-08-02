@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import mcTextureGen.data.TextureGroup;
+import mcTextureGen.generators.GearRotationFramesGenerator;
 import mcTextureGen.generators.MC4k1Generator;
 import mcTextureGen.generators.MC4k2Generator;
 import mcTextureGen.generators.TextureGenerator;
@@ -15,7 +16,7 @@ public final class MCTextureGenerator {
     // private static boolean hasDebugInfo = true;
 
     public static TextureGenerator[] getTextureGenerators() {
-        return new TextureGenerator[] { new MC4k1Generator(), new MC4k2Generator() };
+        return new TextureGenerator[] { new MC4k1Generator(), new MC4k2Generator(), new GearRotationFramesGenerator() };
     }
 
     public static void main(final String[] args) {
