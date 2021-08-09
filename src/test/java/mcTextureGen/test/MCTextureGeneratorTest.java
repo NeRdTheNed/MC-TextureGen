@@ -18,6 +18,10 @@ import mcTextureGen.generators.TextureGenerator;
 // TODO refactor
 public class MCTextureGeneratorTest {
 
+    static {
+        TextureGenerator.nonDeterministicFrames = 1024;
+    }
+
     // TODO this is bad
     private static final Stream<TextureGenerator> textureGeneratorProvider() {
         return Stream.of(MCTextureGenerator.getTextureGenerators());
