@@ -1,8 +1,13 @@
 package mcTextureGen.generators;
 
+import java.util.Random;
+
 import mcTextureGen.data.TextureGroup;
 
 public abstract class TextureGenerator {
+
+    public static int nonDeterministicFrames = 0;
+    public static Long randomSeed = null;
 
     public abstract String getGeneratorName();
 
@@ -12,6 +17,19 @@ public abstract class TextureGenerator {
     // TODO probably refactor
     public boolean hasGenerationIssue() {
         return false;
+    }
+
+    /** Returns an instance of Random with either a set seed from the command line arguments, or a new Random if a seed value was not passed. */
+    static final Random getRandom() {
+        final Random rand;
+
+        if (randomSeed != null) {
+            rand = new Random(randomSeed);
+        } else {
+            rand = new Random();
+        }
+
+        return rand;
     }
 
     // Math utilities

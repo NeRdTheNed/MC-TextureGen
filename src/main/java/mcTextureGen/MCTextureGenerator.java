@@ -22,6 +22,30 @@ public final class MCTextureGenerator {
 
     public static void main(final String[] args) {
         // TODO: Clean up
+        if (args.length > 0) {
+            if ((args.length % 2) == 0) {
+                for (int i = 0; i < args.length; i += 2) {
+                    try {
+                        if ("-nonDeterministicFrames".equals(args[i])) {
+                            TextureGenerator.nonDeterministicFrames = Integer.parseInt(args[i + 1]);
+                        } else if ("-randomSeed".equals(args[i])) {
+                            TextureGenerator.randomSeed = Long.parseLong(args[i + 1]);
+                        } else {
+                            System.out.println("Error: Invalid command line parameter " + args[i] + " provided");
+                            System.exit(1);
+                        }
+                    } catch (final Exception e) {
+                        System.out.println("Error: The command line parameter for " + args[i] + " was not able to be parsed");
+                        e.printStackTrace();
+                        System.exit(1);
+                    }
+                }
+            } else {
+                System.out.println("Error: An incorrect amount of command line parameters was provided");
+                System.exit(1);
+            }
+        }
+
         final String currentDir = System.getProperty("user.dir");
         final String fileSeperator = System.getProperty("file.separator");
         final String lineSeperator = System.getProperty("line.separator");
@@ -33,6 +57,11 @@ public final class MCTextureGenerator {
             final String textureGeneratorOutputPath = baseTextureOutputPath + fileSeperator + generator.getGeneratorName();
 
             for (final TextureGroup group : generator.getTextureGroups()) {
+                if (group.textureImages.length == 0) {
+                    System.out.println("Warning: Group " + group.textureGroupName + " did not contain any textures, skipping" + lineSeperator);
+                    continue;
+                }
+
                 final String textureGroupOutputPath = textureGeneratorOutputPath + fileSeperator + group.textureGroupName;
                 final File textureGroupDirectory = new File(textureGroupOutputPath);
 
