@@ -13,17 +13,17 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import mcTextureGen.MCTextureGenerator;
 import mcTextureGen.data.TextureGroup;
-import mcTextureGen.generators.TextureGenerator;
+import mcTextureGen.generators.AbstractTextureGenerator;
 
 // TODO refactor
 public class MCTextureGeneratorTest {
 
     static {
-        TextureGenerator.nonDeterministicFrames = 1024;
+        AbstractTextureGenerator.nonDeterministicFrames = 1024;
     }
 
     // TODO this is bad
-    private static final Stream<TextureGenerator> textureGeneratorProvider() {
+    private static final Stream<AbstractTextureGenerator> textureGeneratorProvider() {
         return Stream.of(MCTextureGenerator.getTextureGenerators());
     }
 
@@ -51,15 +51,15 @@ public class MCTextureGeneratorTest {
     @ParameterizedTest
     @MethodSource("textureGeneratorProvider")
     @DisplayName("Test if any TextureGenerator reports generation errors.")
-    final void testGenerationIssues(TextureGenerator generator) {
-        assertFalse(generator.hasGenerationIssue(), () -> ("The " + TextureGenerator.class.getSimpleName() + " \"" + generator.getGeneratorName() + "\" has an unspecified texture generation issue."));
+    final void testGenerationIssues(AbstractTextureGenerator generator) {
+        assertFalse(generator.hasGenerationIssue(), () -> ("The " + AbstractTextureGenerator.class.getSimpleName() + " \"" + generator.getGeneratorName() + "\" has an unspecified texture generation issue."));
     }
 
     @ParameterizedTest
     @MethodSource("textureGeneratorProvider")
     @DisplayName("Ensure all names of TextureGenerators only contain characters which are safe to be used in file names")
-    final void testSafeCharactersInTextureGeneratorNames(TextureGenerator generator) {
-        assertTrue(isSafeName(generator.getGeneratorName()), () -> (unsafeCharacterStart + TextureGenerator.class.getSimpleName() + unsafeCharacterQuotesStart + generator.getGeneratorName() + unsafeCharacterEnd));
+    final void testSafeCharactersInTextureGeneratorNames(AbstractTextureGenerator generator) {
+        assertTrue(isSafeName(generator.getGeneratorName()), () -> (unsafeCharacterStart + AbstractTextureGenerator.class.getSimpleName() + unsafeCharacterQuotesStart + generator.getGeneratorName() + unsafeCharacterEnd));
     }
 
     @ParameterizedTest

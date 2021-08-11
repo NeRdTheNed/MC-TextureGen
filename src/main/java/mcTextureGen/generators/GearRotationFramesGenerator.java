@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 
 import mcTextureGen.data.TextureGroup;
 
-public final class GearRotationFramesGenerator extends TextureGenerator {
+public final class GearRotationFramesGenerator extends AbstractTextureGenerator {
 
     /**
      * This variable controls how many distinct angles (frames) the gear animation has.

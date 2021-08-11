@@ -4,7 +4,7 @@ import java.util.Random;
 
 import mcTextureGen.data.TextureGroup;
 
-public abstract class TextureGenerator {
+public abstract class AbstractTextureGenerator {
 
     public static int nonDeterministicFrames = 0;
     public static Long randomSeed = null;

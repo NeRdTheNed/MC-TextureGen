@@ -6,7 +6,7 @@ import java.util.Random;
 
 import mcTextureGen.data.TextureGroup;
 
-public final class NetherPortalGenerator extends TextureGenerator {
+public final class NetherPortalGenerator extends AbstractTextureGenerator {
 
     private final static int portalImageAmount = 32;
     private final static int portalImageSize = 16;
@@ -64,7 +64,7 @@ public final class NetherPortalGenerator extends TextureGenerator {
 
                         final float spiralPowerThingy = (currentSpiralX * currentSpiralX) + (currentSpiralY * currentSpiralY);
                         // TODO fix this to actually make more than two spirals work, you can see my nonsensical attempt to do this before I got too confused to continue
-                        float currentSpiralIntensity = (float)Math.atan2(currentSpiralY, currentSpiralX) + ((((((float)currentPortalImage / (float)portalImageAmount) * (float) Math.PI * 2.0F) - (spiralPowerThingy * 10.0F)) + (float)(currentSpiral * 2)) * (float)((currentSpiral * 2) - 1));
+                        float currentSpiralIntensity = (float)Math.atan2(currentSpiralY, currentSpiralX) + ((((((float)currentPortalImage / (float)portalImageAmount) * (float) Math.PI * 2.0F) - (spiralPowerThingy * 10.0F)) + (currentSpiral * 2)) * ((currentSpiral * 2) - 1));
                         // float currentSpiralIntensity = (float)Math.atan2(currentSpiralY, currentSpiralX) + ((((((float)currentPortalImage / (float)portalImageAmount) * (float) Math.PI * 2.0F) - (spiralPowerThingy * 10.0F)) + (currentSpiral * spiralAmount)) * ((((currentSpiral % 2) * 2) - 1) * ((currentSpiral + 2) / 2)));
                         currentSpiralIntensity = (lookupSin(currentSpiralIntensity) + 1.0f) / 2.0F;
                         currentSpiralIntensity /= spiralPowerThingy + 1.0F;

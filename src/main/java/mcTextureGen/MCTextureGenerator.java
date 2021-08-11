@@ -6,18 +6,18 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import mcTextureGen.data.TextureGroup;
+import mcTextureGen.generators.AbstractTextureGenerator;
 import mcTextureGen.generators.GearRotationFramesGenerator;
 import mcTextureGen.generators.MC4k1Generator;
 import mcTextureGen.generators.MC4k2Generator;
 import mcTextureGen.generators.NetherPortalGenerator;
-import mcTextureGen.generators.TextureGenerator;
 
 public final class MCTextureGenerator {
 
     // private static boolean hasDebugInfo = true;
 
-    public static TextureGenerator[] getTextureGenerators() {
-        return new TextureGenerator[] { new MC4k1Generator(), new MC4k2Generator(), new GearRotationFramesGenerator(), new NetherPortalGenerator() };
+    public static AbstractTextureGenerator[] getTextureGenerators() {
+        return new AbstractTextureGenerator[] { new MC4k1Generator(), new MC4k2Generator(), new GearRotationFramesGenerator(), new NetherPortalGenerator() };
     }
 
     public static void main(final String[] args) {
@@ -27,9 +27,9 @@ public final class MCTextureGenerator {
                 for (int i = 0; i < args.length; i += 2) {
                     try {
                         if ("-nonDeterministicFrames".equals(args[i])) {
-                            TextureGenerator.nonDeterministicFrames = Integer.parseInt(args[i + 1]);
+                            AbstractTextureGenerator.nonDeterministicFrames = Integer.parseInt(args[i + 1]);
                         } else if ("-randomSeed".equals(args[i])) {
-                            TextureGenerator.randomSeed = Long.parseLong(args[i + 1]);
+                            AbstractTextureGenerator.randomSeed = Long.parseLong(args[i + 1]);
                         } else {
                             System.out.println("Error: Invalid command line parameter " + args[i] + " provided");
                             System.exit(1);
@@ -52,7 +52,7 @@ public final class MCTextureGenerator {
         System.out.println(lineSeperator + "MCTextureGenerator" + lineSeperator + "Generates and saves runtime-generated textures from various Minecraft versions." + lineSeperator);
         final String baseTextureOutputPath = currentDir + fileSeperator + "GeneratedTextures";
 
-        for (final TextureGenerator generator : getTextureGenerators()) {
+        for (final AbstractTextureGenerator generator : getTextureGenerators()) {
             System.out.println("Generating all texture groups for the texture generator " + generator.getGeneratorName() + lineSeperator);
             final String textureGeneratorOutputPath = baseTextureOutputPath + fileSeperator + generator.getGeneratorName();
 

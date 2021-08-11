@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import mcTextureGen.data.TextureGroup;
 
 /** TODO WIP, need to split into individual texture groups */
-public final class MC4k2Generator extends TextureGenerator {
+public final class MC4k2Generator extends AbstractTextureGenerator {
 
     private static final int COLOUR_LIGHT_BROWN = 0xFFBC9862;
     private static final int COLOUR_BROWN = 0xFF966C4A;
