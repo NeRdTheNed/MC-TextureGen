@@ -10,6 +10,7 @@ import mcTextureGen.generators.AbstractTextureGenerator;
 import mcTextureGen.generators.Classic19aLavaGenerator;
 import mcTextureGen.generators.Classic19aWaterGenerator;
 import mcTextureGen.generators.Classic22aLavaGenerator;
+import mcTextureGen.generators.FireGenerator;
 import mcTextureGen.generators.GearRotationFramesGenerator;
 import mcTextureGen.generators.MC4k1Generator;
 import mcTextureGen.generators.MC4k2Generator;
@@ -20,7 +21,7 @@ public final class MCTextureGenerator {
     // private static boolean hasDebugInfo = true;
 
     public static AbstractTextureGenerator[] getTextureGenerators() {
-        return new AbstractTextureGenerator[] { new MC4k1Generator(), new MC4k2Generator(), new GearRotationFramesGenerator(), new NetherPortalGenerator(), new Classic19aWaterGenerator(), new Classic19aLavaGenerator(), new Classic22aLavaGenerator() };
+        return new AbstractTextureGenerator[] { new MC4k1Generator(), new MC4k2Generator(), new GearRotationFramesGenerator(), new NetherPortalGenerator(), new Classic19aWaterGenerator(), new Classic19aLavaGenerator(), new Classic22aLavaGenerator(), new FireGenerator() };
     }
 
     public static void main(final String[] args) {

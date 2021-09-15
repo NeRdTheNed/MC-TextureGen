@@ -13,6 +13,7 @@ The program can also generate some non-deterministic textures, if a valid value 
 
 - Water textures from Minecraft Classic 0.0.19a
 - Lava textures from Minecraft Classic 0.0.19a and 0.0.22a
+- Fire textures
 
 ## How to generate the textures.
 
