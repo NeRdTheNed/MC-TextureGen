@@ -31,10 +31,10 @@ jobs:
       env:
         GITHUB_ACTIONS_JDK_6: ${{ steps.setup_jdk_6.outputs.path }}
         GITHUB_ACTIONS_JDK_8: ${{ steps.setup_jdk_8.outputs.path }}
-      uses: eskatos/gradle-command-action@v1
+      uses: gradle/gradle-build-action@v1
       with:
         gradle-version: wrapper
-        wrapper-cache-enabled: false
+        distributions-cache-enabled: false
         dependencies-cache-enabled: false
         configuration-cache-enabled: false
         arguments: build
