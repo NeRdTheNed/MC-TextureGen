@@ -16,20 +16,20 @@ import mcTextureGen.data.TextureGroup;
 import mcTextureGen.generators.AbstractTextureGenerator;
 
 // TODO refactor
-public class MCTextureGeneratorTest {
+final class MCTextureGeneratorTest {
 
     static {
-        AbstractTextureGenerator.nonDeterministicFrames = 1024;
+        AbstractTextureGenerator.setNonDeterministicFrames(1024);
     }
 
     // TODO this is bad
-    private static final Stream<AbstractTextureGenerator> textureGeneratorProvider() {
+    private static Stream<AbstractTextureGenerator> textureGeneratorProvider() {
         return Stream.of(MCTextureGenerator.getTextureGenerators());
     }
 
     // TODO this is bad
-    private static final Stream<TextureGroup> textureGroupProvider() {
-        return Stream.of(MCTextureGenerator.getTextureGenerators()).map(x -> x.getTextureGroups()).flatMap(Stream::of);
+    private static Stream<TextureGroup> textureGroupProvider() {
+        return Stream.of(MCTextureGenerator.getTextureGenerators()).map(AbstractTextureGenerator::getTextureGroups).flatMap(Stream::of);
     }
 
     // This regex matches if the whole string only contains alpha-numeric characters and / or underscores.
@@ -44,28 +44,28 @@ public class MCTextureGeneratorTest {
     private final static String unsafeCharacterQuotesStart = " \"";
     private final static String unsafeCharacterEnd = "\" contained a character which might be potentially unsafe to use in a file name";
 
-    private static final boolean isSafeName(String toCheck) {
+    private static boolean isSafeName(String toCheck) {
         return checkUnsafeCharacters.reset(toCheck).matches();
     }
 
     @ParameterizedTest
     @MethodSource("textureGeneratorProvider")
     @DisplayName("Test if any TextureGenerator reports generation errors.")
-    final void testGenerationIssues(AbstractTextureGenerator generator) {
+    void testGenerationIssues(AbstractTextureGenerator generator) {
         assertFalse(generator.hasGenerationIssue(), () -> ("The " + AbstractTextureGenerator.class.getSimpleName() + " \"" + generator.getGeneratorName() + "\" has an unspecified texture generation issue."));
     }
 
     @ParameterizedTest
     @MethodSource("textureGeneratorProvider")
     @DisplayName("Ensure all names of TextureGenerators only contain characters which are safe to be used in file names")
-    final void testSafeCharactersInTextureGeneratorNames(AbstractTextureGenerator generator) {
+    void testSafeCharactersInTextureGeneratorNames(AbstractTextureGenerator generator) {
         assertTrue(isSafeName(generator.getGeneratorName()), () -> (unsafeCharacterStart + AbstractTextureGenerator.class.getSimpleName() + unsafeCharacterQuotesStart + generator.getGeneratorName() + unsafeCharacterEnd));
     }
 
     @ParameterizedTest
     @MethodSource("textureGroupProvider")
     @DisplayName("Ensure all names of TextureGenerators only contain characters which are safe to be used in file names")
-    final void testSafeCharactersInTextureGroupNames(TextureGroup group) {
+    void testSafeCharactersInTextureGroupNames(TextureGroup group) {
         assertTrue(isSafeName(group.textureGroupName), () -> (unsafeCharacterStart + TextureGroup.class.getSimpleName() + unsafeCharacterQuotesStart  + group.textureGroupName + unsafeCharacterEnd));
     }
 

@@ -9,21 +9,22 @@ import mcTextureGen.data.TextureGroup;
 /* TODO clean up, refactor */
 public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
 
-    //private static final int skipIterations = 0;
-
     private static final int liquidImageSizeBits = 4;
     static final int liquidImageSizeMask = ~(-1 << liquidImageSizeBits);
     static final int liquidImageSize = liquidImageSizeMask + 1;
 
+    // TODO refactor
+    Random rand;
+
     private final String generatorName;
+
+    protected AbstractLiquidGenerator(String generatorName) {
+        this.generatorName = generatorName;
+    }
 
     @Override
     public final String getGeneratorName() {
         return generatorName;
-    }
-
-    public AbstractLiquidGenerator(String generatorName) {
-        this.generatorName = generatorName;
     }
 
     @Override
@@ -35,9 +36,6 @@ public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
 
     public abstract void setABGR(final byte[] imageByteData, final float currentPixelIntensity, final int imageOffset);
 
-    // TODO refactor
-    Random rand;
-
     private final TextureGroup liquidTextures() {
         rand = getRandom();
         float[] liquidImagePrevious = new float[liquidImageSize * liquidImageSize];
@@ -46,13 +44,11 @@ public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
         final float[] liquidIntensityIntensity = new float[liquidImageSize * liquidImageSize];
         final BufferedImage[] liquidImages = new BufferedImage[nonDeterministicFrames];
 
-        //for (int currentFrame = 0; currentFrame < (nonDeterministicFrames + skipIterations); currentFrame++) {
         for (int currentFrame = 0; currentFrame < nonDeterministicFrames; currentFrame++) {
             generateLiquidTexture(liquidImagePrevious, liquidImageCurrent, liquidIntensity, liquidIntensityIntensity);
             final float[] liquidImageCurrentTemp = liquidImageCurrent;
             liquidImageCurrent = liquidImagePrevious;
             liquidImagePrevious = liquidImageCurrentTemp;
-            //if (currentFrame >= skipIterations) {
             final BufferedImage currentLiquidImage = new BufferedImage(liquidImageSize, liquidImageSize, BufferedImage.TYPE_4BYTE_ABGR);
             final byte[] imageByteData = ((DataBufferByte) currentLiquidImage.getRaster().getDataBuffer()).getData();
 
@@ -62,9 +58,7 @@ public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
                 setABGR(imageByteData, currentPixelIntensity, imageOffset);
             }
 
-            //liquidImages[currentFrame - skipIterations] = currentLiquidImage;
             liquidImages[currentFrame] = currentLiquidImage;
-            //}
         }
 
         return new TextureGroup(generatorName + "_Textures", liquidImages);

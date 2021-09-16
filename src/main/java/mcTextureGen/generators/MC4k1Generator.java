@@ -23,7 +23,7 @@ public final class MC4k1Generator extends AbstractTextureGenerator {
     }
 
     /** Minecraft 4k-1's "XOR fractal" texture generation, for each light level */
-    private TextureGroup xorTextures() {
+    private static TextureGroup xorTextures() {
         final BufferedImage[] xorImages = new BufferedImage[maxLightLevel + 1];
 
         for (int tileLightLevel = 0; tileLightLevel <= maxLightLevel; tileLightLevel++) {

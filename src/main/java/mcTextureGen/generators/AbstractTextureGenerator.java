@@ -6,8 +6,18 @@ import mcTextureGen.data.TextureGroup;
 
 public abstract class AbstractTextureGenerator {
 
-    public static int nonDeterministicFrames = 0;
-    public static Long randomSeed = null;
+    protected static int nonDeterministicFrames = 0;
+    private static Long randomSeed = null;
+
+    private static final Random cachedRand = new Random();
+
+    public static void setNonDeterministicFrames(int nonDeterministicFrames) {
+        AbstractTextureGenerator.nonDeterministicFrames = nonDeterministicFrames;
+    }
+
+    public static void setRandomSeed(Long randomSeed) {
+        AbstractTextureGenerator.randomSeed = randomSeed;
+    }
 
     public abstract String getGeneratorName();
 
@@ -19,14 +29,14 @@ public abstract class AbstractTextureGenerator {
         return false;
     }
 
-    /** Returns an instance of Random with either a set seed from the command line arguments, or a new Random if a seed value was not passed. */
+    /** Returns an instance of Random with a set seed from the command line arguments, or a cached Random if a seed value was not passed. */
     static final Random getRandom() {
         final Random rand;
 
         if (randomSeed != null) {
             rand = new Random(randomSeed);
         } else {
-            rand = new Random();
+            rand = cachedRand;
         }
 
         return rand;
@@ -46,18 +56,18 @@ public abstract class AbstractTextureGenerator {
 
     private static final float[] SINE_TABLE = new float[SIN_COUNT];
 
-    static {
-        for (int i = 0; i < SIN_COUNT; ++i) {
-            SINE_TABLE[i] = (float) Math.sin((i * Math.PI * 2.0) / SIN_COUNT);
-        }
-    }
-
     static final float lookupCos(float radians) {
         return SINE_TABLE[(int) ((radians * RADIANS_TO_INDEX) + (SIN_COUNT / 4)) & SIN_MASK];
     }
 
     static final float lookupSin(float radians) {
         return SINE_TABLE[(int) (radians * RADIANS_TO_INDEX) & SIN_MASK];
+    }
+
+    static {
+        for (int i = 0; i < SIN_COUNT; ++i) {
+            SINE_TABLE[i] = (float) Math.sin((i * Math.PI * 2.0) / SIN_COUNT);
+        }
     }
 
 }

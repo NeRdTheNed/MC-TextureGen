@@ -53,7 +53,7 @@ public final class FireGenerator extends AbstractTextureGenerator {
         return new TextureGroup[] { fireTextures() };
     }
 
-    private TextureGroup fireTextures() {
+    private static TextureGroup fireTextures() {
         float[] fireImagePrevious = new float[fireTextureWidth * fireTextureHeight];
         float[] fireImageCurrent = new float[fireTextureWidth * fireTextureHeight];
         final Random rand = getRandom();

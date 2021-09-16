@@ -3,10 +3,6 @@ package mcTextureGen.generators;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.Random;
-/*
-import java.lang.reflect.Field;
-import java.util.concurrent.atomic.AtomicLong;
-*/
 
 import mcTextureGen.data.TextureGroup;
 
@@ -45,7 +41,7 @@ public final class MC4k2Generator extends AbstractTextureGenerator {
     }
 
     /** TODO refactor */
-    private TextureGroup[] rawTextureDump() {
+    private static TextureGroup[] rawTextureDump() {
         final TextureGroup[] textureGroups = new TextureGroup[MAX_TEXTURE_IDS - TEXTURE_OFFSET];
         final Random rand; //= new Random();
         /*rand.setSeed(18295169L);
@@ -53,7 +49,7 @@ public final class MC4k2Generator extends AbstractTextureGenerator {
 
         for (int i = 0; i < 0x40000; i++) {
             //useLess[i] = ((i / 64) % 64) > (32 + rand.nextInt(8)) ? rand.nextInt(8) + 1 : 0;
-        	int useLess = ((i / 64) % 64) > (32 + rand.nextInt(8)) ? rand.nextInt(8) + 1 : 0;
+            int useLess = ((i / 64) % 64) > (32 + rand.nextInt(8)) ? rand.nextInt(8) + 1 : 0;
         }*/
         // https://stackoverflow.com/a/29278559 was used to extract the value of the seed after these calls had been made, which turned out to be 151924357153274.
         rand = new Random(151924357153274L);

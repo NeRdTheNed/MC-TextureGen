@@ -56,7 +56,7 @@ public final class GearRotationFramesGenerator extends AbstractTextureGenerator 
         }
     }
 
-    private TextureGroup gearRotationTextures() {
+    private static TextureGroup gearRotationTextures() {
         final BufferedImage[] gearTextures = new BufferedImage[gearRotationSteps];
 
         // For each angle of the gear animation, generate a texture
@@ -70,7 +70,7 @@ public final class GearRotationFramesGenerator extends AbstractTextureGenerator 
     }
 
     // TODO better documentation, variable names are way to verbose, check if gear rotation animation was consistent across all versions of Minecraft
-    private BufferedImage generateGearTextureForRotation(int rotationStep) {
+    private static BufferedImage generateGearTextureForRotation(int rotationStep) {
         final BufferedImage rotatedImage = new BufferedImage(rotatedTextureSize, rotatedTextureSize, BufferedImage.TYPE_4BYTE_ABGR);
         final byte[] imageByteData = ((DataBufferByte) rotatedImage.getRaster().getDataBuffer()).getData();
         // Convert the current rotation step into an angle in radians,

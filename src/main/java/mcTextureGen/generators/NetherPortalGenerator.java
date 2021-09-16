@@ -8,13 +8,13 @@ import mcTextureGen.data.TextureGroup;
 
 public final class NetherPortalGenerator extends AbstractTextureGenerator {
 
-    private final static int portalImageAmount = 32;
-    private final static int portalImageSize = 16;
+    private static final int portalImageAmount = 32;
+    private static final int portalImageSize = 16;
     // TODO This doesn't really work for more than a value of 2, see "TODO fix this"
-    private final static int spiralAmount = 2;
+    private static final int spiralAmount = 2;
 
-    private final static boolean addConstantOffset = true;
-    private final static boolean addRandomNoise = true;
+    private static final boolean addConstantOffset = true;
+    private static final boolean addRandomNoise = true;
 
     @Override
     public String getGeneratorName() {
@@ -27,7 +27,7 @@ public final class NetherPortalGenerator extends AbstractTextureGenerator {
     }
 
     /* TODO refactor, document */
-    private TextureGroup netherPortalFrames() {
+    private static TextureGroup netherPortalFrames() {
         final BufferedImage[] portalImages = new BufferedImage[portalImageAmount];
         final Random rand = new Random(100L);
 
@@ -41,8 +41,8 @@ public final class NetherPortalGenerator extends AbstractTextureGenerator {
 
                     for (int currentSpiral = 0; currentSpiral < spiralAmount; currentSpiral++) {
                         final float currentSpiralOffset = currentSpiral * (portalImageSize / spiralAmount);
-                        float currentSpiralX = ((portalImageX - currentSpiralOffset) / portalImageSize) * 2.0f;
-                        float currentSpiralY = ((portalImageY - currentSpiralOffset) / portalImageSize) * 2.0f;
+                        float currentSpiralX = ((portalImageX - currentSpiralOffset) / portalImageSize) * 2.0F;
+                        float currentSpiralY = ((portalImageY - currentSpiralOffset) / portalImageSize) * 2.0F;
 
                         if (addConstantOffset) {
                             if (currentSpiralX < -1.0F) {
@@ -66,7 +66,7 @@ public final class NetherPortalGenerator extends AbstractTextureGenerator {
                         // TODO fix this to actually make more than two spirals work, you can see my nonsensical attempt to do this before I got too confused to continue
                         float currentSpiralIntensity = (float)Math.atan2(currentSpiralY, currentSpiralX) + ((((((float)currentPortalImage / (float)portalImageAmount) * (float) Math.PI * 2.0F) - (spiralPowerThingy * 10.0F)) + (currentSpiral * 2)) * ((currentSpiral * 2) - 1));
                         // float currentSpiralIntensity = (float)Math.atan2(currentSpiralY, currentSpiralX) + ((((((float)currentPortalImage / (float)portalImageAmount) * (float) Math.PI * 2.0F) - (spiralPowerThingy * 10.0F)) + (currentSpiral * spiralAmount)) * ((((currentSpiral % 2) * 2) - 1) * ((currentSpiral + 2) / 2)));
-                        currentSpiralIntensity = (lookupSin(currentSpiralIntensity) + 1.0f) / 2.0F;
+                        currentSpiralIntensity = (lookupSin(currentSpiralIntensity) + 1.0F) / 2.0F;
                         currentSpiralIntensity /= spiralPowerThingy + 1.0F;
                         currentPixelIntensity += currentSpiralIntensity * (1.0F / spiralAmount);
                     }

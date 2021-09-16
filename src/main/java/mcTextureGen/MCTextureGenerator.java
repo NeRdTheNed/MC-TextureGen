@@ -2,6 +2,9 @@ package mcTextureGen;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
@@ -26,43 +29,46 @@ public final class MCTextureGenerator {
 
     public static void main(final String[] args) {
         // TODO: Clean up
+        final Logger log = Logger.getLogger("MCTextureGenerator");
+        log.log(Level.INFO, "MCTextureGenerator: Generates and saves runtime-generated textures from various Minecraft versions.");
+
         if (args.length > 0) {
             if ((args.length % 2) == 0) {
                 for (int i = 0; i < args.length; i += 2) {
                     try {
                         if ("-nonDeterministicFrames".equals(args[i])) {
-                            AbstractTextureGenerator.nonDeterministicFrames = Integer.parseInt(args[i + 1]);
+                            AbstractTextureGenerator.setNonDeterministicFrames(Integer.parseInt(args[i + 1]));
                         } else if ("-randomSeed".equals(args[i])) {
-                            AbstractTextureGenerator.randomSeed = Long.parseLong(args[i + 1]);
+                            AbstractTextureGenerator.setRandomSeed(Long.parseLong(args[i + 1]));
                         } else {
-                            System.out.println("Error: Invalid command line parameter " + args[i] + " provided");
+                            log.log(Level.SEVERE, "Invalid command line parameter {0} provided", args[i]);
                             System.exit(1);
                         }
-                    } catch (final Exception e) {
-                        System.out.println("Error: The command line parameter for " + args[i] + " was not able to be parsed");
-                        e.printStackTrace();
+                    } catch (final NumberFormatException e) {
+                        final LogRecord logRecord = new LogRecord(Level.SEVERE, "The command line parameter for {0} was not able to be parsed");
+                        logRecord.setParameters(new Object[] { args[i] });
+                        logRecord.setThrown(e);
+                        log.log(logRecord);
                         System.exit(1);
                     }
                 }
             } else {
-                System.out.println("Error: An incorrect amount of command line parameters was provided");
+                log.log(Level.SEVERE, "An incorrect amount of command line parameters was provided");
                 System.exit(1);
             }
         }
 
         final String currentDir = System.getProperty("user.dir");
         final String fileSeperator = System.getProperty("file.separator");
-        final String lineSeperator = System.getProperty("line.separator");
-        System.out.println(lineSeperator + "MCTextureGenerator" + lineSeperator + "Generates and saves runtime-generated textures from various Minecraft versions." + lineSeperator);
         final String baseTextureOutputPath = currentDir + fileSeperator + "GeneratedTextures";
 
         for (final AbstractTextureGenerator generator : getTextureGenerators()) {
-            System.out.println("Generating all texture groups for the texture generator " + generator.getGeneratorName() + lineSeperator);
+            log.log(Level.INFO, "Generating all texture groups for the texture generator {0}", generator.getGeneratorName());
             final String textureGeneratorOutputPath = baseTextureOutputPath + fileSeperator + generator.getGeneratorName();
 
             for (final TextureGroup group : generator.getTextureGroups()) {
                 if (group.textureImages.length == 0) {
-                    System.out.println("Warning: Group " + group.textureGroupName + " did not contain any textures, skipping" + lineSeperator);
+                    log.log(Level.WARNING, "Group {0} did not contain any textures, skipping", group.textureGroupName);
                     continue;
                 }
 
@@ -70,11 +76,11 @@ public final class MCTextureGenerator {
                 final File textureGroupDirectory = new File(textureGroupOutputPath);
 
                 if (!textureGroupDirectory.exists() && !textureGroupDirectory.mkdirs()) {
-                    System.out.println("Error: Could not create directory for texture group " + group.textureGroupName + ", skipping" + lineSeperator);
+                    log.log(Level.WARNING, "Could not create directory for texture group {0}, skipping", group.textureGroupName);
                     continue;
                 }
 
-                System.out.println("Generating all texures for the texture group " + group.textureGroupName);
+                log.log(Level.INFO, "Generating all texures for the texture group {0}", group.textureGroupName);
 
                 for (int i = 0; i < group.textureImages.length; i++) {
                     final RenderedImage textureImage = group.textureImages[i];
@@ -84,18 +90,21 @@ public final class MCTextureGenerator {
                     try {
                         ImageIO.write(textureImage, "png", textureFile);
                     } catch (final IOException e) {
-                        System.out.println("Error: Failed to save " + group.textureGroupName);
-                        e.printStackTrace();
+                        final LogRecord logRecord = new LogRecord(Level.SEVERE, "Error: Failed to save {0}");
+                        logRecord.setParameters(new Object[] { group.textureGroupName });
+                        logRecord.setThrown(e);
+                        log.log(logRecord);
+                        System.exit(1);
                     }
                 }
 
-                System.out.println("Finished generating all texures for the texture group " + group.textureGroupName + lineSeperator);
+                log.log(Level.INFO, "Finished generating all texures for the texture group {0}", group.textureGroupName);
             }
 
-            System.out.println("Finished generating all texture groups for the texture generator " + generator.getGeneratorName() + lineSeperator);
+            log.log(Level.INFO, "Finished generating all texture groups for the texture generator {0}", generator.getGeneratorName());
         }
 
-        System.out.println("All images have been generated and saved!");
+        log.log(Level.INFO, "All images have been generated and saved!");
     }
 
 }

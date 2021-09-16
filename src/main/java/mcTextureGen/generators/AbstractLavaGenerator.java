@@ -3,7 +3,7 @@ package mcTextureGen.generators;
 /* TODO clean up, refactor */
 public abstract class AbstractLavaGenerator extends AbstractLiquidGenerator {
 
-    public AbstractLavaGenerator(String generatorName) {
+    protected AbstractLavaGenerator(String generatorName) {
         super(generatorName);
     }
 
