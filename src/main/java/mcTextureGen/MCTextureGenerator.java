@@ -90,7 +90,7 @@ public final class MCTextureGenerator {
                     try {
                         ImageIO.write(textureImage, "png", textureFile);
                     } catch (final IOException e) {
-                        final LogRecord logRecord = new LogRecord(Level.WARNING, "Error: Failed to save {0}");
+                        final LogRecord logRecord = new LogRecord(Level.WARNING, "Failed to save {0}");
                         logRecord.setParameters(new Object[] { group.textureGroupName });
                         logRecord.setThrown(e);
                         log.log(logRecord);
