@@ -2,7 +2,7 @@
 
 # dontpreverify should only be used when targeting Java 6 or below.
 
--target 1.6
+-target 1.5
 -dontpreverify
 
 # Make sure to check everything always, can't hurt.
