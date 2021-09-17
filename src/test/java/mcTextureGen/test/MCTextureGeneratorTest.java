@@ -19,6 +19,7 @@ import mcTextureGen.generators.AbstractTextureGenerator;
 final class MCTextureGeneratorTest {
 
     static {
+        MCTextureGenerator.setupGraphics();
         AbstractTextureGenerator.setNonDeterministicFrames(1024);
     }
 

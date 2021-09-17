@@ -1,4 +1,5 @@
 package mcTextureGen;
+import java.awt.GraphicsEnvironment;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import mcTextureGen.generators.FireGenerator;
 import mcTextureGen.generators.GearRotationFramesGenerator;
 import mcTextureGen.generators.MC4k1Generator;
 import mcTextureGen.generators.MC4k2Generator;
+import mcTextureGen.generators.MissingTextureGenerator;
 import mcTextureGen.generators.NetherPortalGenerator;
 
 public final class MCTextureGenerator {
@@ -24,13 +26,30 @@ public final class MCTextureGenerator {
     // private static boolean hasDebugInfo = true;
 
     public static AbstractTextureGenerator[] getTextureGenerators() {
-        return new AbstractTextureGenerator[] { new MC4k1Generator(), new MC4k2Generator(), new GearRotationFramesGenerator(), new NetherPortalGenerator(), new Classic19aWaterGenerator(), new Classic19aLavaGenerator(), new Classic22aLavaGenerator(), new FireGenerator() };
+        return new AbstractTextureGenerator[] {
+                   new MissingTextureGenerator(),
+                   new MC4k1Generator(),
+                   new MC4k2Generator(),
+                   new GearRotationFramesGenerator(),
+                   new NetherPortalGenerator(),
+                   new Classic19aWaterGenerator(),
+                   new Classic19aLavaGenerator(),
+                   new Classic22aLavaGenerator(),
+                   new FireGenerator()
+               };
+    }
+
+    public static void setupGraphics() {
+        System.setProperty("java.awt.headless", "true");
+        GraphicsEnvironment.getLocalGraphicsEnvironment();
     }
 
     public static void main(final String[] args) {
         // TODO: Clean up
         final Logger log = Logger.getLogger("MCTextureGenerator");
         log.log(Level.INFO, "MCTextureGenerator: Generates and saves runtime-generated textures from various Minecraft versions.");
+        log.log(Level.FINE, "Setting up GraphicsEnvironment");
+        setupGraphics();
 
         if (args.length > 0) {
             if ((args.length % 2) == 0) {
@@ -84,7 +103,14 @@ public final class MCTextureGenerator {
 
                 for (int i = 0; i < group.textureImages.length; i++) {
                     final RenderedImage textureImage = group.textureImages[i];
-                    final String outFileName = textureGroupOutputPath + fileSeperator + group.textureGroupName + "_" + (i + 1) + ".png";
+                    final String outFileName;
+
+                    if (group.textureImages.length > 1) {
+                        outFileName = textureGroupOutputPath + fileSeperator + group.textureGroupName + "_" + (i + 1) + ".png";
+                    } else {
+                        outFileName = textureGroupOutputPath + fileSeperator + group.textureGroupName + ".png";
+                    }
+
                     final File textureFile = new File(outFileName);
 
                     try {
