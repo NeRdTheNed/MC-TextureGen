@@ -43,12 +43,10 @@ public final class FireGenerator extends AbstractTextureGenerator {
     // If that's true, removing " + (selfSamples * 0.01F)" from wtFloat might simulate this.
     private static final float divPixelIntensity = sampleCounterEnd * wtFloat;
 
-    @Override
     public String getGeneratorName() {
         return "Fire";
     }
 
-    @Override
     public TextureGroup[] getTextureGroups() {
         return new TextureGroup[] { fireTextures() };
     }

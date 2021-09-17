@@ -6,7 +6,6 @@ public final class Classic19aLavaGenerator extends AbstractLavaGenerator {
         super("Classic_19a_Lava");
     }
 
-    @Override
     public void setABGR(final byte[] imageByteData, final float currentPixelIntensity, final int imageOffset) {
         imageByteData[imageOffset + 0] = (byte) 0xFF;
         imageByteData[imageOffset + 1] = (byte) (currentPixelIntensity * currentPixelIntensity * currentPixelIntensity * currentPixelIntensity * 128.0F);

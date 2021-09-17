@@ -16,12 +16,10 @@ public final class NetherPortalGenerator extends AbstractTextureGenerator {
     private static final boolean addConstantOffset = true;
     private static final boolean addRandomNoise = true;
 
-    @Override
     public String getGeneratorName() {
         return "Nether_Portal";
     }
 
-    @Override
     public TextureGroup[] getTextureGroups() {
         return new TextureGroup[] { netherPortalFrames() };
     }

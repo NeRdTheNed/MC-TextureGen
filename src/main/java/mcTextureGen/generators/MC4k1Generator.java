@@ -12,12 +12,10 @@ public final class MC4k1Generator extends AbstractTextureGenerator {
     private static final int unsignedByteMax = 0xFF;
     private static final float unsignedByteMaxAsFloat = 0xFF;
 
-    @Override
     public String getGeneratorName() {
         return "Minecraft_4k_1";
     }
 
-    @Override
     public TextureGroup[] getTextureGroups() {
         return new TextureGroup[] { xorTextures() };
     }

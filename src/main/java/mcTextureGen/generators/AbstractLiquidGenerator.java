@@ -22,12 +22,10 @@ public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
         this.generatorName = generatorName;
     }
 
-    @Override
     public final String getGeneratorName() {
         return generatorName;
     }
 
-    @Override
     public final TextureGroup[] getTextureGroups() {
         return new TextureGroup[] { liquidTextures() };
     }

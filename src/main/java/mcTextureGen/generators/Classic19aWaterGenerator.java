@@ -6,7 +6,6 @@ public final class Classic19aWaterGenerator extends AbstractLiquidGenerator {
         super("Classic_19a_Water");
     }
 
-    @Override
     public void generateLiquidTexture(final float[] liquidImagePrevious, final float[] liquidImageCurrent, final float[] liquidIntensity, final float[] liquidIntensityIntensity) {
         // Generate the image pixel values
         for (int currentWaterX = 0; currentWaterX < liquidImageSize; ++currentWaterX) {
@@ -46,7 +45,6 @@ public final class Classic19aWaterGenerator extends AbstractLiquidGenerator {
         }
     }
 
-    @Override
     public void setABGR(final byte[] imageByteData, final float currentPixelIntensity, final int imageOffset) {
         final float currentPixelIntensityPow = currentPixelIntensity * currentPixelIntensity;
         imageByteData[imageOffset + 0] = (byte) (146.0F + (currentPixelIntensityPow * 50.0F));

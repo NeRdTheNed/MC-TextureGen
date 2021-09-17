@@ -12,15 +12,13 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
     private static final int CHECKERBOARD_TEXTURE_SIZE = 16;
     private static final int TEXT_TEXTURE_SZIE = 64;
 
-    @Override
     public String getGeneratorName() {
         return "Missing_Textures";
     }
 
-    @Override
     public TextureGroup[] getTextureGroups() {
         return new TextureGroup[] {
-                   missingTextureText("Java_13w02a_to_13w17a", "missing", "texture"),
+                   missingTextureText("Java_13w02a_to_13w17a", new String[] { "missing", "texture"}),
                    missingTextureCheckerboard("Java_13w18a_to_1_12_2", 0x000000, 0xF800F8),
                    missingTextureCheckerboard("Java_17w43a_to_current", 0xF800F8, 0x000000)
                };
@@ -40,7 +38,7 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
     }
 
     /** Note: The generated TextureGroup is JVM / system dependent: the font / text rendering method chosen will vary across different platforms. */
-    private static TextureGroup missingTextureText(String name, String... toDraw) {
+    private static TextureGroup missingTextureText(String name, String[] toDraw) {
         final BufferedImage[] missingTextureAsArray;
 
         if (nonDeterministicFrames > 0) {

@@ -30,12 +30,10 @@ public final class MC4k2Generator extends AbstractTextureGenerator {
     private static final int TEXTURES_PER_ID = 3;
     private static final int TEXTURE_OFFSET = 1;
 
-    @Override
     public String getGeneratorName() {
         return "Minecraft_4k_2";
     }
 
-    @Override
     public TextureGroup[] getTextureGroups() {
         return rawTextureDump();
     }

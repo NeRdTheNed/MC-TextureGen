@@ -7,7 +7,6 @@ public abstract class AbstractLavaGenerator extends AbstractLiquidGenerator {
         super(generatorName);
     }
 
-    @Override
     public final void generateLiquidTexture(final float[] liquidImagePrevious, final float[] liquidImageCurrent, final float[] liquidIntensity, final float[] liquidIntensityIntensity) {
         for (int currentLavaX = 0; currentLavaX < liquidImageSize; ++currentLavaX) {
             for (int currentLavaY = 0; currentLavaY < liquidImageSize; ++currentLavaY) {

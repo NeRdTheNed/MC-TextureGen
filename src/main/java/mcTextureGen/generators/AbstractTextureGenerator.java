@@ -34,7 +34,7 @@ public abstract class AbstractTextureGenerator {
         final Random rand;
 
         if (randomSeed != null) {
-            rand = new Random(randomSeed);
+            rand = new Random(randomSeed.longValue());
         } else {
             rand = cachedRand;
         }

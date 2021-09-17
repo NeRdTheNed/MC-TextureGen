@@ -45,8 +45,8 @@ compileJava {
     // Use the provisioned Java 6 compatible JDK to compile the program
     // Note to self: probably support building with not outdated versions of Java in the future.
     javaCompiler = compiler
-    sourceCompatibility = "1.5"
-    targetCompatibility = "1.5"
+    sourceCompatibility = "1.4"
+    targetCompatibility = "1.4"
 }
 
 compileTestJava {

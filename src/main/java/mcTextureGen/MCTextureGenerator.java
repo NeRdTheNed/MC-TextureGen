@@ -58,7 +58,7 @@ public final class MCTextureGenerator {
                         if ("-nonDeterministicFrames".equals(args[i])) {
                             AbstractTextureGenerator.setNonDeterministicFrames(Integer.parseInt(args[i + 1]));
                         } else if ("-randomSeed".equals(args[i])) {
-                            AbstractTextureGenerator.setRandomSeed(Long.parseLong(args[i + 1]));
+                            AbstractTextureGenerator.setRandomSeed(Long.valueOf(args[i + 1]));
                         } else {
                             log.log(Level.SEVERE, "Invalid command line parameter {0} provided", args[i]);
                             System.exit(1);
@@ -81,11 +81,14 @@ public final class MCTextureGenerator {
         final String fileSeperator = System.getProperty("file.separator");
         final String baseTextureOutputPath = currentDir + fileSeperator + "GeneratedTextures";
 
-        for (final AbstractTextureGenerator generator : getTextureGenerators()) {
+        for (int i = 0; i < getTextureGenerators().length; i++) {
+            final AbstractTextureGenerator generator = getTextureGenerators()[i];
             log.log(Level.INFO, "Generating all texture groups for the texture generator {0}", generator.getGeneratorName());
             final String textureGeneratorOutputPath = baseTextureOutputPath + fileSeperator + generator.getGeneratorName();
 
-            for (final TextureGroup group : generator.getTextureGroups()) {
+            for (int j = 0; j < generator.getTextureGroups().length; j++) {
+                final TextureGroup group = generator.getTextureGroups()[j];
+
                 if (group.textureImages.length == 0) {
                     log.log(Level.WARNING, "Group {0} did not contain any textures, skipping", group.textureGroupName);
                     continue;
@@ -101,12 +104,12 @@ public final class MCTextureGenerator {
 
                 log.log(Level.INFO, "Generating all texures for the texture group {0}", group.textureGroupName);
 
-                for (int i = 0; i < group.textureImages.length; i++) {
-                    final RenderedImage textureImage = group.textureImages[i];
+                for (int k = 0; k < group.textureImages.length; k++) {
+                    final RenderedImage textureImage = group.textureImages[k];
                     final String outFileName;
 
                     if (group.textureImages.length > 1) {
-                        outFileName = textureGroupOutputPath + fileSeperator + group.textureGroupName + "_" + (i + 1) + ".png";
+                        outFileName = textureGroupOutputPath + fileSeperator + group.textureGroupName + "_" + (k + 1) + ".png";
                     } else {
                         outFileName = textureGroupOutputPath + fileSeperator + group.textureGroupName + ".png";
                     }

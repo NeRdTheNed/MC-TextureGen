@@ -6,7 +6,6 @@ public final class Classic22aLavaGenerator extends AbstractLavaGenerator {
         super("Classic_22a_Lava");
     }
 
-    @Override
     public void setABGR(final byte[] imageByteData, final float currentPixelIntensity, final int imageOffset) {
         imageByteData[imageOffset + 0] = (byte) 0xFF;
         imageByteData[imageOffset + 1] = (byte) (currentPixelIntensity * currentPixelIntensity * currentPixelIntensity * currentPixelIntensity * 128.0F);
@@ -14,7 +13,6 @@ public final class Classic22aLavaGenerator extends AbstractLavaGenerator {
         imageByteData[imageOffset + 3] = (byte) ((currentPixelIntensity * 100.0F) + 155.0F);
     }
 
-    @Override
     float clampCurrentPixelIntensity(float toClamp) {
         toClamp *= 2.0F;
         return super.clampCurrentPixelIntensity(toClamp);

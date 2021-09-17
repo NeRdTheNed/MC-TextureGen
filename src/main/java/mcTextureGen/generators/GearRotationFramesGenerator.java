@@ -120,17 +120,14 @@ public final class GearRotationFramesGenerator extends AbstractTextureGenerator 
         return rotatedImage;
     }
 
-    @Override
     public String getGeneratorName() {
         return "Gear_Rotation";
     }
 
-    @Override
     public TextureGroup[] getTextureGroups() {
         return new TextureGroup[] { gearRotationTextures() };
     }
 
-    @Override
     public boolean hasGenerationIssue() {
         return generationIssueFlag;
     }
