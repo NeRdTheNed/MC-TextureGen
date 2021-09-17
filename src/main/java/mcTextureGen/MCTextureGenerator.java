@@ -1,5 +1,4 @@
 package mcTextureGen;
-import java.awt.GraphicsEnvironment;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -39,17 +38,11 @@ public final class MCTextureGenerator {
                };
     }
 
-    public static void setupGraphics() {
-        System.setProperty("java.awt.headless", "true");
-        GraphicsEnvironment.getLocalGraphicsEnvironment();
-    }
-
     public static void main(final String[] args) {
         // TODO: Clean up
         final Logger log = Logger.getLogger("MCTextureGenerator");
         log.log(Level.INFO, "MCTextureGenerator: Generates and saves runtime-generated textures from various Minecraft versions.");
         log.log(Level.FINE, "Setting up GraphicsEnvironment");
-        setupGraphics();
 
         if (args.length > 0) {
             if ((args.length % 2) == 0) {
