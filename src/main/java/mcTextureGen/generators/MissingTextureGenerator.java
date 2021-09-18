@@ -18,7 +18,8 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
 
     public TextureGroup[] getTextureGroups() {
         return new TextureGroup[] {
-                   missingTextureText("Java_13w02a_to_13w17a", new String[] { "missing", "texture"}),
+                   missingTextureText("Java_b1_4_to_13w01b", false, new String[] { "missingtex" }),
+                   missingTextureText("Java_13w02a_to_13w17a", true, new String[] { "missing", "texture"}),
                    missingTextureCheckerboard("Java_13w18a_to_1_12_2", 0x000000, 0xF800F8),
                    missingTextureCheckerboard("Java_17w43a_to_current", 0xF800F8, 0x000000)
                };
@@ -38,7 +39,7 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
     }
 
     /** Note: The generated TextureGroup is JVM / system dependent: the font / text rendering method chosen will vary across different platforms. */
-    private static TextureGroup missingTextureText(String name, String[] toDraw) {
+    private static TextureGroup missingTextureText(String name, boolean repeats, String[] lines) {
         final BufferedImage[] missingTextureAsArray;
 
         if (nonDeterministicFrames > 0) {
@@ -48,11 +49,12 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
             graphics.setColor(Color.WHITE);
             graphics.fillRect(0, 0, TEXT_TEXTURE_SZIE, TEXT_TEXTURE_SZIE);
 
-            if ((toDraw != null) && (toDraw.length > 0)) {
+            if ((lines != null) && (lines.length > 0)) {
                 // Set color to black for text rendering
                 graphics.setColor(Color.BLACK);
                 int fontSize = graphics.getFont().getSize();
 
+                // Prevent infinite loops
                 if (fontSize < 1) {
                     fontSize = 1;
                 }
@@ -61,12 +63,16 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
                 int stringsDrawn = 0;
 
                 while (yPos < TEXT_TEXTURE_SZIE) {
-                    final String currentLine = toDraw[stringsDrawn % toDraw.length];
+                    final String currentLine = lines[stringsDrawn % lines.length];
                     stringsDrawn++;
                     graphics.drawString(currentLine, 1, yPos);
                     yPos += fontSize;
 
-                    if ((stringsDrawn % toDraw.length) == 0) {
+                    if ((stringsDrawn % lines.length) == 0) {
+                        if (!repeats) {
+                            break;
+                        }
+
                         yPos += 5;
                     }
                 }
