@@ -42,7 +42,6 @@ public final class MCTextureGenerator {
         // TODO: Clean up
         final Logger log = Logger.getLogger("MCTextureGenerator");
         log.log(Level.INFO, "MCTextureGenerator: Generates and saves runtime-generated textures from various Minecraft versions.");
-        log.log(Level.FINE, "Setting up GraphicsEnvironment");
 
         if (args.length > 0) {
             if ((args.length % 2) == 0) {
