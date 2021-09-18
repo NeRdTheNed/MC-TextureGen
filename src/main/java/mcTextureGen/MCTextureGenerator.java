@@ -72,9 +72,10 @@ public final class MCTextureGenerator {
         final String currentDir = System.getProperty("user.dir");
         final String fileSeperator = System.getProperty("file.separator");
         final String baseTextureOutputPath = currentDir + fileSeperator + "GeneratedTextures";
+        final AbstractTextureGenerator[] textureGenerators = getTextureGenerators();
 
-        for (int i = 0; i < getTextureGenerators().length; i++) {
-            final AbstractTextureGenerator generator = getTextureGenerators()[i];
+        for (int i = 0; i < textureGenerators.length; i++) {
+            final AbstractTextureGenerator generator = textureGenerators[i];
             log.log(Level.INFO, "Generating all texture groups for the texture generator {0}", generator.getGeneratorName());
             final String textureGeneratorOutputPath = baseTextureOutputPath + fileSeperator + generator.getGeneratorName();
 
