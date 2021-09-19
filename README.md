@@ -15,7 +15,7 @@ The program can also generate some non-deterministic textures, if a valid value 
 - Water textures from Minecraft Classic 0.0.19a
 - Lava textures from Minecraft Classic 0.0.19a and 0.0.22a
 - Fire textures
-- Certain "missing texture" textures which use text rendering based on the the current JVM / system
+- **Possibly not accurate on older versions of Java on MacOS ([Apple's Mac OS Runtime for Java](https://en.wikipedia.org/wiki/Mac_OS_Runtime_for_Java)).** Certain "missing texture" textures which use text rendering based on the the current JVM / system
 
 ## How to generate the textures.
 
