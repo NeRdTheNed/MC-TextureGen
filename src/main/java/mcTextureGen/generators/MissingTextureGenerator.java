@@ -2,6 +2,8 @@ package mcTextureGen.generators;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
@@ -45,6 +47,14 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
         if (nonDeterministicFrames > 0) {
             final BufferedImage missingTexture = new BufferedImage(TEXT_TEXTURE_SZIE, TEXT_TEXTURE_SZIE, BufferedImage.TYPE_INT_ARGB);
             final Graphics2D graphics = missingTexture.createGraphics();
+            // Really dumb code to use text anti aliasing when running on Apple's legacy java runtime on a Mac with a retina display.
+            // TODO I think this should produce the right results but legacy MacOS support is hard.
+            final Object contentScaleFactor = Toolkit.getDefaultToolkit().getDesktopProperty("apple.awt.contentScaleFactor");
+
+            if ((contentScaleFactor instanceof Float) && (((Float) contentScaleFactor).floatValue() != 1.0F)) {
+                graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            }
+
             // Fill background with white
             graphics.setColor(Color.WHITE);
             graphics.fillRect(0, 0, TEXT_TEXTURE_SZIE, TEXT_TEXTURE_SZIE);
