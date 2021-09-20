@@ -20,6 +20,7 @@ final class MCTextureGeneratorTest {
 
     static {
         AbstractTextureGenerator.setNonDeterministicFrames(1024);
+        AbstractTextureGenerator.setShouldGeneratePlatformDependantTextures(true);
     }
 
     // TODO this is bad

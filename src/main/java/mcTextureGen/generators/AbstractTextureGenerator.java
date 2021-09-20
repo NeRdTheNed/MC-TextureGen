@@ -8,6 +8,7 @@ public abstract class AbstractTextureGenerator {
 
     protected static int nonDeterministicFrames = 0;
     private static Long randomSeed = null;
+    protected static boolean shouldGeneratePlatformDependantTextures = false;
 
     private static final Random cachedRand = new Random();
 
@@ -17,6 +18,10 @@ public abstract class AbstractTextureGenerator {
 
     public static void setRandomSeed(Long randomSeed) {
         AbstractTextureGenerator.randomSeed = randomSeed;
+    }
+
+    public static void setShouldGeneratePlatformDependantTextures(boolean shouldGeneratePlatformDependantTextures) {
+        AbstractTextureGenerator.shouldGeneratePlatformDependantTextures = shouldGeneratePlatformDependantTextures;
     }
 
     public abstract String getGeneratorName();

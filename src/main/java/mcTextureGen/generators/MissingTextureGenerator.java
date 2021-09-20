@@ -44,7 +44,7 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
     private static TextureGroup missingTextureText(String name, boolean repeats, String[] lines) {
         final BufferedImage[] missingTextureAsArray;
 
-        if (nonDeterministicFrames > 0) {
+        if (shouldGeneratePlatformDependantTextures) {
             final BufferedImage missingTexture = new BufferedImage(TEXT_TEXTURE_SZIE, TEXT_TEXTURE_SZIE, BufferedImage.TYPE_INT_ARGB);
             final Graphics2D graphics = missingTexture.createGraphics();
             // Really dumb code to use text anti aliasing when running on Apple's legacy java runtime on a Mac with a retina display.

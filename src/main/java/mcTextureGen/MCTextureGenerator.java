@@ -51,6 +51,8 @@ public final class MCTextureGenerator {
                             AbstractTextureGenerator.setNonDeterministicFrames(Integer.parseInt(args[i + 1]));
                         } else if ("-randomSeed".equals(args[i])) {
                             AbstractTextureGenerator.setRandomSeed(Long.valueOf(args[i + 1]));
+                        } else if ("-platformTextures".equals(args[i])) {
+                            AbstractTextureGenerator.setShouldGeneratePlatformDependantTextures(Boolean.parseBoolean(args[i + 1]));
                         } else {
                             log.log(Level.SEVERE, "Invalid command line parameter {0} provided", args[i]);
                             System.exit(1);
