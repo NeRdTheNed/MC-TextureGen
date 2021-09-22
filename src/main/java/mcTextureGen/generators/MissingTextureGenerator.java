@@ -33,7 +33,7 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
 
         for (int xPixel = 0; xPixel < CHECKERBOARD_TEXTURE_SIZE; ++xPixel) {
             for (int yPixel = 0; yPixel < CHECKERBOARD_TEXTURE_SIZE; ++yPixel) {
-                textureData[xPixel + (yPixel * CHECKERBOARD_TEXTURE_SIZE)] = ((xPixel < (CHECKERBOARD_TEXTURE_SIZE / 2)) ^ (yPixel < (CHECKERBOARD_TEXTURE_SIZE / 2))) ? colourOne : colourTwo;
+                textureData[xPixel + (yPixel * CHECKERBOARD_TEXTURE_SIZE)] = (xPixel < (CHECKERBOARD_TEXTURE_SIZE / 2)) ^ (yPixel < (CHECKERBOARD_TEXTURE_SIZE / 2)) ? colourOne : colourTwo;
             }
         }
 

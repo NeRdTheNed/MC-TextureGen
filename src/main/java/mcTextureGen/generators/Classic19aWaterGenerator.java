@@ -36,11 +36,7 @@ public final class Classic19aWaterGenerator extends AbstractLiquidGenerator {
                     liquidIntensity[currentWaterOffset] = 0.0F;
                 }
 
-                if (rand.nextDouble() < 0.05) {
-                    liquidIntensityIntensity[currentWaterOffset] = 0.5F;
-                } else {
-                    liquidIntensityIntensity[currentWaterOffset] -= 0.1F;
-                }
+                liquidIntensityIntensity[currentWaterOffset] = rand.nextDouble() < 0.05 ? 0.5F : (liquidIntensityIntensity[currentWaterOffset] - 0.1F);
             }
         }
     }

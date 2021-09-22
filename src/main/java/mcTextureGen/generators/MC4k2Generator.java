@@ -107,14 +107,8 @@ public final class MC4k2Generator extends AbstractTextureGenerator {
                             break;
 
                         case TEXTURE_BRICK:
-
                             // These generate the horizontal & vertical lines on brick textures respectively.
-                            if ((((xPixel + ((yPixel / 4) * 4)) % 8) == 0) || ((yPixel % 4) == 0)) {
-                                colour = COLOUR_LIGHT_GREY;
-                            } else {
-                                colour = COLOUR_RED;
-                            }
-
+                            colour = (((xPixel + ((yPixel / 4) * 4)) % 8) == 0) || ((yPixel % 4) == 0) ? COLOUR_LIGHT_GREY : COLOUR_RED;
                             break;
 
                         case TEXTURE_LOG:
@@ -150,12 +144,7 @@ public final class MC4k2Generator extends AbstractTextureGenerator {
                             break;
 
                         case TEXTURE_LEAF:
-                            if (isTransparentPixelOnLeaf) {
-                                colour = COLOUR_NONE;
-                            } else {
-                                colour = COLOUR_LIGHT_GREEN;
-                            }
-
+                            colour = isTransparentPixelOnLeaf ? COLOUR_NONE : COLOUR_LIGHT_GREEN;
                             break;
 
                         case TEXTURE_GRASS:

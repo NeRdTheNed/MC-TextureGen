@@ -36,15 +36,7 @@ public abstract class AbstractTextureGenerator {
 
     /** Returns an instance of Random with a set seed from the command line arguments, or a cached Random if a seed value was not passed. */
     static final Random getRandom() {
-        final Random rand;
-
-        if (randomSeed != null) {
-            rand = new Random(randomSeed.longValue());
-        } else {
-            rand = cachedRand;
-        }
-
-        return rand;
+        return randomSeed != null ? new Random(randomSeed.longValue()) : cachedRand;
     }
 
     // Math utilities

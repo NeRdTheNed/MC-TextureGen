@@ -94,16 +94,11 @@ public final class GearRotationFramesGenerator extends AbstractTextureGenerator 
                 if ((rotatedGearImageX >= 0) && (rotatedGearImageY >= 0) && (rotatedGearImageX < originalGearTextureSize) && (rotatedGearImageY < originalGearTextureSize)) {
                     final int gearDiv = rotatedTextureSize / middleGearTextureSize;
                     final int gearMiddleARGB = gearMiddleARGBValues[(rotatedImageX / gearDiv) + ((rotatedImageY / gearDiv) * middleGearTextureSize)];
-
                     // Is the alpha component of the RGBA value for the middle piece of the gear greater than 128?
                     // (i.e. in the context of the gear images, is there a non-transparent pixel at that position?
+                    // If so, use the RGBA value for the middle of the gear as the RGBA value
                     // TODO refactor, this is dumb)
-                    if ((gearMiddleARGB >>> 24) > 128) {
-                        // If so, use the RGBA value for the middle of the gear as the RGBA value
-                        ARGB = gearMiddleARGB;
-                    } else {
-                        ARGB = gearARGBValues[rotatedGearImageX + (rotatedGearImageY * originalGearTextureSize)];
-                    }
+                    ARGB = (gearMiddleARGB >>> 24) > 128 ? gearMiddleARGB : gearARGBValues[rotatedGearImageX + (rotatedGearImageY * originalGearTextureSize)];
                 } else {
                     ARGB = 0;
                 }

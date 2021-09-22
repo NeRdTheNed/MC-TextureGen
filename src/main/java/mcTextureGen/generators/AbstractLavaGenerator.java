@@ -51,11 +51,7 @@ public abstract class AbstractLavaGenerator extends AbstractLiquidGenerator {
                     liquidIntensity[currentLavaOffset] = 0.0F;
                 }
 
-                if (rand.nextDouble() < 0.005) {
-                    liquidIntensityIntensity[currentLavaOffset] = 1.5F;
-                } else {
-                    liquidIntensityIntensity[currentLavaOffset] -= 0.06F;
-                }
+                liquidIntensityIntensity[currentLavaOffset] = rand.nextDouble() < 0.005 ? 1.5F : (liquidIntensityIntensity[currentLavaOffset] - 0.06F);
             }
         }
     }
