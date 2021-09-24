@@ -1,14 +1,8 @@
 package mcTextureGen;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
-
-import mcTextureGen.data.TextureGroup;
 import mcTextureGen.generators.AbstractTextureGenerator;
 import mcTextureGen.generators.Classic19aLavaGenerator;
 import mcTextureGen.generators.Classic19aWaterGenerator;
@@ -42,6 +36,7 @@ public final class MCTextureGenerator {
         // TODO: Clean up
         final Logger log = Logger.getLogger("MCTextureGenerator");
         log.log(Level.INFO, "MCTextureGenerator: Generates and saves runtime-generated textures from various Minecraft versions.");
+        boolean isMultiThreaded = true;
 
         if (args.length > 0) {
             if ((args.length % 2) == 0) {
@@ -53,6 +48,8 @@ public final class MCTextureGenerator {
                             AbstractTextureGenerator.setRandomSeed(Long.valueOf(args[i + 1]));
                         } else if ("-platformTextures".equals(args[i])) {
                             AbstractTextureGenerator.setShouldGeneratePlatformDependantTextures(Boolean.valueOf(args[i + 1]).booleanValue());
+                        } else if ("-multiThreaded".equals(args[i])) {
+                            isMultiThreaded = Boolean.valueOf(args[i + 1]).booleanValue();
                         } else {
                             log.log(Level.SEVERE, "Invalid command line parameter {0} provided", args[i]);
                             System.exit(1);
@@ -71,61 +68,42 @@ public final class MCTextureGenerator {
             }
         }
 
-        final String currentDir = System.getProperty("user.dir");
-        final String fileSeperator = System.getProperty("file.separator");
-        final String baseTextureOutputPath = currentDir + fileSeperator + "GeneratedTextures";
+        if (isMultiThreaded) {
+            log.log(Level.INFO, "Using multi-threaded texture generation");
+        }
+
+        final String baseTextureOutputPath = System.getProperty("user.dir") + System.getProperty("file.separator") + "GeneratedTextures";
         final AbstractTextureGenerator[] textureGenerators = getTextureGenerators();
+        final int textureGeneratorAmount = textureGenerators.length;
+        final Thread[] generatorThreads = isMultiThreaded ? new Thread[textureGeneratorAmount] : null;
 
-        for (int i = 0; i < textureGenerators.length; i++) {
+        for (int i = 0; i < textureGeneratorAmount; i++) {
             final AbstractTextureGenerator generator = textureGenerators[i];
-            log.log(Level.INFO, "Generating all texture groups for the texture generator {0}", generator.getGeneratorName());
-            final String textureGeneratorOutputPath = baseTextureOutputPath + fileSeperator + generator.getGeneratorName();
-            final TextureGroup[] textureGroups = generator.getTextureGroups();
+            final SaveTextureGeneratorResultsTask task = new SaveTextureGeneratorResultsTask(baseTextureOutputPath, generator, log);
 
-            for (int j = 0; j < textureGroups.length; j++) {
-                final TextureGroup group = textureGroups[j];
-
-                if (group.textureImages.length == 0) {
-                    log.log(Level.WARNING, "Group {0} did not contain any textures, skipping", group.textureGroupName);
-                    continue;
-                }
-
-                final String textureGroupOutputPath = textureGeneratorOutputPath + fileSeperator + group.textureGroupName;
-                final File textureGroupDirectory = new File(textureGroupOutputPath);
-
-                if (!textureGroupDirectory.exists() && !textureGroupDirectory.mkdirs()) {
-                    log.log(Level.WARNING, "Could not create directory for texture group {0}, skipping", group.textureGroupName);
-                    continue;
-                }
-
-                log.log(Level.INFO, "Generating all texures for the texture group {0}", group.textureGroupName);
-
-                for (int k = 0; k < group.textureImages.length; k++) {
-                    final RenderedImage textureImage = group.textureImages[k];
-                    final String outFileName;
-
-                    if (group.textureImages.length > 1) {
-                        outFileName = textureGroupOutputPath + fileSeperator + group.textureGroupName + "_" + (k + 1) + ".png";
-                    } else {
-                        outFileName = textureGroupOutputPath + fileSeperator + group.textureGroupName + ".png";
-                    }
-
-                    final File textureFile = new File(outFileName);
-
-                    try {
-                        ImageIO.write(textureImage, "png", textureFile);
-                    } catch (final IOException e) {
-                        final LogRecord logRecord = new LogRecord(Level.WARNING, "Failed to save {0}");
-                        logRecord.setParameters(new Object[] { group.textureGroupName });
-                        logRecord.setThrown(e);
-                        log.log(logRecord);
-                    }
-                }
-
-                log.log(Level.INFO, "Finished generating all texures for the texture group {0}", group.textureGroupName);
+            if (isMultiThreaded) {
+                final Thread taskThread = new Thread(task, generator.getGeneratorName() + " generator thread");
+                taskThread.start();
+                generatorThreads[i] = taskThread;
+            } else {
+                task.run();
             }
+        }
 
-            log.log(Level.INFO, "Finished generating all texture groups for the texture generator {0}", generator.getGeneratorName());
+        // When using multi-threaded texture generation, wait for all threads to finish generating before printing the end message.
+        if (isMultiThreaded) {
+            for (int i = 0; i < textureGeneratorAmount; i++) {
+                final Thread taskThread = generatorThreads[i];
+
+                try {
+                    taskThread.join();
+                } catch (final InterruptedException e) {
+                    final LogRecord logRecord = new LogRecord(Level.WARNING, "An InterruptedException was thrown when trying to join {0}. Textures may not have been generated.");
+                    logRecord.setParameters(new Object[] { taskThread.getName() });
+                    logRecord.setThrown(e);
+                    log.log(logRecord);
+                }
+            }
         }
 
         log.log(Level.INFO, "All images have been generated and saved!");
