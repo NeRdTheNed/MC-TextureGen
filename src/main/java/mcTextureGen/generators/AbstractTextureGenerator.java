@@ -10,8 +10,6 @@ public abstract class AbstractTextureGenerator {
     private static Long randomSeed = null;
     protected static boolean shouldGeneratePlatformDependantTextures = false;
 
-    private static final Random cachedRand = new Random();
-
     public static void setNonDeterministicFrames(int nonDeterministicFrames) {
         AbstractTextureGenerator.nonDeterministicFrames = nonDeterministicFrames;
     }
@@ -34,9 +32,9 @@ public abstract class AbstractTextureGenerator {
         return false;
     }
 
-    /** Returns an instance of Random with a set seed from the command line arguments, or a cached Random if a seed value was not passed. */
+    /** Returns an instance of Random with a set seed from the command line arguments, or a new Random if a seed value was not passed. */
     static final Random getRandom() {
-        return randomSeed != null ? new Random(randomSeed.longValue()) : cachedRand;
+        return randomSeed != null ? new Random(randomSeed.longValue()) : new Random();
     }
 
     // Math utilities
