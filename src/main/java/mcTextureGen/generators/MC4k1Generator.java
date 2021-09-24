@@ -12,14 +12,6 @@ public final class MC4k1Generator extends AbstractTextureGenerator {
     private static final int unsignedByteMax = 0xFF;
     private static final float unsignedByteMaxAsFloat = 0xFF;
 
-    public String getGeneratorName() {
-        return "Minecraft_4k_1";
-    }
-
-    public TextureGroup[] getTextureGroups() {
-        return new TextureGroup[] { xorTextures() };
-    }
-
     /** Minecraft 4k-1's "XOR fractal" texture generation, for each light level */
     private static TextureGroup xorTextures() {
         final BufferedImage[] xorImages = new BufferedImage[maxLightLevel + 1];
@@ -38,6 +30,14 @@ public final class MC4k1Generator extends AbstractTextureGenerator {
         }
 
         return new TextureGroup("XOR_Block_Texture", xorImages);
+    }
+
+    public String getGeneratorName() {
+        return "Minecraft_4k_1";
+    }
+
+    public TextureGroup[] getTextureGroups() {
+        return new TextureGroup[] { xorTextures() };
     }
 
 }

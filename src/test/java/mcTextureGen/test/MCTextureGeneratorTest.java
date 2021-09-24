@@ -18,9 +18,26 @@ import mcTextureGen.generators.AbstractTextureGenerator;
 // TODO refactor
 final class MCTextureGeneratorTest {
 
+    // This regex matches if the whole string only contains alpha-numeric characters and / or underscores.
+    private final static Pattern checkUnsafeCharacterRegex = Pattern.compile("^\\w+$");
+
+    // The Matcher is initially given a dummy value, as it is reused each loop.
+    // If it somehow fails to get reset, this ASCII table flip should cause the test to fail.
+    // P.S applicants welcome to submit a better ASCII-only table flip (I really tried).
+    // Using non-ASCII characters causes Eclipse to space lines weirdly.
+    private final static Matcher checkUnsafeCharacters = checkUnsafeCharacterRegex.matcher("(/@_@/) `` _|__|_");
+
+    private final static String unsafeCharacterEnd = "\" contained a character which might be potentially unsafe to use in a file name";
+    private final static String unsafeCharacterQuotesStart = " \"";
+    private final static String unsafeCharacterStart = "The name of the ";
+
     static {
         AbstractTextureGenerator.setNonDeterministicFrames(1024);
-        AbstractTextureGenerator.setShouldGeneratePlatformDependantTextures(true);
+        AbstractTextureGenerator.setShouldGeneratePlatformDependentTextures(true);
+    }
+
+    private static boolean isSafeName(String toCheck) {
+        return checkUnsafeCharacters.reset(toCheck).matches();
     }
 
     // TODO this is bad
@@ -31,22 +48,6 @@ final class MCTextureGeneratorTest {
     // TODO this is bad
     private static Stream<TextureGroup> textureGroupProvider() {
         return Stream.of(MCTextureGenerator.getTextureGenerators()).map(AbstractTextureGenerator::getTextureGroups).flatMap(Stream::of);
-    }
-
-    // This regex matches if the whole string only contains alpha-numeric characters and / or underscores.
-    private final static Pattern checkUnsafeCharactersRegex = Pattern.compile("^\\w+$");
-    // The Matcher is initially given a dummy value, as it is reused each loop.
-    // If it somehow fails to get reset, this ASCII table flip should cause the test to fail.
-    // P.S applicants welcome to submit a better ASCII-only table flip (I really tried).
-    // Using non-ASCII characters causes Eclipse to space lines weirdly.
-    private final static Matcher checkUnsafeCharacters = checkUnsafeCharactersRegex.matcher("(/@_@/) `` _|__|_");
-
-    private final static String unsafeCharacterStart = "The name of the ";
-    private final static String unsafeCharacterQuotesStart = " \"";
-    private final static String unsafeCharacterEnd = "\" contained a character which might be potentially unsafe to use in a file name";
-
-    private static boolean isSafeName(String toCheck) {
-        return checkUnsafeCharacters.reset(toCheck).matches();
     }
 
     @ParameterizedTest

@@ -24,8 +24,8 @@ public abstract class AbstractLavaGenerator extends AbstractLiquidGenerator {
                     for (int localLavaY = currentLavaY - 1; localLavaY <= (currentLavaY + 1); ++localLavaY) {
                         // Restrict the adjusted coordinates to be in range of the maximum valid coordinate (liquidImageSize).
                         // If a coordinate is out of range, it wraps to be in range.
-                        final int localLavaXWrapped = (localLavaX + ySin) & liquidImageSizeMask;
-                        final int localLavaYWrapped = (localLavaY + xCos) & liquidImageSizeMask;
+                        final int localLavaXWrapped = (localLavaX + ySin) & liquidImageMask;
+                        final int localLavaYWrapped = (localLavaY + xCos) & liquidImageMask;
                         localPreviousIntensity += liquidImagePrevious[localLavaXWrapped + (localLavaYWrapped * liquidImageSize)];
                     }
                 }
@@ -36,10 +36,10 @@ public abstract class AbstractLavaGenerator extends AbstractLiquidGenerator {
                 // I don't want to change floating point semantics, so I'm not re-rolling this for now.
                 // This was originally inlined as part of the next line of code. I un-inlined it for readability.
                 // I'm pretty sure this shouldn't change anything, but I should probably figure out how floats work in Java to verify that.
-                final float localLiquidIntensity = liquidIntensity[(currentLavaX & liquidImageSizeMask) + ((currentLavaY & liquidImageSizeMask) * liquidImageSize)]
-                                                   + liquidIntensity[(currentLavaX & liquidImageSizeMask) + (((currentLavaY + 1) & liquidImageSizeMask) * liquidImageSize)]
-                                                   + liquidIntensity[((currentLavaX + 1) & liquidImageSizeMask) + ((currentLavaY & liquidImageSizeMask) * liquidImageSize)]
-                                                   + liquidIntensity[((currentLavaX + 1) & liquidImageSizeMask) + (((currentLavaY + 1) & liquidImageSizeMask) * liquidImageSize)];
+                final float localLiquidIntensity = liquidIntensity[(currentLavaX & liquidImageMask) + ((currentLavaY & liquidImageMask) * liquidImageSize)]
+                                                   + liquidIntensity[(currentLavaX & liquidImageMask) + (((currentLavaY + 1) & liquidImageMask) * liquidImageSize)]
+                                                   + liquidIntensity[((currentLavaX + 1) & liquidImageMask) + ((currentLavaY & liquidImageMask) * liquidImageSize)]
+                                                   + liquidIntensity[((currentLavaX + 1) & liquidImageMask) + (((currentLavaY + 1) & liquidImageMask) * liquidImageSize)];
                 // localLiquidIntensity is divided by 4.0F, because it samples from 4 points.
                 // localPreviousIntensity is divided by 10.0F, because the whims of other programmers are inscrutable.
                 // You'd expect it to be 9.0F based on the previous bit of logic. Maybe someone made an off-by-one error? Or rounded up from 9.9? TODO investigate

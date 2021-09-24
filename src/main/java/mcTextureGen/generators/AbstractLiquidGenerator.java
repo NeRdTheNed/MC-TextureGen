@@ -9,18 +9,32 @@ import mcTextureGen.data.TextureGroup;
 /* TODO clean up, refactor */
 public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
 
-    private static final int liquidImageSizeBits = 4;
-    static final int liquidImageSizeMask = ~(-1 << liquidImageSizeBits);
-    static final int liquidImageSize = liquidImageSizeMask + 1;
+    private static final int liquidImageBits = 4;
+    static final int liquidImageMask = ~(-1 << liquidImageBits);
+    static final int liquidImageSize = liquidImageMask + 1;
+
+    private final String generatorName;
 
     // TODO refactor
     Random rand;
 
-    private final String generatorName;
-
     protected AbstractLiquidGenerator(String generatorName) {
         this.generatorName = generatorName;
     }
+
+    float clampCurrentPixelIntensity(float toClamp) {
+        if (toClamp > 1.0F) {
+            toClamp = 1.0F;
+        }
+
+        if (toClamp < 0.0F) {
+            toClamp = 0.0F;
+        }
+
+        return toClamp;
+    }
+
+    public abstract void generateLiquidTexture(final float[] liquidImagePrevious, final float[] liquidImageCurrent, final float[] liquidIntensity, final float[] liquidIntensityIntensity);
 
     public final String getGeneratorName() {
         return generatorName;
@@ -29,10 +43,6 @@ public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
     public final TextureGroup[] getTextureGroups() {
         return new TextureGroup[] { liquidTextures() };
     }
-
-    public abstract void generateLiquidTexture(final float[] liquidImagePrevious, final float[] liquidImageCurrent, final float[] liquidIntensity, final float[] liquidIntensityIntensity);
-
-    public abstract void setABGR(final byte[] imageByteData, final float currentPixelIntensity, final int imageOffset);
 
     private final TextureGroup liquidTextures() {
         rand = getRandom();
@@ -62,16 +72,6 @@ public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
         return new TextureGroup(generatorName + "_Textures", liquidImages);
     }
 
-    float clampCurrentPixelIntensity(float toClamp) {
-        if (toClamp > 1.0F) {
-            toClamp = 1.0F;
-        }
-
-        if (toClamp < 0.0F) {
-            toClamp = 0.0F;
-        }
-
-        return toClamp;
-    }
+    public abstract void setABGR(final byte[] imageByteData, final float currentPixelIntensity, final int imageOffset);
 
 }

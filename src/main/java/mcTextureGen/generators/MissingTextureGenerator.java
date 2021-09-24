@@ -14,19 +14,6 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
     private static final int CHECKERBOARD_TEXTURE_SIZE = 16;
     private static final int TEXT_TEXTURE_SZIE = 64;
 
-    public String getGeneratorName() {
-        return "Missing_Textures";
-    }
-
-    public TextureGroup[] getTextureGroups() {
-        return new TextureGroup[] {
-                   missingTextureText("Java_b1_4_to_13w01b", false, new String[] { "missingtex" }),
-                   missingTextureText("Java_13w02a_to_13w17a", true, new String[] { "missing", "texture"}),
-                   missingTextureCheckerboard("Java_13w18a_to_1_12_2", 0x000000, 0xF800F8),
-                   missingTextureCheckerboard("Java_17w43a_to_current", 0xF800F8, 0x000000)
-               };
-    }
-
     private static TextureGroup missingTextureCheckerboard(String name, int colourOne, int colourTwo) {
         final BufferedImage missingTexture = new BufferedImage(CHECKERBOARD_TEXTURE_SIZE, CHECKERBOARD_TEXTURE_SIZE, BufferedImage.TYPE_INT_RGB);
         final int[] textureData = ((DataBufferInt) missingTexture.getRaster().getDataBuffer()).getData();
@@ -44,7 +31,7 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
     private static TextureGroup missingTextureText(String name, boolean repeats, String[] lines) {
         final BufferedImage[] missingTextureAsArray;
 
-        if (shouldGeneratePlatformDependantTextures) {
+        if (shouldGeneratePlatformDependentTextures) {
             final BufferedImage missingTexture = new BufferedImage(TEXT_TEXTURE_SZIE, TEXT_TEXTURE_SZIE, BufferedImage.TYPE_INT_ARGB);
             final Graphics2D graphics = missingTexture.createGraphics();
             // Really dumb code to use text anti aliasing when running on Apple's legacy java runtime on a Mac with a retina display.
@@ -95,6 +82,19 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
         }
 
         return new TextureGroup("Missing_Texture_" + name, missingTextureAsArray);
+    }
+
+    public String getGeneratorName() {
+        return "Missing_Textures";
+    }
+
+    public TextureGroup[] getTextureGroups() {
+        return new TextureGroup[] {
+                   missingTextureText("Java_b1_4_to_13w01b", false, new String[] { "missingtex" }),
+                   missingTextureText("Java_13w02a_to_13w17a", true, new String[] { "missing", "texture"}),
+                   missingTextureCheckerboard("Java_13w18a_to_1_12_2", 0x000000, 0xF800F8),
+                   missingTextureCheckerboard("Java_17w43a_to_current", 0xF800F8, 0x000000)
+               };
     }
 
 }

@@ -17,7 +17,7 @@ public final class Classic19aWaterGenerator extends AbstractLiquidGenerator {
                 for (int localWaterX = currentWaterX - 1; localWaterX <= (currentWaterX + 1); ++localWaterX) {
                     // Restrict the adjusted x coordinate to be in range of the maximum valid coordinate (liquidImageSize).
                     // If the x coordinate is out of range, it wraps to be in range.
-                    localPixelIntensity += liquidImagePrevious[(localWaterX & liquidImageSizeMask) + (currentWaterY * liquidImageSize)];
+                    localPixelIntensity += liquidImagePrevious[(localWaterX & liquidImageMask) + (currentWaterY * liquidImageSize)];
                 }
 
                 final int currentWaterOffset = currentWaterX + (currentWaterY * liquidImageSize);

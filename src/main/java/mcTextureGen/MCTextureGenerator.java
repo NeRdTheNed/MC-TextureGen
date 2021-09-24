@@ -47,7 +47,7 @@ public final class MCTextureGenerator {
                         } else if ("-randomSeed".equals(args[i])) {
                             AbstractTextureGenerator.setRandomSeed(Long.valueOf(args[i + 1]));
                         } else if ("-platformTextures".equals(args[i])) {
-                            AbstractTextureGenerator.setShouldGeneratePlatformDependantTextures(Boolean.valueOf(args[i + 1]).booleanValue());
+                            AbstractTextureGenerator.setShouldGeneratePlatformDependentTextures(Boolean.valueOf(args[i + 1]).booleanValue());
                         } else if ("-multiThreaded".equals(args[i])) {
                             isMultiThreaded = Boolean.valueOf(args[i + 1]).booleanValue();
                         } else {

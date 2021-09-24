@@ -30,14 +30,6 @@ public final class MC4k2Generator extends AbstractTextureGenerator {
     private static final int TEXTURES_PER_ID = 3;
     private static final int TEXTURE_OFFSET = 1;
 
-    public String getGeneratorName() {
-        return "Minecraft_4k_2";
-    }
-
-    public TextureGroup[] getTextureGroups() {
-        return rawTextureDump();
-    }
-
     /** TODO refactor */
     private static TextureGroup[] rawTextureDump() {
         final TextureGroup[] textureGroups = new TextureGroup[MAX_TEXTURE_IDS - TEXTURE_OFFSET];
@@ -198,6 +190,14 @@ public final class MC4k2Generator extends AbstractTextureGenerator {
         }
 
         return textureGroups;
+    }
+
+    public String getGeneratorName() {
+        return "Minecraft_4k_2";
+    }
+
+    public TextureGroup[] getTextureGroups() {
+        return rawTextureDump();
     }
 
 }

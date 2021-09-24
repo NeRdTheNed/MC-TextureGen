@@ -43,14 +43,6 @@ public final class FireGenerator extends AbstractTextureGenerator {
     // If that's true, removing " + (selfSamples * 0.01F)" from wtFloat might simulate this.
     private static final float divPixelIntensity = sampleCounterEnd * wtFloat;
 
-    public String getGeneratorName() {
-        return "Fire";
-    }
-
-    public TextureGroup[] getTextureGroups() {
-        return new TextureGroup[] { fireTextures() };
-    }
-
     private static TextureGroup fireTextures() {
         float[] fireImagePrevious = new float[fireTextureWidth * fireTextureHeight];
         float[] fireImageCurrent = new float[fireTextureWidth * fireTextureHeight];
@@ -113,6 +105,14 @@ public final class FireGenerator extends AbstractTextureGenerator {
         }
 
         return new TextureGroup("Fire_Textures", fireImages);
+    }
+
+    public String getGeneratorName() {
+        return "Fire";
+    }
+
+    public TextureGroup[] getTextureGroups() {
+        return new TextureGroup[] { fireTextures() };
     }
 
 }

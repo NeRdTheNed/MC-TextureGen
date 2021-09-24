@@ -8,21 +8,13 @@ import mcTextureGen.data.TextureGroup;
 
 public final class NetherPortalGenerator extends AbstractTextureGenerator {
 
+    private static final boolean addConstantOffset = true;
+    private static final boolean addRandomNoise = true;
+
     private static final int portalImageAmount = 32;
     private static final int portalImageSize = 16;
     // TODO This doesn't really work for more than a value of 2, see "TODO fix this"
     private static final int spiralAmount = 2;
-
-    private static final boolean addConstantOffset = true;
-    private static final boolean addRandomNoise = true;
-
-    public String getGeneratorName() {
-        return "Nether_Portal";
-    }
-
-    public TextureGroup[] getTextureGroups() {
-        return new TextureGroup[] { netherPortalFrames() };
-    }
 
     /* TODO refactor, document */
     private static TextureGroup netherPortalFrames() {
@@ -95,6 +87,14 @@ public final class NetherPortalGenerator extends AbstractTextureGenerator {
         }
 
         return new TextureGroup("Nether_Portal_Animation", portalImages);
+    }
+
+    public String getGeneratorName() {
+        return "Nether_Portal";
+    }
+
+    public TextureGroup[] getTextureGroups() {
+        return new TextureGroup[] { netherPortalFrames() };
     }
 
 }
