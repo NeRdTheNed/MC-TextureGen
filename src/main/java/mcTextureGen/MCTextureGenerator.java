@@ -80,9 +80,10 @@ public final class MCTextureGenerator {
             final AbstractTextureGenerator generator = textureGenerators[i];
             log.log(Level.INFO, "Generating all texture groups for the texture generator {0}", generator.getGeneratorName());
             final String textureGeneratorOutputPath = baseTextureOutputPath + fileSeperator + generator.getGeneratorName();
+            final TextureGroup[] textureGroups = generator.getTextureGroups();
 
-            for (int j = 0; j < generator.getTextureGroups().length; j++) {
-                final TextureGroup group = generator.getTextureGroups()[j];
+            for (int j = 0; j < textureGroups.length; j++) {
+                final TextureGroup group = textureGroups[j];
 
                 if (group.textureImages.length == 0) {
                     log.log(Level.WARNING, "Group {0} did not contain any textures, skipping", group.textureGroupName);
