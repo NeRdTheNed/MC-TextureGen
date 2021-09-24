@@ -52,18 +52,18 @@ compileJava {
 }
 
 compileTestJava {
-    // Use a Java 8 compatible JDK to compile the tests for the program,
+    // Use a Java 16 compatible JDK to compile the tests for the program,
     // as JUnit does not support outdated versions of Java
     javaCompiler = javaToolchains.compilerFor {
-        languageVersion = JavaLanguageVersion.of(8)
+        languageVersion = JavaLanguageVersion.of(16)
     }
 }
 
 test {
-    // Use a Java 8 compatible JDK / JRE to run the tests for the program,
+    // Use a Java 16 compatible JDK / JRE to run the tests for the program,
     // as JUnit does not support outdated versions of Java
     javaLauncher = javaToolchains.launcherFor {
-        languageVersion = JavaLanguageVersion.of(8)
+        languageVersion = JavaLanguageVersion.of(16)
     }
     useJUnitPlatform()
 }
