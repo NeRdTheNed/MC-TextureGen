@@ -36,9 +36,24 @@ java {
     }
 }
 
+javadoc {
+    // Currently never compiled due to MC-TextureGen targeting Java 1.4 TODO Find a better solution
+    excludes = ['**/module-info.java']
+    // Specify Java version this project uses
+    options.addStringOption('source', '4')
+}
+
 tasks.withType(JavaCompile) {
     // Ensures that the encoding of source files is set to UTF-8, see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
     options.encoding = "UTF-8"
+}
+
+// Use Java 6 Javadoc tool for Javadoc generation.
+// There's not really a good reason for this, I just like the very retro look it has.
+tasks.withType(Javadoc).configureEach {
+    javadocTool = javaToolchains.javadocToolFor {
+        languageVersion = JavaLanguageVersion.of(6)
+    }
 }
 
 compileJava {
@@ -109,9 +124,15 @@ def obfsJar = artifacts.add('archives', file(proguard.outputs.files.singleFile))
     builtBy(proguard)
 }
 
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier = 'javadoc'
+}
+
 artifacts {
     archives sourcesJar
     archives obfsJar
+    archives javadocJar
 }
 
 jar {
@@ -133,6 +154,9 @@ publishing {
                 builtBy sourcesJar
             }
             artifact obfsJar
+            artifact(javadocJar) {
+                builtBy javadocJar
+            }
         }
     }
 }
