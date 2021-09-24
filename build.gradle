@@ -47,6 +47,8 @@ compileJava {
     javaCompiler = compiler
     sourceCompatibility = "1.4"
     targetCompatibility = "1.4"
+    // Currently never compiled due to MC-TextureGen targeting Java 1.4 TODO Find a better solution
+    excludes = ['**/module-info.java']
 }
 
 compileTestJava {
