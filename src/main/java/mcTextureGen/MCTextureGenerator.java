@@ -18,6 +18,11 @@ public final class MCTextureGenerator {
 
     // private static boolean hasDebugInfo = true;
 
+    /**
+     * Creates an array of all implemented texture generators.
+     *
+     * @return an array of all implemented texture generators
+     */
     public static AbstractTextureGenerator[] getTextureGenerators() {
         return new AbstractTextureGenerator[] {
                    new MissingTextureGenerator(),

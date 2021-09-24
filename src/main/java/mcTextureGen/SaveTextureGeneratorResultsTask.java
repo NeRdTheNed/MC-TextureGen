@@ -12,6 +12,9 @@ import javax.imageio.ImageIO;
 import mcTextureGen.data.TextureGroup;
 import mcTextureGen.generators.AbstractTextureGenerator;
 
+/**
+ * This class is used to generate and save the textures for a texture generator.
+ */
 public final class SaveTextureGeneratorResultsTask implements Runnable {
 
     private static final String fileSeperator = System.getProperty("file.separator");
@@ -20,12 +23,22 @@ public final class SaveTextureGeneratorResultsTask implements Runnable {
     private final AbstractTextureGenerator generator;
     private final Logger log;
 
+    /**
+     * Creates a new SaveTextureGeneratorResultsTask with the specified output path, texture generator, and logger.
+     *
+     * @param baseTextureOutputPath the base texture output path (the generated textures are saved to subdirectories)
+     * @param generator             the texture generator to generated textures for
+     * @param log                   the Logger to log to
+     */
     public SaveTextureGeneratorResultsTask(String baseTextureOutputPath, AbstractTextureGenerator generator, Logger log) {
         this.baseTextureOutputPath = baseTextureOutputPath;
         this.generator = generator;
         this.log = log;
     }
 
+    /**
+     * Generates all textures for a texture generator, then saves them to the provided directory.
+     */
     public void run() {
         log.log(Level.INFO, "Generating all texture groups for the texture generator {0}", generator.getGeneratorName());
         final String textureGeneratorOutputPath = baseTextureOutputPath + fileSeperator + generator.getGeneratorName();
