@@ -1,7 +1,14 @@
 package mcTextureGen.generators;
 
+/**
+ * This class generates lava textures from Minecraft Classic 0.0.19a to Classic 0.0.21a_01.
+ * This is a non-deterministic generator.
+ */
 public final class Classic19aLavaGenerator extends AbstractLavaGenerator {
 
+    /**
+     * Creates a new Classic 0.0.19a lava texture generator.
+     */
     public Classic19aLavaGenerator() {
         super("Classic_19a_Lava");
     }

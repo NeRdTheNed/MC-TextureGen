@@ -14,9 +14,12 @@ import mcTextureGen.generators.MC4k2Generator;
 import mcTextureGen.generators.MissingTextureGenerator;
 import mcTextureGen.generators.NetherPortalGenerator;
 
+/**
+ * The main program class. Responsible for generating and saving the textures for each implemented generator.
+ */
 public final class MCTextureGenerator {
 
-    // private static boolean hasDebugInfo = true;
+    //private static boolean hasDebugInfo = true;
 
     /**
      * Creates an array of all implemented texture generators.
@@ -37,8 +40,19 @@ public final class MCTextureGenerator {
                };
     }
 
+    /**
+     * The main method. Responsible for generating and saving the textures for each implemented generator.
+     * TODO clean up, make less complex
+     *
+     * @param args The command line arguments. Recognized options include:
+     * <ul>
+     * <li>-nonDeterministicFrames (integer n): Generates n frames of each non-deterministic texture. Otherwise, no non-deterministic textures are generated.
+     * <li>-randomSeed (long n): Sets the starting seed for each random number generator used by textures generated from non-deterministic generators. Otherwise, a random starting seed is used.
+     * <li>-platformTextures (boolean b): If b is true, platform dependant textures are generated. Otherwise, no platform dependant textures are generated. "Platform dependant" can mean that the textures vary depending on the version of Java, the operating system, and / or global settings for the current platform.
+     * <li>-multiThreaded (boolean b): If b is false, texture generation will be done consecutively on a single thread. Otherwise, each texture generator will be run on a seperate thread. This should not cause any differences in the generated textures.
+     * </ul>
+     */
     public static void main(final String[] args) {
-        // TODO: Clean up
         final Logger log = Logger.getLogger("MCTextureGenerator");
         log.log(Level.INFO, "MCTextureGenerator: Generates and saves runtime-generated textures from various Minecraft versions.");
         boolean isMultiThreaded = true;
@@ -103,6 +117,7 @@ public final class MCTextureGenerator {
                 try {
                     taskThread.join();
                 } catch (final InterruptedException e) {
+                    // TODO I have no idea why these threads would ever be interrupted, and I'm not sure how to handle it if they are.
                     final LogRecord logRecord = new LogRecord(Level.WARNING, "An InterruptedException was thrown when trying to join {0}. Textures may not have been generated.");
                     logRecord.setParameters(new Object[] { taskThread.getName() });
                     logRecord.setThrown(e);

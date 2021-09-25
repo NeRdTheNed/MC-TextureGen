@@ -5,24 +5,33 @@ import java.awt.image.DataBufferByte;
 
 import mcTextureGen.data.TextureGroup;
 
+/**
+ * This class generates the only textures used by Minecraft 4k-1 (the "XOR fractal" textures).
+ */
 public final class MC4k1Generator extends AbstractTextureGenerator {
 
-    private static final int maxLightLevel = 2;
-    private static final int tileSize = 16;
-    private static final int unsignedByteMax = 0xFF;
-    private static final float unsignedByteMaxAsFloat = 0xFF;
+    /** How many light levels to generate textures for. */
+    private static final int MAX_LIGHT_LEVEL = 2;
 
-    /** Minecraft 4k-1's "XOR fractal" texture generation, for each light level */
+    /** The texture size. */
+    private static final int TILE_SIZE = 16;
+
+    /**
+     * Generates Minecraft 4k-1's "XOR fractal" textures, for each light level.
+     * TODO this code is unreadable, what was I thinking?
+     *
+     * @return the generated "XOR fractal" texture group
+     */
     private static TextureGroup xorTextures() {
-        final BufferedImage[] xorImages = new BufferedImage[maxLightLevel + 1];
+        final BufferedImage[] xorImages = new BufferedImage[MAX_LIGHT_LEVEL + 1];
 
-        for (int tileLightLevel = 0; tileLightLevel <= maxLightLevel; tileLightLevel++) {
-            final BufferedImage tile = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_BYTE_GRAY);
+        for (int tileLightLevel = 0; tileLightLevel <= MAX_LIGHT_LEVEL; tileLightLevel++) {
+            final BufferedImage tile = new BufferedImage(TILE_SIZE, TILE_SIZE, BufferedImage.TYPE_BYTE_GRAY);
             final byte[] tileByteData = ((DataBufferByte) tile.getRaster().getDataBuffer()).getData();
 
-            for (int tileX = 0; tileX < tileSize; tileX++) {
-                for (int tileY = 0; tileY < tileSize; tileY++) {
-                    tileByteData[(tileX * tileSize) + tileY] = (byte) ((((((tileX ^ tileY) * 8) + 128) & unsignedByteMax) * (int) ((1.0F - (tileLightLevel * 0.2F)) * unsignedByteMaxAsFloat)) / unsignedByteMax);
+            for (int tileX = 0; tileX < TILE_SIZE; tileX++) {
+                for (int tileY = 0; tileY < TILE_SIZE; tileY++) {
+                    tileByteData[(tileX * TILE_SIZE) + tileY] = (byte) ((((((tileX ^ tileY) * 8) + 128) & 0xFF) * (int) ((1.0F - (tileLightLevel * 0.2F)) * 0xFF)) / 0xFF);
                 }
             }
 
@@ -36,6 +45,11 @@ public final class MC4k1Generator extends AbstractTextureGenerator {
         return "Minecraft_4k_1";
     }
 
+    /**
+     * Gets the generated "XOR fractal" textures.
+     *
+     * @return the generated "XOR fractal" texture group
+     */
     public TextureGroup[] getTextureGroups() {
         return new TextureGroup[] { xorTextures() };
     }

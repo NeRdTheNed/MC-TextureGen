@@ -6,35 +6,53 @@ import java.util.Random;
 
 import mcTextureGen.data.TextureGroup;
 
+/**
+ * This class generates all nether portal textures.
+ */
 public final class NetherPortalGenerator extends AbstractTextureGenerator {
 
-    private static final boolean addConstantOffset = true;
-    private static final boolean addRandomNoise = true;
+    /** True if a constant offset should be added to the texture. */
+    private static final boolean ADD_CONSTANT_OFFSET = true;
 
-    private static final int portalImageAmount = 32;
-    private static final int portalImageSize = 16;
-    // TODO This doesn't really work for more than a value of 2, see "TODO fix this"
-    private static final int spiralAmount = 2;
+    /** True if random noise should be added to the texture. */
+    private static final boolean ADD_RANDOM_NOISE = true;
 
-    /* TODO refactor, document */
+    /** The amount of generated nether portal images. */
+    private static final int PORTAL_IMAGE_AMOUNT = 32;
+
+    /** The size of generated nether portal images. */
+    private static final int PORTAL_IMAGE_SIZE = 16;
+
+    /**
+     * How many spirals the generated image has.
+     * TODO This doesn't really work for more than a value of 2, see "TODO fix this" in {@link #netherPortalFrames()}
+     */
+    private static final int SPIRAL_AMOUNT = 2;
+
+    /**
+     * Generates all frames of the nether portal animation.
+     * TODO refactor, document
+     *
+     * @return the generated nether portal texture group
+     */
     private static TextureGroup netherPortalFrames() {
-        final BufferedImage[] portalImages = new BufferedImage[portalImageAmount];
+        final BufferedImage[] portalImages = new BufferedImage[PORTAL_IMAGE_AMOUNT];
         final Random rand = new Random(100L);
 
-        for (int currentPortalImage = 0; currentPortalImage < portalImageAmount; currentPortalImage++) {
-            final BufferedImage portalImage = new BufferedImage(portalImageSize, portalImageSize, BufferedImage.TYPE_4BYTE_ABGR);
+        for (int currentPortalImage = 0; currentPortalImage < PORTAL_IMAGE_AMOUNT; currentPortalImage++) {
+            final BufferedImage portalImage = new BufferedImage(PORTAL_IMAGE_SIZE, PORTAL_IMAGE_SIZE, BufferedImage.TYPE_4BYTE_ABGR);
             final byte[] imageByteData = ((DataBufferByte) portalImage.getRaster().getDataBuffer()).getData();
 
-            for (int portalImageX = 0; portalImageX < portalImageSize; portalImageX++) {
-                for (int portalImageY = 0; portalImageY < portalImageSize; portalImageY++) {
+            for (int portalImageX = 0; portalImageX < PORTAL_IMAGE_SIZE; portalImageX++) {
+                for (int portalImageY = 0; portalImageY < PORTAL_IMAGE_SIZE; portalImageY++) {
                     float currentPixelIntensity = 0.0F;
 
-                    for (int currentSpiral = 0; currentSpiral < spiralAmount; currentSpiral++) {
-                        final float currentSpiralOffset = currentSpiral * (portalImageSize / spiralAmount);
-                        float currentSpiralX = ((portalImageX - currentSpiralOffset) / portalImageSize) * 2.0F;
-                        float currentSpiralY = ((portalImageY - currentSpiralOffset) / portalImageSize) * 2.0F;
+                    for (int currentSpiral = 0; currentSpiral < SPIRAL_AMOUNT; currentSpiral++) {
+                        final float currentSpiralOffset = currentSpiral * (PORTAL_IMAGE_SIZE / SPIRAL_AMOUNT);
+                        float currentSpiralX = ((portalImageX - currentSpiralOffset) / PORTAL_IMAGE_SIZE) * 2.0F;
+                        float currentSpiralY = ((portalImageY - currentSpiralOffset) / PORTAL_IMAGE_SIZE) * 2.0F;
 
-                        if (addConstantOffset) {
+                        if (ADD_CONSTANT_OFFSET) {
                             if (currentSpiralX < -1.0F) {
                                 currentSpiralX += 2.0F;
                             }
@@ -54,19 +72,19 @@ public final class NetherPortalGenerator extends AbstractTextureGenerator {
 
                         final float spiralPowerThingy = (currentSpiralX * currentSpiralX) + (currentSpiralY * currentSpiralY);
                         // TODO fix this to actually make more than two spirals work, you can see my nonsensical attempt to do this before I got too confused to continue
-                        float currentSpiralIntensity = (float)Math.atan2(currentSpiralY, currentSpiralX) + ((((((float)currentPortalImage / (float)portalImageAmount) * (float) Math.PI * 2.0F) - (spiralPowerThingy * 10.0F)) + (currentSpiral * 2)) * ((currentSpiral * 2) - 1));
+                        float currentSpiralIntensity = (float)Math.atan2(currentSpiralY, currentSpiralX) + ((((((float)currentPortalImage / (float)PORTAL_IMAGE_AMOUNT) * (float) Math.PI * 2.0F) - (spiralPowerThingy * 10.0F)) + (currentSpiral * 2)) * ((currentSpiral * 2) - 1));
                         // float currentSpiralIntensity = (float)Math.atan2(currentSpiralY, currentSpiralX) + ((((((float)currentPortalImage / (float)portalImageAmount) * (float) Math.PI * 2.0F) - (spiralPowerThingy * 10.0F)) + (currentSpiral * spiralAmount)) * ((((currentSpiral % 2) * 2) - 1) * ((currentSpiral + 2) / 2)));
                         currentSpiralIntensity = (lookupSin(currentSpiralIntensity) + 1.0F) / 2.0F;
                         currentSpiralIntensity /= spiralPowerThingy + 1.0F;
-                        currentPixelIntensity += currentSpiralIntensity * (1.0F / spiralAmount);
+                        currentPixelIntensity += currentSpiralIntensity * (1.0F / SPIRAL_AMOUNT);
                     }
 
-                    if (addRandomNoise) {
+                    if (ADD_RANDOM_NOISE) {
                         currentPixelIntensity += rand.nextFloat() * 0.1F;
                     }
 
                     // Construct the ABGR components of the image.
-                    final int imageOffset = (portalImageX + (portalImageY * portalImageSize)) * 4;
+                    final int imageOffset = (portalImageX + (portalImageY * PORTAL_IMAGE_SIZE)) * 4;
                     /*
                      * Aplha / blue is very common, and has a fairly normal distribution.
                      * The alpha value is the same as the blue value.
@@ -93,6 +111,11 @@ public final class NetherPortalGenerator extends AbstractTextureGenerator {
         return "Nether_Portal";
     }
 
+    /**
+     * Gets the generated nether portal textures.
+     *
+     * @return the generated nether portal texture group
+     */
     public TextureGroup[] getTextureGroups() {
         return new TextureGroup[] { netherPortalFrames() };
     }

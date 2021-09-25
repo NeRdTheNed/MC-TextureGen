@@ -9,25 +9,54 @@ import java.awt.image.DataBufferInt;
 
 import mcTextureGen.data.TextureGroup;
 
+/**
+ * This class generates all known variations of the "missing texture" texture. This includes:
+ * <ul>
+ * <li>The text-based "missingtex" texture used by Minecraft Beta 1.4 to snapshot 13w01b
+ * <li>The text-based "missing texture" texture used by Minecraft snapshot 13w02a to snapshot 13w17a
+ * <li>The "checkerboard" / "source engine" missing texture used by Minecraft snapshot 13w18a to 1.12.2
+ * <li>The "checkerboard" / "source engine" missing texture used by Minecraft snapshot 17w43a to the current day
+ * </ul>
+ */
 public final class MissingTextureGenerator extends AbstractTextureGenerator {
 
+    /** The size of the generated "checkerboard" textures. */
     private static final int CHECKERBOARD_TEXTURE_SIZE = 16;
+
+    /** The size of the generated text based textures. */
     private static final int TEXT_TEXTURE_SZIE = 64;
 
-    private static TextureGroup missingTextureCheckerboard(String name, int colourOne, int colourTwo) {
+    /**
+     * Generates a "checkerboard" texture with the provided colors.
+     *
+     * @param name the name of the returned texture group
+     * @param colorOne the first color
+     * @param colorTwo the second color
+     * @return the generated "checkerboard" texture
+     */
+    private static TextureGroup missingTextureCheckerboard(String name, int colorOne, int colorTwo) {
         final BufferedImage missingTexture = new BufferedImage(CHECKERBOARD_TEXTURE_SIZE, CHECKERBOARD_TEXTURE_SIZE, BufferedImage.TYPE_INT_RGB);
         final int[] textureData = ((DataBufferInt) missingTexture.getRaster().getDataBuffer()).getData();
 
         for (int xPixel = 0; xPixel < CHECKERBOARD_TEXTURE_SIZE; ++xPixel) {
             for (int yPixel = 0; yPixel < CHECKERBOARD_TEXTURE_SIZE; ++yPixel) {
-                textureData[xPixel + (yPixel * CHECKERBOARD_TEXTURE_SIZE)] = (xPixel < (CHECKERBOARD_TEXTURE_SIZE / 2)) ^ (yPixel < (CHECKERBOARD_TEXTURE_SIZE / 2)) ? colourOne : colourTwo;
+                textureData[xPixel + (yPixel * CHECKERBOARD_TEXTURE_SIZE)] = (xPixel < (CHECKERBOARD_TEXTURE_SIZE / 2)) ^ (yPixel < (CHECKERBOARD_TEXTURE_SIZE / 2)) ? colorOne : colorTwo;
             }
         }
 
         return new TextureGroup("Missing_Texture_" + name, missingTexture);
     }
 
-    /** Note: The generated TextureGroup is JVM / system dependent: the font / text rendering method chosen will vary across different platforms. */
+    /**
+     * Generates a text-based texture with the provided text.
+     * The generated TextureGroup is JVM / system dependent:
+     * the font / text rendering method chosen will vary across different platforms.
+     *
+     * @param name the name of the returned texture group
+     * @param repeats if the text repeats after all lines have been rendered
+     * @param lines the lines of text to render
+     * @return the generated text-based texture
+     */
     private static TextureGroup missingTextureText(String name, boolean repeats, String[] lines) {
         final BufferedImage[] missingTextureAsArray;
 
@@ -88,6 +117,11 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
         return "Missing_Textures";
     }
 
+    /**
+     * Gets the generated "missing texture" texture groups.
+     *
+     * @return the generated "missing texture" texture groups
+     */
     public TextureGroup[] getTextureGroups() {
         return new TextureGroup[] {
                    missingTextureText("Java_b1_4_to_13w01b", false, new String[] { "missingtex" }),

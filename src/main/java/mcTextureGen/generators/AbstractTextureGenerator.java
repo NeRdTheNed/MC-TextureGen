@@ -4,21 +4,38 @@ import java.util.Random;
 
 import mcTextureGen.data.TextureGroup;
 
+/**
+ * The base texture generator class. All texture generators extend from this.
+ * This is an abstract class (instead of an interface) due to it having helper methods.
+ */
 public abstract class AbstractTextureGenerator {
 
     // Global settings
+
+    /** The amount of non-deterministic frames to generate. */
     protected static int nonDeterministicFrames = 0;
+
+    /** The random seed used by {@link #getRandom()}. */
     private static Long randomSeed = null;
+
+    /** True if platform dependent texture generators should generate platform dependent textures. */
     protected static boolean shouldGeneratePlatformDependentTextures = false;
 
     /*
      * Constants to determine the size of the sin and cos lookup tables.
      * Adapted from https://jvm-gaming.org/t/fast-math-sin-cos-lookup-tables/36660.
      */
+
+    /** The size of the sine table in bits. */
     private static final int SIN_BITS = 16;
+
+    /** A bit mask of the amount of bits in the sine table. */
     private static final int SIN_MASK = ~(-1 << SIN_BITS);
+
+    /** The size of the sine table. */
     private static final int SIN_COUNT = SIN_MASK + 1;
 
+    /** A value to convert from an angle in radians to an index in the sine table. */
     private static final float RADIANS_TO_INDEX = SIN_COUNT / (float) (Math.PI * 2.0);
 
     /** A lookup table for finding the sine of an angle. */

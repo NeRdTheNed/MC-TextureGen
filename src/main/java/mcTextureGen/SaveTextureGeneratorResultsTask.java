@@ -17,17 +17,23 @@ import mcTextureGen.generators.AbstractTextureGenerator;
  */
 public final class SaveTextureGeneratorResultsTask implements Runnable {
 
-    private static final String fileSeperator = System.getProperty("file.separator");
+    /** The system value for the file separator string. */
+    private static final String FILE_SEPARATOR = System.getProperty("file.separator");
 
+    /** The base texture output path. */
     private final String baseTextureOutputPath;
+
+    /** The texture generator to generate textures for. */
     private final AbstractTextureGenerator generator;
+
+    /** The Logger to log to. */
     private final Logger log;
 
     /**
      * Creates a new SaveTextureGeneratorResultsTask with the specified output path, texture generator, and logger.
      *
      * @param baseTextureOutputPath the base texture output path (the generated textures are saved to subdirectories)
-     * @param generator             the texture generator to generated textures for
+     * @param generator             the texture generator to generate textures for
      * @param log                   the Logger to log to
      */
     public SaveTextureGeneratorResultsTask(String baseTextureOutputPath, AbstractTextureGenerator generator, Logger log) {
@@ -41,7 +47,7 @@ public final class SaveTextureGeneratorResultsTask implements Runnable {
      */
     public void run() {
         log.log(Level.INFO, "Generating all texture groups for the texture generator {0}", generator.getGeneratorName());
-        final String textureGeneratorOutputPath = baseTextureOutputPath + fileSeperator + generator.getGeneratorName();
+        final String textureGeneratorOutputPath = baseTextureOutputPath + FILE_SEPARATOR + generator.getGeneratorName();
         final TextureGroup[] textureGroups = generator.getTextureGroups();
 
         for (int i = 0; i < textureGroups.length; i++) {
@@ -52,7 +58,7 @@ public final class SaveTextureGeneratorResultsTask implements Runnable {
                 continue;
             }
 
-            final String textureGroupOutputPath = textureGeneratorOutputPath + fileSeperator + group.textureGroupName;
+            final String textureGroupOutputPath = textureGeneratorOutputPath + FILE_SEPARATOR + group.textureGroupName;
             final File textureGroupDirectory = new File(textureGroupOutputPath);
 
             if (!textureGroupDirectory.exists() && !textureGroupDirectory.mkdirs()) {
@@ -67,9 +73,9 @@ public final class SaveTextureGeneratorResultsTask implements Runnable {
                 final String outFileName;
 
                 if (group.textureImages.length > 1) {
-                    outFileName = textureGroupOutputPath + fileSeperator + group.textureGroupName + "_" + (j + 1) + ".png";
+                    outFileName = textureGroupOutputPath + FILE_SEPARATOR + group.textureGroupName + "_" + (j + 1) + ".png";
                 } else {
-                    outFileName = textureGroupOutputPath + fileSeperator + group.textureGroupName + ".png";
+                    outFileName = textureGroupOutputPath + FILE_SEPARATOR + group.textureGroupName + ".png";
                 }
 
                 final File textureFile = new File(outFileName);

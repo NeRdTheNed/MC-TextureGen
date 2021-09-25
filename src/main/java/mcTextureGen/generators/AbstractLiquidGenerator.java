@@ -6,22 +6,46 @@ import java.util.Random;
 
 import mcTextureGen.data.TextureGroup;
 
-/* TODO clean up, refactor */
+/**
+ * This class is used as the base of texture generators which generate liquid textures (i.e lava and water).
+ * All current subclasses are non-deterministic generators.
+ * TODO clean up, refactor
+ */
 public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
 
-    private static final int liquidImageBits = 4;
-    static final int liquidImageMask = ~(-1 << liquidImageBits);
-    static final int liquidImageSize = liquidImageMask + 1;
+    /** The size of a liquid image in bits. */
+    private static final int LIQUID_IMAGE_BITS = 4;
 
+    /** A bit mask of the amount of bits in a liquid image. */
+    static final int LIQUID_IMAGE_MASK = ~(-1 << LIQUID_IMAGE_BITS);
+
+    /** The size of a liquid image in pixels. */
+    static final int LIQUID_IMAGE_SIZE = LIQUID_IMAGE_MASK + 1;
+
+    /** The name of this liquid texture generator. */
     private final String generatorName;
 
-    // TODO refactor
+    /** The Random instance used when generating a liquid texture. TODO refactor */
     Random rand;
 
+    /**
+     * Creates a new liquid texture generator with the specified name.
+     * Used for subclasses to define what their name is.
+     *
+     * @param generatorName the texture generator name
+     */
     protected AbstractLiquidGenerator(String generatorName) {
         this.generatorName = generatorName;
     }
 
+    /**
+     * Clamps the passed float to a value between 0.0F and 1.0F.
+     * Used in a fairly janky way by {@link Classic22aLavaGenerator#clampCurrentPixelIntensity(float)} to modify the value before clamping.
+     * TODO refactor
+     *
+     * @param toClamp the float to clamp
+     * @return a float clamped between 0.0F and 1.0F
+     */
     float clampCurrentPixelIntensity(float toClamp) {
         if (toClamp > 1.0F) {
             toClamp = 1.0F;
@@ -34,22 +58,44 @@ public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
         return toClamp;
     }
 
+    /**
+     * Generates a liquid texture with the provided parameters.
+     * TODO Better Javadoc.
+     *
+     * @param liquidImagePrevious the previous liquid image
+     * @param liquidImageCurrent the current liquid image
+     * @param liquidIntensity the liquid intensity map
+     * @param liquidIntensityIntensity the liquid intensity intensity map
+     */
     public abstract void generateLiquidTexture(final float[] liquidImagePrevious, final float[] liquidImageCurrent, final float[] liquidIntensity, final float[] liquidIntensityIntensity);
 
+    /**
+     * Returns the set liquid generator name from {@link #AbstractLiquidGenerator(String)}.
+     */
     public final String getGeneratorName() {
         return generatorName;
     }
 
+    /**
+     * Gets the generated liquid textures.
+     *
+     * @return the generated liquid texture group
+     */
     public final TextureGroup[] getTextureGroups() {
         return new TextureGroup[] { liquidTextures() };
     }
 
+    /**
+     * Generates the liquid textures for this liquid texture generator, and returns them as a texture group.
+     *
+     * @return the generated liquid texture group
+     */
     private final TextureGroup liquidTextures() {
         rand = getRandom();
-        float[] liquidImagePrevious = new float[liquidImageSize * liquidImageSize];
-        float[] liquidImageCurrent = new float[liquidImageSize * liquidImageSize];
-        final float[] liquidIntensity = new float[liquidImageSize * liquidImageSize];
-        final float[] liquidIntensityIntensity = new float[liquidImageSize * liquidImageSize];
+        float[] liquidImagePrevious = new float[LIQUID_IMAGE_SIZE * LIQUID_IMAGE_SIZE];
+        float[] liquidImageCurrent = new float[LIQUID_IMAGE_SIZE * LIQUID_IMAGE_SIZE];
+        final float[] liquidIntensity = new float[LIQUID_IMAGE_SIZE * LIQUID_IMAGE_SIZE];
+        final float[] liquidIntensityIntensity = new float[LIQUID_IMAGE_SIZE * LIQUID_IMAGE_SIZE];
         final BufferedImage[] liquidImages = new BufferedImage[nonDeterministicFrames];
 
         for (int currentFrame = 0; currentFrame < nonDeterministicFrames; currentFrame++) {
@@ -57,10 +103,10 @@ public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
             final float[] liquidImageCurrentTemp = liquidImageCurrent;
             liquidImageCurrent = liquidImagePrevious;
             liquidImagePrevious = liquidImageCurrentTemp;
-            final BufferedImage currentLiquidImage = new BufferedImage(liquidImageSize, liquidImageSize, BufferedImage.TYPE_4BYTE_ABGR);
+            final BufferedImage currentLiquidImage = new BufferedImage(LIQUID_IMAGE_SIZE, LIQUID_IMAGE_SIZE, BufferedImage.TYPE_4BYTE_ABGR);
             final byte[] imageByteData = ((DataBufferByte) currentLiquidImage.getRaster().getDataBuffer()).getData();
 
-            for (int currentPixel = 0; currentPixel < (liquidImageSize * liquidImageSize); ++currentPixel) {
+            for (int currentPixel = 0; currentPixel < (LIQUID_IMAGE_SIZE * LIQUID_IMAGE_SIZE); ++currentPixel) {
                 final float currentPixelIntensity = clampCurrentPixelIntensity(liquidImagePrevious[currentPixel]);
                 final int imageOffset = currentPixel * 4;
                 setABGR(imageByteData, currentPixelIntensity, imageOffset);
@@ -72,6 +118,14 @@ public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
         return new TextureGroup(generatorName + "_Textures", liquidImages);
     }
 
+    /**
+     * Sets the ABGR values at a specified location for a liquid texture from the current pixel intensity.
+     * TODO refactor
+     *
+     * @param imageByteData the image byte data to set
+     * @param currentPixelIntensity the current pixel intensity
+     * @param imageOffset the image offset to write to
+     */
     public abstract void setABGR(final byte[] imageByteData, final float currentPixelIntensity, final int imageOffset);
 
 }
