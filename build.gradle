@@ -40,7 +40,11 @@ javadoc {
     // Currently never compiled due to MC-TextureGen targeting Java 1.4 TODO Find a better solution
     excludes = ['**/module-info.java']
     // Specify Java version this project uses
-    options.addStringOption('source', '4')
+    options.addStringOption('source', '1.4')
+    // Generate Javadoc for all classes and members.
+    options.memberLevel = JavadocMemberLevel.PRIVATE
+    // Add custom "todo" tag
+    options.tags = ["todo:a:To Do:"]
 }
 
 tasks.withType(JavaCompile) {

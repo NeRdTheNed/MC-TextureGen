@@ -6,7 +6,8 @@ package mcTextureGen.generators;
  * This is mainly due to the fact that this is one of the only differences between Classic 0.0.19a lava textures
  * and Classic 0.0.22a lava textures (the other difference being how pixels are clamped).
  * This is a non-deterministic generator.
- * TODO clean up, refactor
+ *
+ * @todo clean up, refactor
  */
 public abstract class AbstractLavaGenerator extends AbstractLiquidGenerator {
 
@@ -22,7 +23,8 @@ public abstract class AbstractLavaGenerator extends AbstractLiquidGenerator {
 
     /**
      * Generates the lava textures.
-     * TODO Better Javadoc.
+     *
+     * @todo better Javadoc
      */
     public final void generateLiquidTexture(final float[] liquidImagePrevious, final float[] liquidImageCurrent, final float[] liquidIntensity, final float[] liquidIntensityIntensity) {
         for (int currentLavaX = 0; currentLavaX < LIQUID_IMAGE_SIZE; ++currentLavaX) {

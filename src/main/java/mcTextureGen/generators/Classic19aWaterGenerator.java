@@ -15,7 +15,8 @@ public final class Classic19aWaterGenerator extends AbstractLiquidGenerator {
 
     /**
      * Generates the water textures.
-     * TODO Better Javadoc.
+     *
+     * @todo better Javadoc
      */
     public void generateLiquidTexture(final float[] liquidImagePrevious, final float[] liquidImageCurrent, final float[] liquidIntensity, final float[] liquidIntensityIntensity) {
         // Generate the image pixel values

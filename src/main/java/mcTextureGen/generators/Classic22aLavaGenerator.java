@@ -15,7 +15,8 @@ public final class Classic22aLavaGenerator extends AbstractLavaGenerator {
 
     /**
      * Multiplies the passed float by two, then clamps to a value between 0.0F and 1.0F.
-     * TODO refactor
+     *
+     * @todo refactor
      */
     float clampCurrentPixelIntensity(float toClamp) {
         toClamp *= 2.0F;

@@ -9,7 +9,8 @@ import mcTextureGen.data.TextureGroup;
 /**
  * This class is used as the base of texture generators which generate liquid textures (i.e lava and water).
  * All current subclasses are non-deterministic generators.
- * TODO clean up, refactor
+ *
+ * @todo clean up, refactor
  */
 public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
 
@@ -25,7 +26,11 @@ public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
     /** The name of this liquid texture generator. */
     private final String generatorName;
 
-    /** The Random instance used when generating a liquid texture. TODO refactor */
+    /**
+     * The Random instance used when generating a liquid texture.
+     *
+     * @todo refactor
+     */
     Random rand;
 
     /**
@@ -41,9 +46,9 @@ public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
     /**
      * Clamps the passed float to a value between 0.0F and 1.0F.
      * Used in a fairly janky way by {@link Classic22aLavaGenerator#clampCurrentPixelIntensity(float)} to modify the value before clamping.
-     * TODO refactor
      *
-     * @param toClamp the float to clamp
+     * @todo   refactor
+     * @param  toClamp the float to clamp
      * @return a float clamped between 0.0F and 1.0F
      */
     float clampCurrentPixelIntensity(float toClamp) {
@@ -60,8 +65,8 @@ public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
 
     /**
      * Generates a liquid texture with the provided parameters.
-     * TODO Better Javadoc.
      *
+     * @todo  better Javadoc
      * @param liquidImagePrevious the previous liquid image
      * @param liquidImageCurrent the current liquid image
      * @param liquidIntensity the liquid intensity map
@@ -120,8 +125,8 @@ public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
 
     /**
      * Sets the ABGR values at a specified location for a liquid texture from the current pixel intensity.
-     * TODO refactor
      *
+     * @todo  refactor
      * @param imageByteData the image byte data to set
      * @param currentPixelIntensity the current pixel intensity
      * @param imageOffset the image offset to write to

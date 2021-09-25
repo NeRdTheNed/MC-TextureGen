@@ -18,8 +18,8 @@ public final class MC4k1Generator extends AbstractTextureGenerator {
 
     /**
      * Generates Minecraft 4k-1's "XOR fractal" textures, for each light level.
-     * TODO this code is unreadable, what was I thinking?
      *
+     * @todo   this code is unreadable, what was I thinking?
      * @return the generated "XOR fractal" texture group
      */
     private static TextureGroup xorTextures() {

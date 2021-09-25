@@ -29,9 +29,9 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
     /**
      * Generates a "checkerboard" texture with the provided colors.
      *
-     * @param name the name of the returned texture group
-     * @param colorOne the first color
-     * @param colorTwo the second color
+     * @param  name the name of the returned texture group
+     * @param  colorOne the first color
+     * @param  colorTwo the second color
      * @return the generated "checkerboard" texture
      */
     private static TextureGroup missingTextureCheckerboard(String name, int colorOne, int colorTwo) {
@@ -52,9 +52,9 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
      * The generated TextureGroup is JVM / system dependent:
      * the font / text rendering method chosen will vary across different platforms.
      *
-     * @param name the name of the returned texture group
-     * @param repeats if the text repeats after all lines have been rendered
-     * @param lines the lines of text to render
+     * @param  name the name of the returned texture group
+     * @param  repeats if the text repeats after all lines have been rendered
+     * @param  lines the lines of text to render
      * @return the generated text-based texture
      */
     private static TextureGroup missingTextureText(String name, boolean repeats, String[] lines) {

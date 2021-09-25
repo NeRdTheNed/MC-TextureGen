@@ -127,8 +127,8 @@ public abstract class AbstractTextureGenerator {
 
     /**
      * Only used during tests, signifies that the generator would not be able to generate textures correctly.
-     * TODO probably refactor
      *
+     * @todo   probably refactor
      * @return true, if there were no generation issues during testing
      */
     public boolean hasGenerationIssue() {

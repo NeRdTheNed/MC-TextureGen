@@ -25,14 +25,15 @@ public final class NetherPortalGenerator extends AbstractTextureGenerator {
 
     /**
      * How many spirals the generated image has.
-     * TODO This doesn't really work for more than a value of 2, see "TODO fix this" in {@link #netherPortalFrames()}
+     *
+     * @todo this doesn't really work for more than a value of 2, see "TODO fix this" in {@link #netherPortalFrames()}
      */
     private static final int SPIRAL_AMOUNT = 2;
 
     /**
      * Generates all frames of the nether portal animation.
-     * TODO refactor, document
      *
+     * @todo   refactor, document
      * @return the generated nether portal texture group
      */
     private static TextureGroup netherPortalFrames() {

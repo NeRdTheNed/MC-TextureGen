@@ -76,7 +76,7 @@ public final class GearRotationFramesGenerator extends AbstractTextureGenerator 
     /**
      * Generates a gear texture for a rotation step.
      *
-     * @param rotationStep the rotation step
+     * @param  rotationStep the rotation step
      * @return the generated gear rotation image
      */
     // TODO better documentation, variable names are way to verbose, check if gear rotation animation was consistent across all versions of Minecraft

@@ -17,7 +17,8 @@ import mcTextureGen.generators.AbstractTextureGenerator;
 
 /**
  * Unit tests for texture generators.
- * TODO refactor
+ *
+ * @todo refactor
  */
 final class MCTextureGeneratorTest {
 
@@ -51,7 +52,7 @@ final class MCTextureGeneratorTest {
     /**
      * Checks if the provided String contains only safe characters to use in file names.
      *
-     * @param toCheck the String to check
+     * @param  toCheck the String to check
      * @return true, if the String only contains safe characters to use in file names
      */
     private static boolean isSafeName(String toCheck) {
@@ -60,8 +61,8 @@ final class MCTextureGeneratorTest {
 
     /**
      * Provides a Stream of all texture generators.
-     * TODO this is bad
      *
+     * @todo   this is bad
      * @return a Stream of all texture generators
      */
     private static Stream<AbstractTextureGenerator> textureGeneratorProvider() {
@@ -70,8 +71,8 @@ final class MCTextureGeneratorTest {
 
     /**
      * Provides a Stream of all texture groups from all texture generators.
-     * TODO this is bad
      *
+     * @todo   this is bad
      * @return a Stream of all texture groups from all texture generators
      */
     private static Stream<TextureGroup> textureGroupProvider() {
@@ -80,8 +81,8 @@ final class MCTextureGeneratorTest {
 
     /**
      * Tests if any AbstractTextureGenerator reports generation issues via hasGenerationIssue().
-     * TODO refactor
      *
+     * @todo  refactor
      * @param generator the generator
      */
     @ParameterizedTest

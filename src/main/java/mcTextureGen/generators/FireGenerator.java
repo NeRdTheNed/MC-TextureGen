@@ -61,15 +61,15 @@ public final class FireGenerator extends AbstractTextureGenerator {
 
     /**
      * Used during fire texture generation to compensate for sampling multiple pixels.
-     * TODO It's rumored that some versions of pocket edition have this as 25.2?
-     * If that's true, removing " + (SAMPLE_SELF * 0.01F)" from WTFLOAT might simulate this.
+     * @todo It's rumored that some versions of pocket edition have this as 25.2?
+     *       If that's true, removing " + (SAMPLE_SELF * 0.01F)" from WTFLOAT might simulate this.
      */
     private static final float DIV_PIXEL_INTENSITY = SAMPLE_COUNTER_END * WTFLOAT;
 
     /**
      * Generates the fire textures.
-     * TODO Better Javadoc.
      *
+     * @todo   better Javadoc
      * @return the generated fire texture group
      */
     private static TextureGroup fireTextures() {

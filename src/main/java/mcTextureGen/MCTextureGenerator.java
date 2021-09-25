@@ -42,8 +42,8 @@ public final class MCTextureGenerator {
 
     /**
      * The main method. Responsible for generating and saving the textures for each implemented generator.
-     * TODO clean up, make less complex
      *
+     * @todo  clean up, make less complex
      * @param args The command line arguments. Recognized options include:
      * <ul>
      * <li>-nonDeterministicFrames (integer n): Generates n frames of each non-deterministic texture. Otherwise, no non-deterministic textures are generated.
