@@ -21,6 +21,17 @@ public abstract class AbstractTextureGenerator {
     /** True if platform dependent texture generators should generate platform dependent textures. */
     protected static boolean shouldGeneratePlatformDependentTextures = false;
 
+    // Image size constants
+
+    /** A convenience variable to generate larger textures. Must be a power of two, or one. */
+    static final int STANDARD_IMAGE_SIZE_MULTIPLIER = 1;
+
+    /** The size of a standard image in pixels. */
+    static final int STANDARD_IMAGE_SIZE = 16 * STANDARD_IMAGE_SIZE_MULTIPLIER;
+
+    /** A bit mask of the size of a standard image. */
+    static final int STANDARD_IMAGE_SIZE_BITMASK = STANDARD_IMAGE_SIZE - 1;
+
     /*
      * Constants to determine the size of the sin and cos lookup tables.
      * Adapted from https://jvm-gaming.org/t/fast-math-sin-cos-lookup-tables/36660.
@@ -92,7 +103,7 @@ public abstract class AbstractTextureGenerator {
     }
 
     /**
-     * Sets the seed used by getRandom().
+     * Sets the seed used by {@link #getRandom()}.
      *
      * @param randomSeed the new random seed
      */

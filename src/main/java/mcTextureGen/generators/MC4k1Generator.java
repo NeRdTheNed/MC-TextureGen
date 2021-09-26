@@ -13,9 +13,6 @@ public final class MC4k1Generator extends AbstractTextureGenerator {
     /** How many light levels to generate textures for. */
     private static final int MAX_LIGHT_LEVEL = 2;
 
-    /** The texture size. */
-    private static final int TILE_SIZE = 16;
-
     /**
      * Generates Minecraft 4k-1's "XOR fractal" textures, for each light level.
      *
@@ -26,12 +23,12 @@ public final class MC4k1Generator extends AbstractTextureGenerator {
         final BufferedImage[] xorImages = new BufferedImage[MAX_LIGHT_LEVEL + 1];
 
         for (int tileLightLevel = 0; tileLightLevel <= MAX_LIGHT_LEVEL; tileLightLevel++) {
-            final BufferedImage tile = new BufferedImage(TILE_SIZE, TILE_SIZE, BufferedImage.TYPE_BYTE_GRAY);
+            final BufferedImage tile = new BufferedImage(STANDARD_IMAGE_SIZE, STANDARD_IMAGE_SIZE, BufferedImage.TYPE_BYTE_GRAY);
             final byte[] tileByteData = ((DataBufferByte) tile.getRaster().getDataBuffer()).getData();
 
-            for (int tileX = 0; tileX < TILE_SIZE; tileX++) {
-                for (int tileY = 0; tileY < TILE_SIZE; tileY++) {
-                    tileByteData[(tileX * TILE_SIZE) + tileY] = (byte) ((((((tileX ^ tileY) * 8) + 128) & 0xFF) * (int) ((1.0F - (tileLightLevel * 0.2F)) * 0xFF)) / 0xFF);
+            for (int tileX = 0; tileX < STANDARD_IMAGE_SIZE; tileX++) {
+                for (int tileY = 0; tileY < STANDARD_IMAGE_SIZE; tileY++) {
+                    tileByteData[(tileX * STANDARD_IMAGE_SIZE) + tileY] = (byte) ((((((tileX ^ tileY) * 8) + 128) & 0xFF) * (int) ((1.0F - (tileLightLevel * 0.2F)) * 0xFF)) / 0xFF);
                 }
             }
 

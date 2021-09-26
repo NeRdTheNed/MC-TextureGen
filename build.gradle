@@ -45,6 +45,8 @@ javadoc {
     options.memberLevel = JavadocMemberLevel.PRIVATE
     // Add custom "todo" tag
     options.tags = ["todo:a:To Do:"]
+    // Ensures that the encoding of javadoc source files is set to UTF-8
+    options.encoding = "UTF-8"
 }
 
 tasks.withType(JavaCompile) {

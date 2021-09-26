@@ -12,14 +12,11 @@ import mcTextureGen.data.TextureGroup;
  */
 public final class FireGenerator extends AbstractTextureGenerator {
 
-    /** A convenience variable to generate larger fire textures with. */
-    private static final int FIRE_MULTI = 1;
-
     /** How wide the fire texture is. */
-    private static final int FIRE_TEXTURE_WIDTH = 16 * FIRE_MULTI;
+    private static final int FIRE_TEXTURE_WIDTH = 16 * STANDARD_IMAGE_SIZE_MULTIPLIER;
 
     /** How high the fire texture is. */
-    private static final int FIRE_TEXTURE_HEIGHT = 20 * FIRE_MULTI;
+    private static final int FIRE_TEXTURE_HEIGHT = 20 * STANDARD_IMAGE_SIZE_MULTIPLIER;
 
     /** How many pixels left to sample from when generating the texture. */
     private static final int SAMPLE_X_LEFT = 1;
@@ -43,7 +40,7 @@ public final class FireGenerator extends AbstractTextureGenerator {
      */
 
     /** The staring value for the "sample counter". */
-    private static final int SAMPLE_COUNTER_START = 18 * FIRE_MULTI;
+    private static final int SAMPLE_COUNTER_START = 18 * STANDARD_IMAGE_SIZE_MULTIPLIER;
 
     /** How many times the "sample counter" would increment. */
     private static final int SAMPLE_COUNTER_ITERATIONS = (SAMPLE_X_LEFT + SAMPLE_SELF + SAMPLE_X_RIGHT) * (SAMPLE_Y_DOWN + SAMPLE_SELF + SAMPLE_Y_UP);
@@ -53,16 +50,18 @@ public final class FireGenerator extends AbstractTextureGenerator {
 
     /**
      * WTFLOAT is a very strange constant. I felt the name was appropriate, given how hard it was to pin down.
-     * Earlier versions of Minecraft define this as 1.06F. Later versions defined it as 1.0600001F.
+     * Earlier versions of Minecraft define this as ≈ 1.06F. Later versions defined it as ≈ 1.0600001F.
      * This is the current method I've settled on to determine the scaled value of WTFLOAT.
-     * If fireMulti is 1, it results in 1.06F.
+     * If {@link AbstractTextureGenerator#STANDARD_IMAGE_SIZE_MULTIPLIER} is
+     * {@value mcTextureGen.generators.AbstractTextureGenerator#STANDARD_IMAGE_SIZE_MULTIPLIER},
+     * it results in {@value} (the same as earlier versions of Minecraft).
      */
-    private static final float WTFLOAT = 1.0F + (SAMPLE_SELF * 0.01F) + (((SAMPLE_COUNTER_ITERATIONS - SAMPLE_SELF) * 0.01F) / FIRE_MULTI);
+    private static final float WTFLOAT = 1.0F + (SAMPLE_SELF * 0.01F) + (((SAMPLE_COUNTER_ITERATIONS - SAMPLE_SELF) * 0.01F) / STANDARD_IMAGE_SIZE_MULTIPLIER);
 
     /**
      * Used during fire texture generation to compensate for sampling multiple pixels.
      * @todo It's rumored that some versions of pocket edition have this as 25.2?
-     *       If that's true, removing " + (SAMPLE_SELF * 0.01F)" from WTFLOAT might simulate this.
+     *       If that's true, removing " + (SAMPLE_SELF * 0.01F)" from {@link #WTFLOAT} might simulate this.
      */
     private static final float DIV_PIXEL_INTENSITY = SAMPLE_COUNTER_END * WTFLOAT;
 
@@ -100,7 +99,7 @@ public final class FireGenerator extends AbstractTextureGenerator {
                 }
 
                 // Randomize bottom row of pixels
-                fireImageCurrent[fireX + ((FIRE_TEXTURE_HEIGHT - 1) * FIRE_TEXTURE_WIDTH)] = (float)((rand.nextDouble() * rand.nextDouble() * rand.nextDouble() * (3 + FIRE_MULTI)) + (rand.nextDouble() * 0.1F) + 0.2F);
+                fireImageCurrent[fireX + ((FIRE_TEXTURE_HEIGHT - 1) * FIRE_TEXTURE_WIDTH)] = (float)((rand.nextDouble() * rand.nextDouble() * rand.nextDouble() * (3 + STANDARD_IMAGE_SIZE_MULTIPLIER)) + (rand.nextDouble() * 0.1F) + 0.2F);
             }
 
             final float[] fireImageCurrentTemp = fireImageCurrent;

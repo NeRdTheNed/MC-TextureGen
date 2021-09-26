@@ -20,28 +20,28 @@ public final class Classic19aWaterGenerator extends AbstractLiquidGenerator {
      */
     public void generateLiquidTexture(final float[] liquidImagePrevious, final float[] liquidImageCurrent, final float[] liquidIntensity, final float[] liquidIntensityIntensity) {
         // Generate the image pixel values
-        for (int currentWaterX = 0; currentWaterX < LIQUID_IMAGE_SIZE; ++currentWaterX) {
-            for (int currentWaterY = 0; currentWaterY < LIQUID_IMAGE_SIZE; ++currentWaterY) {
+        for (int currentWaterX = 0; currentWaterX < STANDARD_IMAGE_SIZE; ++currentWaterX) {
+            for (int currentWaterY = 0; currentWaterY < STANDARD_IMAGE_SIZE; ++currentWaterY) {
                 float localPixelIntensity = 0.0F;
 
                 // Iterates through (x - 1, y) to (x + 1, y), and accumulates the previous pixel value at each location into localPixelIntensity.
                 // Only iterating over the x values causes the water to generate horizontal "stripes", as the y value does not change.
                 for (int localWaterX = currentWaterX - 1; localWaterX <= (currentWaterX + 1); ++localWaterX) {
-                    // Restrict the adjusted x coordinate to be in range of the maximum valid coordinate (liquidImageSize).
+                    // Restrict the adjusted x coordinate to be in range of the maximum valid coordinate (STANDARD_IMAGE_SIZE).
                     // If the x coordinate is out of range, it wraps to be in range.
-                    localPixelIntensity += liquidImagePrevious[(localWaterX & LIQUID_IMAGE_MASK) + (currentWaterY * LIQUID_IMAGE_SIZE)];
+                    localPixelIntensity += liquidImagePrevious[(localWaterX & STANDARD_IMAGE_SIZE_BITMASK) + (currentWaterY * STANDARD_IMAGE_SIZE)];
                 }
 
-                final int currentWaterOffset = currentWaterX + (currentWaterY * LIQUID_IMAGE_SIZE);
+                final int currentWaterOffset = currentWaterX + (currentWaterY * STANDARD_IMAGE_SIZE);
                 // localPixelIntensity is divided by 3.3F, because it samples from 3 x points.
                 liquidImageCurrent[currentWaterOffset] = (localPixelIntensity / 3.3F) + (liquidIntensity[currentWaterOffset] * 0.8F);
             }
         }
 
         // Update liquidIntensity and liquidIntensityIntensity
-        for (int currentWaterX = 0; currentWaterX < LIQUID_IMAGE_SIZE; ++currentWaterX) {
-            for (int currentWaterY = 0; currentWaterY < LIQUID_IMAGE_SIZE; ++currentWaterY) {
-                final int currentWaterOffset = currentWaterX + (currentWaterY * LIQUID_IMAGE_SIZE);
+        for (int currentWaterX = 0; currentWaterX < STANDARD_IMAGE_SIZE; ++currentWaterX) {
+            for (int currentWaterY = 0; currentWaterY < STANDARD_IMAGE_SIZE; ++currentWaterY) {
+                final int currentWaterOffset = currentWaterX + (currentWaterY * STANDARD_IMAGE_SIZE);
                 liquidIntensity[currentWaterOffset] += liquidIntensityIntensity[currentWaterOffset] * 0.05F;
 
                 if (liquidIntensity[currentWaterOffset] < 0.0F) {

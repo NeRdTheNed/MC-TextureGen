@@ -14,15 +14,6 @@ import mcTextureGen.data.TextureGroup;
  */
 public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
 
-    /** The size of a liquid image in bits. */
-    private static final int LIQUID_IMAGE_BITS = 4;
-
-    /** A bit mask of the amount of bits in a liquid image. */
-    static final int LIQUID_IMAGE_MASK = ~(-1 << LIQUID_IMAGE_BITS);
-
-    /** The size of a liquid image in pixels. */
-    static final int LIQUID_IMAGE_SIZE = LIQUID_IMAGE_MASK + 1;
-
     /** The name of this liquid texture generator. */
     private final String generatorName;
 
@@ -97,10 +88,10 @@ public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
      */
     private final TextureGroup liquidTextures() {
         rand = getRandom();
-        float[] liquidImagePrevious = new float[LIQUID_IMAGE_SIZE * LIQUID_IMAGE_SIZE];
-        float[] liquidImageCurrent = new float[LIQUID_IMAGE_SIZE * LIQUID_IMAGE_SIZE];
-        final float[] liquidIntensity = new float[LIQUID_IMAGE_SIZE * LIQUID_IMAGE_SIZE];
-        final float[] liquidIntensityIntensity = new float[LIQUID_IMAGE_SIZE * LIQUID_IMAGE_SIZE];
+        float[] liquidImagePrevious = new float[STANDARD_IMAGE_SIZE * STANDARD_IMAGE_SIZE];
+        float[] liquidImageCurrent = new float[STANDARD_IMAGE_SIZE * STANDARD_IMAGE_SIZE];
+        final float[] liquidIntensity = new float[STANDARD_IMAGE_SIZE * STANDARD_IMAGE_SIZE];
+        final float[] liquidIntensityIntensity = new float[STANDARD_IMAGE_SIZE * STANDARD_IMAGE_SIZE];
         final BufferedImage[] liquidImages = new BufferedImage[nonDeterministicFrames];
 
         for (int currentFrame = 0; currentFrame < nonDeterministicFrames; currentFrame++) {
@@ -108,10 +99,10 @@ public abstract class AbstractLiquidGenerator extends AbstractTextureGenerator {
             final float[] liquidImageCurrentTemp = liquidImageCurrent;
             liquidImageCurrent = liquidImagePrevious;
             liquidImagePrevious = liquidImageCurrentTemp;
-            final BufferedImage currentLiquidImage = new BufferedImage(LIQUID_IMAGE_SIZE, LIQUID_IMAGE_SIZE, BufferedImage.TYPE_4BYTE_ABGR);
+            final BufferedImage currentLiquidImage = new BufferedImage(STANDARD_IMAGE_SIZE, STANDARD_IMAGE_SIZE, BufferedImage.TYPE_4BYTE_ABGR);
             final byte[] imageByteData = ((DataBufferByte) currentLiquidImage.getRaster().getDataBuffer()).getData();
 
-            for (int currentPixel = 0; currentPixel < (LIQUID_IMAGE_SIZE * LIQUID_IMAGE_SIZE); ++currentPixel) {
+            for (int currentPixel = 0; currentPixel < (STANDARD_IMAGE_SIZE * STANDARD_IMAGE_SIZE); ++currentPixel) {
                 final float currentPixelIntensity = clampCurrentPixelIntensity(liquidImagePrevious[currentPixel]);
                 final int imageOffset = currentPixel * 4;
                 setABGR(imageByteData, currentPixelIntensity, imageOffset);

@@ -1,6 +1,7 @@
 package mcTextureGen.generators;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
@@ -20,11 +21,11 @@ import mcTextureGen.data.TextureGroup;
  */
 public final class MissingTextureGenerator extends AbstractTextureGenerator {
 
-    /** The size of the generated "checkerboard" textures. */
-    private static final int CHECKERBOARD_TEXTURE_SIZE = 16;
-
     /** The size of the generated text based textures. */
-    private static final int TEXT_TEXTURE_SZIE = 64;
+    private static final int TEXT_TEXTURE_SZIE = STANDARD_IMAGE_SIZE * 4;
+
+    /** The starting y-position for text-based textures. */
+    private static final int TEXT_STARTING_YPOS = 10 * STANDARD_IMAGE_SIZE_MULTIPLIER;
 
     /**
      * Generates a "checkerboard" texture with the provided colors.
@@ -35,12 +36,12 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
      * @return the generated "checkerboard" texture
      */
     private static TextureGroup missingTextureCheckerboard(String name, int colorOne, int colorTwo) {
-        final BufferedImage missingTexture = new BufferedImage(CHECKERBOARD_TEXTURE_SIZE, CHECKERBOARD_TEXTURE_SIZE, BufferedImage.TYPE_INT_RGB);
+        final BufferedImage missingTexture = new BufferedImage(STANDARD_IMAGE_SIZE, STANDARD_IMAGE_SIZE, BufferedImage.TYPE_INT_RGB);
         final int[] textureData = ((DataBufferInt) missingTexture.getRaster().getDataBuffer()).getData();
 
-        for (int xPixel = 0; xPixel < CHECKERBOARD_TEXTURE_SIZE; ++xPixel) {
-            for (int yPixel = 0; yPixel < CHECKERBOARD_TEXTURE_SIZE; ++yPixel) {
-                textureData[xPixel + (yPixel * CHECKERBOARD_TEXTURE_SIZE)] = (xPixel < (CHECKERBOARD_TEXTURE_SIZE / 2)) ^ (yPixel < (CHECKERBOARD_TEXTURE_SIZE / 2)) ? colorOne : colorTwo;
+        for (int xPixel = 0; xPixel < STANDARD_IMAGE_SIZE; ++xPixel) {
+            for (int yPixel = 0; yPixel < STANDARD_IMAGE_SIZE; ++yPixel) {
+                textureData[xPixel + (yPixel * STANDARD_IMAGE_SIZE)] = (xPixel < (STANDARD_IMAGE_SIZE / 2)) ^ (yPixel < (STANDARD_IMAGE_SIZE / 2)) ? colorOne : colorTwo;
             }
         }
 
@@ -78,14 +79,21 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
             if ((lines != null) && (lines.length > 0)) {
                 // Set color to black for text rendering
                 graphics.setColor(Color.BLACK);
-                int fontSize = graphics.getFont().getSize();
+                final int checkFontSize;
 
-                // Prevent infinite loops
-                if (fontSize < 1) {
-                    fontSize = 1;
+                // Scale font size with image size multiplier
+                if (STANDARD_IMAGE_SIZE_MULTIPLIER != 1) {
+                    final Font initualFont = graphics.getFont();
+                    final Font newFont = initualFont.deriveFont(initualFont.getSize2D() * STANDARD_IMAGE_SIZE_MULTIPLIER);
+                    graphics.setFont(newFont);
+                    checkFontSize = newFont.getSize();
+                } else {
+                    checkFontSize = graphics.getFont().getSize();
                 }
 
-                int yPos = 10;
+                // Prevent infinite loops
+                final int fontSize = checkFontSize < 1 ? 1 : checkFontSize;
+                int yPos = TEXT_STARTING_YPOS;
                 int stringsDrawn = 0;
 
                 while (yPos < TEXT_TEXTURE_SZIE) {
@@ -99,7 +107,7 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
                             break;
                         }
 
-                        yPos += 5;
+                        yPos += TEXT_STARTING_YPOS / 2;
                     }
                 }
             }
