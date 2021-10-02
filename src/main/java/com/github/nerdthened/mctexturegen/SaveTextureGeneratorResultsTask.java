@@ -1,4 +1,4 @@
-package mcTextureGen;
+package com.github.nerdthened.mctexturegen;
 
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-import mcTextureGen.data.TextureGroup;
-import mcTextureGen.generators.AbstractTextureGenerator;
+import com.github.nerdthened.mctexturegen.data.TextureGroup;
+import com.github.nerdthened.mctexturegen.generators.AbstractTextureGenerator;
 
 /**
  * This class is used to generate and save the textures for a texture generator.

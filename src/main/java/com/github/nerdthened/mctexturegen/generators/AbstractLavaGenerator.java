@@ -1,4 +1,4 @@
-package mcTextureGen.generators;
+package com.github.nerdthened.mctexturegen.generators;
 
 /**
  * Although this class is called AbstractLavaGenerator, it's pretty much just a lava texture generator,

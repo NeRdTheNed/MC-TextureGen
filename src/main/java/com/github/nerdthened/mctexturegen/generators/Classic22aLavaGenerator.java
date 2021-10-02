@@ -1,4 +1,4 @@
-package mcTextureGen.generators;
+package com.github.nerdthened.mctexturegen.generators;
 
 /**
  * This class generates lava textures from Minecraft Classic 0.0.22a to snapshot 13w01b.

@@ -1,4 +1,4 @@
-package mcTextureGen.generators;
+package com.github.nerdthened.mctexturegen.generators;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -8,7 +8,7 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
-import mcTextureGen.data.TextureGroup;
+import com.github.nerdthened.mctexturegen.data.TextureGroup;
 
 /**
  * This class generates all known variations of the "missing texture" texture. This includes:

@@ -1,8 +1,8 @@
-package mcTextureGen.generators;
+package com.github.nerdthened.mctexturegen.generators;
 
 import java.util.Random;
 
-import mcTextureGen.data.TextureGroup;
+import com.github.nerdthened.mctexturegen.data.TextureGroup;
 
 /**
  * The base texture generator class. All texture generators extend from this.

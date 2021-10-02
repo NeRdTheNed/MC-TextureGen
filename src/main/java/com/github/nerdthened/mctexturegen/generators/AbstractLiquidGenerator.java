@@ -1,10 +1,10 @@
-package mcTextureGen.generators;
+package com.github.nerdthened.mctexturegen.generators;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.Random;
 
-import mcTextureGen.data.TextureGroup;
+import com.github.nerdthened.mctexturegen.data.TextureGroup;
 
 /**
  * This class is used as the base of texture generators which generate liquid textures (i.e lava and water).

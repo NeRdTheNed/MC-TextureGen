@@ -1,10 +1,10 @@
-package mcTextureGen.generators;
+package com.github.nerdthened.mctexturegen.generators;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.Random;
 
-import mcTextureGen.data.TextureGroup;
+import com.github.nerdthened.mctexturegen.data.TextureGroup;
 
 /**
  * This class generates fire textures.
@@ -53,7 +53,7 @@ public final class FireGenerator extends AbstractTextureGenerator {
      * Earlier versions of Minecraft define this as ≈ 1.06F. Later versions defined it as ≈ 1.0600001F.
      * This is the current method I've settled on to determine the scaled value of WTFLOAT.
      * If {@link AbstractTextureGenerator#STANDARD_IMAGE_SIZE_MULTIPLIER} is
-     * {@value mcTextureGen.generators.AbstractTextureGenerator#STANDARD_IMAGE_SIZE_MULTIPLIER},
+     * {@value com.github.nerdthened.mctexturegen.generators.AbstractTextureGenerator#STANDARD_IMAGE_SIZE_MULTIPLIER},
      * it results in {@value} (the same as earlier versions of Minecraft).
      */
     private static final float WTFLOAT = 1.0F + (SAMPLE_SELF * 0.01F) + (((SAMPLE_COUNTER_ITERATIONS - SAMPLE_SELF) * 0.01F) / STANDARD_IMAGE_SIZE_MULTIPLIER);

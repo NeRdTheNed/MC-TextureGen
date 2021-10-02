@@ -1,9 +1,9 @@
-package mcTextureGen.generators;
+package com.github.nerdthened.mctexturegen.generators;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 
-import mcTextureGen.data.TextureGroup;
+import com.github.nerdthened.mctexturegen.data.TextureGroup;
 
 /**
  * This class generates the only textures used by Minecraft 4k-1 (the "XOR fractal" textures).

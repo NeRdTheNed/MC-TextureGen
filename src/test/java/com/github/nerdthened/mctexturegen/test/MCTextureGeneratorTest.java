@@ -1,4 +1,4 @@
-package mcTextureGen.test;
+package com.github.nerdthened.mctexturegen.test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,9 +11,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import mcTextureGen.MCTextureGenerator;
-import mcTextureGen.data.TextureGroup;
-import mcTextureGen.generators.AbstractTextureGenerator;
+import com.github.nerdthened.mctexturegen.MCTextureGenerator;
+import com.github.nerdthened.mctexturegen.data.TextureGroup;
+import com.github.nerdthened.mctexturegen.generators.AbstractTextureGenerator;
 
 /**
  * Unit tests for texture generators.

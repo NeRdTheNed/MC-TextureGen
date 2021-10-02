@@ -1,18 +1,19 @@
-package mcTextureGen;
+package com.github.nerdthened.mctexturegen;
+
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import mcTextureGen.generators.AbstractTextureGenerator;
-import mcTextureGen.generators.Classic19aLavaGenerator;
-import mcTextureGen.generators.Classic19aWaterGenerator;
-import mcTextureGen.generators.Classic22aLavaGenerator;
-import mcTextureGen.generators.FireGenerator;
-import mcTextureGen.generators.GearRotationFramesGenerator;
-import mcTextureGen.generators.MC4k1Generator;
-import mcTextureGen.generators.MC4k2Generator;
-import mcTextureGen.generators.MissingTextureGenerator;
-import mcTextureGen.generators.NetherPortalGenerator;
+import com.github.nerdthened.mctexturegen.generators.AbstractTextureGenerator;
+import com.github.nerdthened.mctexturegen.generators.Classic19aLavaGenerator;
+import com.github.nerdthened.mctexturegen.generators.Classic19aWaterGenerator;
+import com.github.nerdthened.mctexturegen.generators.Classic22aLavaGenerator;
+import com.github.nerdthened.mctexturegen.generators.FireGenerator;
+import com.github.nerdthened.mctexturegen.generators.GearRotationFramesGenerator;
+import com.github.nerdthened.mctexturegen.generators.MC4k1Generator;
+import com.github.nerdthened.mctexturegen.generators.MC4k2Generator;
+import com.github.nerdthened.mctexturegen.generators.MissingTextureGenerator;
+import com.github.nerdthened.mctexturegen.generators.NetherPortalGenerator;
 
 /**
  * The main program class. Responsible for generating and saving the textures for each implemented generator.

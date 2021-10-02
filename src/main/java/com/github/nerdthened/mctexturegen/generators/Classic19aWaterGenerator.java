@@ -1,4 +1,4 @@
-package mcTextureGen.generators;
+package com.github.nerdthened.mctexturegen.generators;
 
 /**
  * This class generates water textures from Minecraft Classic 0.0.19a to snapshot 13w01b.

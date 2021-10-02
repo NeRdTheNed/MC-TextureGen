@@ -1,4 +1,4 @@
-package mcTextureGen.data;
+package com.github.nerdthened.mctexturegen.data;
 
 import java.awt.image.RenderedImage;
 

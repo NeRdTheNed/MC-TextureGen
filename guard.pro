@@ -20,18 +20,18 @@
 
 # Preserve main entrypoint, but remove class name.
 
--keepclasseswithmembers,allowoptimization,allowobfuscation public class mcTextureGen.MCTextureGenerator {
+-keepclasseswithmembers,allowoptimization,allowobfuscation public class com.github.nerdthened.mctexturegen.MCTextureGenerator {
     public static void main(java.lang.String[]);
 }
 
--keepclassmembers public class mcTextureGen.MCTextureGenerator {
+-keepclassmembers public class com.github.nerdthened.mctexturegen.MCTextureGenerator {
     public static void main(java.lang.String[]);
     #public static boolean hasDebugInfo;
 }
 
 # Strip debug code
 
--assumevalues public class mcTextureGen.MCTextureGenerator {
+-assumevalues public class com.github.nerdthened.mctexturegen.MCTextureGenerator {
     boolean hasDebugInfo = false;
 }
 
@@ -82,7 +82,7 @@
 # Debug ProGuard
 
 -printusage
--whyareyoukeeping class mcTextureGen.**
+-whyareyoukeeping class com.github.nerdthened.mctexturegen.**
 
 # Bonus optimisations
 

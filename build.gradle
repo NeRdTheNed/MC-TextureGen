@@ -144,7 +144,7 @@ artifacts {
 jar {
     manifest {
         attributes (
-            'Main-Class': 'mcTextureGen.MCTextureGenerator'
+            'Main-Class': 'com.github.nerdthened.mctexturegen.MCTextureGenerator'
         )
     }
     classifier = "debug"
