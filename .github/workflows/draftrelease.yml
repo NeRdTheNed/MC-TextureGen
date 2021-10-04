@@ -31,6 +31,7 @@ jobs:
       env:
         GITHUB_ACTIONS_JDK_6: ${{ steps.setup_jdk_6.outputs.path }}
         GITHUB_ACTIONS_JDK_16: ${{ steps.setup_jdk_16.outputs.path }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BUILD_RELEASE: ${{ github.event.release.prerelease == false }}
       uses: gradle/gradle-build-action@v1
       with:
