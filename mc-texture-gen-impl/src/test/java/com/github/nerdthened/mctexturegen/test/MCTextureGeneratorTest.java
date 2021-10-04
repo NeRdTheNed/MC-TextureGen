@@ -11,9 +11,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import com.github.nerdthened.mctexturegen.MCTextureGenerator;
 import com.github.nerdthened.mctexturegen.data.TextureGroup;
 import com.github.nerdthened.mctexturegen.generators.AbstractTextureGenerator;
+import com.github.nerdthened.mctexturegen.generators.TextureGenerators;
 
 /**
  * Unit tests for texture generators.
@@ -66,7 +66,7 @@ final class MCTextureGeneratorTest {
      * @return a Stream of all texture generators
      */
     private static Stream<AbstractTextureGenerator> textureGeneratorProvider() {
-        return Stream.of(MCTextureGenerator.getTextureGenerators());
+        return Stream.of(TextureGenerators.getTextureGenerators());
     }
 
     /**
@@ -76,7 +76,7 @@ final class MCTextureGeneratorTest {
      * @return a Stream of all texture groups from all texture generators
      */
     private static Stream<TextureGroup> textureGroupProvider() {
-        return Stream.of(MCTextureGenerator.getTextureGenerators()).map(AbstractTextureGenerator::getTextureGroups).flatMap(Stream::of);
+        return Stream.of(TextureGenerators.getTextureGenerators()).map(AbstractTextureGenerator::getTextureGroups).flatMap(Stream::of);
     }
 
     /**

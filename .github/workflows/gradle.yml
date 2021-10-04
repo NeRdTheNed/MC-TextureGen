@@ -40,11 +40,11 @@ jobs:
         distributions-cache-enabled: true
         dependencies-cache-enabled: true
         configuration-cache-enabled: true
-        arguments: build
+        arguments: build publish
     - name: Run strip-nondeterminism on built .jar files
-      run: strip-nondeterminism build/libs/*.jar
+      run: strip-nondeterminism mc-texture-gen-app/build/libs/*.jar
     - name: Run advzip on built .jar files
-      run: advzip --shrink-insane --iter 999 -k -p -z build/libs/*.jar
+      run: advzip --shrink-insane --iter 999 -k -p -z mc-texture-gen-app/build/libs/*.jar
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

@@ -1,0 +1,17 @@
+plugins {
+    // Support convention plugins written in Groovy.
+    id 'groovy-gradle-plugin'
+}
+
+repositories {
+    gradlePluginPortal()
+    mavenCentral()
+    google()
+}
+
+dependencies {
+    // Shadow is used to package API classes with applications
+    implementation "gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0"
+    // ProGuard is used to minify and optimise applications
+    implementation "com.guardsquare:proguard-gradle:7.1.1"
+}

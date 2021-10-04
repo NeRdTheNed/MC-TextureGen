@@ -1,0 +1,93 @@
+plugins {
+    id 'com.github.nerdthened.mctexturegen.java-common-conventions'
+    id 'com.github.johnrengelman.shadow'
+    id 'maven-publish'
+}
+
+group = projectGroup
+version = projectVersion
+
+// Add snapshot suffix to version if not building a release.
+// To build a release, set the environment variable BUILD_RELEASE to true.
+if (!System.getenv("BUILD_RELEASE")?.equals("true")) {
+    version += "-SNAPSHOT"
+}
+
+// Don't create the standard jar as we're using Shadow
+jar {
+    enabled = false
+}
+
+// Indicate that the shadow jar has not been optimised with ProGuard
+shadowJar {
+    archiveClassifier.set('debug')
+}
+
+def shadowOutputFile = shadowJar.outputs.files.singleFile
+
+// Defines a Java 6 compatible JDK
+// Note to self: probably support building with not outdated versions of Java in the future.
+def compiler = javaToolchains.compilerFor {
+    languageVersion = JavaLanguageVersion.of(javaMainToolchain)
+}
+
+task ('proguard', type: proguard.gradle.ProGuardTask) {
+    dependsOn "shadowJar"
+    // Workaround for ProGuard seemingly not recognising that when the output .jar file doesn't exist
+    outputs.upToDateWhen { false }
+
+    verbose
+
+    injars shadowOutputFile
+    outjars shadowOutputFile.absolutePath.replace("-debug", "")
+
+    // Get the location of rt.jar from the provided toolchain.
+    // Note to self: probably support building with not outdated versions of Java in the future.
+    libraryjars compiler.get().metadata.installationPath.asFile.absolutePath + "/lib/rt.jar"
+    // rt.jar is sometimes only in a JRE folder
+    libraryjars compiler.get().metadata.installationPath.asFile.absolutePath + "/jre/lib/rt.jar"
+    // Dumb MacOS stuff, Apple's Legacy JDK 6 "rt.jar" equivalent is not in any standard place
+    libraryjars compiler.get().metadata.installationPath.asFile.absolutePath + "/../Classes/classes.jar"
+
+    // The rest of the configs are in this file
+    configuration 'guard.pro'
+}
+
+def obfsJar = artifacts.add('archives', file(proguard.outputs.files.singleFile)) {
+    type('jar')
+    builtBy(proguard)
+}
+
+artifacts {
+    archives obfsJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact(shadowJar) {
+                builtBy build
+            }
+            artifact(sourcesJar) {
+                builtBy sourcesJar
+            }
+            artifact obfsJar
+            artifact(javadocJar) {
+                builtBy javadocJar
+            }
+        }
+    }
+    // Only publish to Github Packages if running on GitHub actions
+    if (System.getenv("GITHUB_ACTIONS")?.equals("true")) {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = "https://maven.pkg.github.com/" + System.getenv("GITHUB_REPOSITORY")
+                credentials {
+                    username = System.getenv("GITHUB_ACTOR")
+                    password = System.getenv("GITHUB_TOKEN")
+                }
+            }
+        }
+    }
+}

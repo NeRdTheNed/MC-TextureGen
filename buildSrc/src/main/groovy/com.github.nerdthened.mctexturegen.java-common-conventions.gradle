@@ -1,0 +1,101 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+// All unit tests use JUnit Jupiter
+dependencies {
+    testImplementation group: 'org.junit.jupiter',
+    name: 'junit-jupiter', version: '5.7.2'
+}
+
+// Defines a Java 6 compatible JDK
+// Note to self: probably support building with not outdated versions of Java in the future.
+def compiler = javaToolchains.compilerFor {
+    languageVersion = JavaLanguageVersion.of(javaMainToolchain)
+}
+
+// Use the provisioned Java 6 compatible JDK as the main toolchain
+// Note to self: probably support building with not outdated versions of Java in the future.
+java {
+    toolchain {
+        compiler
+    }
+}
+
+javadoc {
+    // Currently never compiled due to MC-TextureGen targeting Java 1.4 TODO Find a better solution
+    excludes = ['**/module-info.java']
+    // Specify Java version this project uses
+    options.addStringOption('source', javaMainTarget)
+    // Generate Javadoc for all classes and members.
+    options.memberLevel = JavadocMemberLevel.PRIVATE
+    // Add custom "todo" tag
+    options.tags = ["todo:a:To Do:"]
+    // Ensures that the encoding of javadoc source files is set to UTF-8
+    options.encoding = "UTF-8"
+}
+
+tasks.withType(JavaCompile) {
+    // Ensures that the encoding of source files is set to UTF-8, see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
+    options.encoding = "UTF-8"
+}
+
+// Use Java 6 Javadoc tool for Javadoc generation.
+// There's not really a good reason for this, I just like the very retro look it has.
+tasks.withType(Javadoc).configureEach {
+    javadocTool = javaToolchains.javadocToolFor {
+        languageVersion = JavaLanguageVersion.of(javaMainToolchain)
+    }
+}
+
+compileJava {
+    // Use the provisioned Java 6 compatible JDK to compile the program
+    // Note to self: probably support building with not outdated versions of Java in the future.
+    javaCompiler = compiler
+    sourceCompatibility = javaMainTarget
+    targetCompatibility = javaMainTarget
+    // Currently never compiled due to MC-TextureGen targeting Java 1.4 TODO Find a better solution
+    excludes = ['**/module-info.java']
+}
+
+compileTestJava {
+    // Use a Java 16 compatible JDK to compile the tests for the program,
+    // as JUnit does not support outdated versions of Java
+    javaCompiler = javaToolchains.compilerFor {
+        languageVersion = JavaLanguageVersion.of(javaTestToolchain)
+    }
+}
+
+test {
+    // Use a Java 16 compatible JDK / JRE to run the tests for the program,
+    // as JUnit does not support outdated versions of Java
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(javaTestToolchain)
+    }
+    useJUnitPlatform()
+}
+
+// Reproducible builds
+tasks.withType(AbstractArchiveTask) {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+task sourcesJar(type: Jar) {
+    classifier = "sources"
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier = 'javadoc'
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}

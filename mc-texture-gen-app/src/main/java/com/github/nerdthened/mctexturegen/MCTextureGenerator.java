@@ -5,15 +5,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import com.github.nerdthened.mctexturegen.generators.AbstractTextureGenerator;
-import com.github.nerdthened.mctexturegen.generators.Classic19aLavaGenerator;
-import com.github.nerdthened.mctexturegen.generators.Classic19aWaterGenerator;
-import com.github.nerdthened.mctexturegen.generators.Classic22aLavaGenerator;
-import com.github.nerdthened.mctexturegen.generators.FireGenerator;
-import com.github.nerdthened.mctexturegen.generators.GearRotationFramesGenerator;
-import com.github.nerdthened.mctexturegen.generators.MC4k1Generator;
-import com.github.nerdthened.mctexturegen.generators.MC4k2Generator;
-import com.github.nerdthened.mctexturegen.generators.MissingTextureGenerator;
-import com.github.nerdthened.mctexturegen.generators.NetherPortalGenerator;
+import com.github.nerdthened.mctexturegen.generators.TextureGenerators;
 
 /**
  * The main program class. Responsible for generating and saving the textures for each implemented generator.
@@ -21,25 +13,6 @@ import com.github.nerdthened.mctexturegen.generators.NetherPortalGenerator;
 public final class MCTextureGenerator {
 
     //private static boolean hasDebugInfo = true;
-
-    /**
-     * Creates an array of all implemented texture generators.
-     *
-     * @return an array of all implemented texture generators
-     */
-    public static AbstractTextureGenerator[] getTextureGenerators() {
-        return new AbstractTextureGenerator[] {
-                   new MissingTextureGenerator(),
-                   new MC4k1Generator(),
-                   new MC4k2Generator(),
-                   new GearRotationFramesGenerator(),
-                   new NetherPortalGenerator(),
-                   new Classic19aWaterGenerator(),
-                   new Classic19aLavaGenerator(),
-                   new Classic22aLavaGenerator(),
-                   new FireGenerator()
-               };
-    }
 
     /**
      * The main method. Responsible for generating and saving the textures for each implemented generator.
@@ -93,7 +66,7 @@ public final class MCTextureGenerator {
         }
 
         final String baseTextureOutputPath = System.getProperty("user.dir") + System.getProperty("file.separator") + "GeneratedTextures";
-        final AbstractTextureGenerator[] textureGenerators = getTextureGenerators();
+        final AbstractTextureGenerator[] textureGenerators = TextureGenerators.getTextureGenerators();
         final int textureGeneratorAmount = textureGenerators.length;
         final Thread[] generatorThreads = isMultiThreaded ? new Thread[textureGeneratorAmount] : null;
 

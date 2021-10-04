@@ -31,17 +31,18 @@ jobs:
       env:
         GITHUB_ACTIONS_JDK_6: ${{ steps.setup_jdk_6.outputs.path }}
         GITHUB_ACTIONS_JDK_16: ${{ steps.setup_jdk_16.outputs.path }}
+        BUILD_RELEASE: ${{ github.event.release.prerelease == false }}
       uses: gradle/gradle-build-action@v1
       with:
         gradle-version: wrapper
         distributions-cache-enabled: false
         dependencies-cache-enabled: false
         configuration-cache-enabled: false
-        arguments: build
+        arguments: build publish
     - name: Run strip-nondeterminism on built .jar files
-      run: strip-nondeterminism build/libs/*.jar
+      run: strip-nondeterminism mc-texture-gen-app/build/libs/*.jar
     - name: Run advzip on built .jar files
-      run: advzip --shrink-insane --iter 99999 -k -p -z build/libs/*.jar
+      run: advzip --shrink-insane --iter 99999 -k -p -z mc-texture-gen-app/build/libs/*.jar
     - name: Draft release
       id: create_release
       uses: actions/create-release@v1
@@ -57,4 +58,4 @@ jobs:
       uses: shogo82148/actions-upload-release-asset@v1
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: build/libs/*.jar
+        asset_path: mc-texture-gen-app/build/libs/*.jar
