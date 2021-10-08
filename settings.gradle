@@ -1,2 +1,2 @@
 rootProject.name = 'mc-texture-gen-base'
-include('mc-texture-gen-api', 'mc-texture-gen-app', 'mc-texture-gen-impl')
+include('mc-texture-gen-app', 'mc-texture-gen-impl')

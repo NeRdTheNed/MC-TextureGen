@@ -12,7 +12,7 @@ hs_err_pid*
 
 # legacy eclipse ignores of dubious use
 /target/
-/bin/
+bin
 .classpath
 .project
 .metadata/

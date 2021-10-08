@@ -1,7 +1,3 @@
 plugins {
     id 'com.github.nerdthened.mctexturegen.java-library-conventions'
 }
-
-dependencies {
-    api project(':mc-texture-gen-api')
-}
