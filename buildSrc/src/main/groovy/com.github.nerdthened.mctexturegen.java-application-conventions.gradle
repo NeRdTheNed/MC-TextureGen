@@ -77,8 +77,9 @@ publishing {
             }
         }
     }
-    // Only publish to Github Packages if running on GitHub actions
-    if (System.getenv("GITHUB_ACTIONS")?.equals("true")) {
+    // Only publish to Github Packages if running on GitHub Actions.
+    // Snapshot publishing temporarily disabled due to GitHub Packages not overwriting the previous upload.
+    if (System.getenv("GITHUB_ACTIONS")?.equals("true") && System.getenv("BUILD_RELEASE")?.equals("true")) {
         repositories {
             maven {
                 name = "GitHubPackages"
