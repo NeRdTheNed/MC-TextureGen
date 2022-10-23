@@ -9,7 +9,7 @@ repositories {
 // All unit tests use JUnit Jupiter
 dependencies {
     testImplementation group: 'org.junit.jupiter',
-    name: 'junit-jupiter', version: '5.7.2'
+    name: 'junit-jupiter', version: '5.9.1'
 }
 
 // Defines a Java 6 compatible JDK
@@ -63,7 +63,7 @@ compileJava {
 }
 
 compileTestJava {
-    // Use a Java 16 compatible JDK to compile the tests for the program,
+    // Use a Java 17 compatible JDK to compile the tests for the program,
     // as JUnit does not support outdated versions of Java
     javaCompiler = javaToolchains.compilerFor {
         languageVersion = JavaLanguageVersion.of(javaTestToolchain)
@@ -71,7 +71,7 @@ compileTestJava {
 }
 
 test {
-    // Use a Java 16 compatible JDK / JRE to run the tests for the program,
+    // Use a Java 17 compatible JDK / JRE to run the tests for the program,
     // as JUnit does not support outdated versions of Java
     javaLauncher = javaToolchains.launcherFor {
         languageVersion = JavaLanguageVersion.of(javaTestToolchain)
