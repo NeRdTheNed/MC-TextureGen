@@ -13,5 +13,5 @@ dependencies {
     // Shadow is used to package API classes with applications
     implementation "gradle.plugin.com.github.johnrengelman:shadow:7.1.2"
     // ProGuard is used to minify and optimise applications
-    implementation "com.guardsquare:proguard-gradle:7.2.2"
+    implementation "com.guardsquare:proguard-gradle:7.3.0"
 }

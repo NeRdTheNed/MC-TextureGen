@@ -15,39 +15,32 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
-    - name: Set up JDK 6
-      id: setup_jdk_6
-      uses: actions/setup-java@v1
+      uses: actions/checkout@v3
+    - name: Set up JDK 6 & 17
+      uses: actions/setup-java@v3
       with:
-        java-version: 6
-    - name: Set up JDK 17
-      id: setup_jdk_17
-      uses: actions/setup-java@v1
-      with:
-        java-version: 17
+        distribution: 'zulu'
+        java-version: |
+          6
+          17
     - name: Install advancecomp
       run: sudo apt-get install advancecomp
     - name: Install strip-nondeterminism
       run: sudo apt-get install strip-nondeterminism
     - name: Build with Gradle
       env:
-        GITHUB_ACTIONS_JDK_6: ${{ steps.setup_jdk_6.outputs.path }}
-        GITHUB_ACTIONS_JDK_17: ${{ steps.setup_jdk_17.outputs.path }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      uses: gradle/gradle-build-action@v1
+      uses: gradle/gradle-build-action@v2
       with:
         gradle-version: wrapper
-        distributions-cache-enabled: true
-        dependencies-cache-enabled: true
-        configuration-cache-enabled: true
-        arguments: build publish
+        cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+        arguments: build publish --scan --stacktrace --warning-mode all
     - name: Run strip-nondeterminism on built .jar files
       run: strip-nondeterminism mc-texture-gen-app/build/libs/*.jar
     - name: Run advzip on built .jar files
       run: advzip --shrink-insane --iter 999 -k -p -z mc-texture-gen-app/build/libs/*.jar
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: Package
         path: mc-texture-gen-app/build/libs
