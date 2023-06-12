@@ -27,6 +27,8 @@ jobs:
       run: sudo apt-get install advancecomp
     - name: Install strip-nondeterminism
       run: sudo apt-get install strip-nondeterminism
+    - name: Validate Gradle wrapper
+      uses: gradle/wrapper-validation-action@v1
     - name: Build with Gradle
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
