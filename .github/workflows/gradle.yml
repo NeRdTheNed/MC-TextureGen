@@ -41,6 +41,16 @@ jobs:
       run: strip-nondeterminism mc-texture-gen-app/build/libs/*.jar
     - name: Run advzip on built .jar files
       run: advzip --shrink-insane --iter 999 -k -p -z mc-texture-gen-app/build/libs/*.jar
+    - name: Run ECT on built .jar files
+      run: for file in ./build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 --disable-png --disable-jpg -strip -zip $file; done
+    - name: Run ECT (-9) on built .jar files
+      run: for file in ./build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -9 --disable-png --disable-jpg -strip -zip $file; done
+    - name: Run ECT (-99) on built .jar files
+      run: for file in ./build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -99 --disable-png --disable-jpg -strip -zip $file; done
+    - name: Run ECT (-30060) on built .jar files
+      run: for file in ./build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -30060 --disable-png --disable-jpg -strip -zip $file; done
+    - name: Run ECT (-90032) on built .jar files
+      run: for file in ./build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -90032 --disable-png --disable-jpg -strip -zip $file; done
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
