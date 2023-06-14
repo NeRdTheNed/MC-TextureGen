@@ -40,19 +40,19 @@ jobs:
     - name: Run advzip on built .jar files
       run: advzip --shrink-insane --iter 99999 -k -p -z mc-texture-gen-app/build/libs/*.jar
     - name: Run ECT on built .jar files
-      run: for file in ./build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 --disable-png --disable-jpg -strip -zip $file; done
+      run: for file in ./mc-texture-gen-app/build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 --disable-png --disable-jpg -strip -zip $file; done
     - name: Run ECT (-9) on built .jar files
-      run: for file in ./build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -9 --disable-png --disable-jpg -strip -zip $file; done
+      run: for file in ./mc-texture-gen-app/build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -9 --disable-png --disable-jpg -strip -zip $file; done
     - name: Run ECT (-99) on built .jar files
-      run: for file in ./build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -99 --disable-png --disable-jpg -strip -zip $file; done
+      run: for file in ./mc-texture-gen-app/build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -99 --disable-png --disable-jpg -strip -zip $file; done
     - name: Run ECT (-999) on built .jar files
-      run: for file in ./build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -999 --disable-png --disable-jpg -strip -zip $file; done
+      run: for file in ./mc-texture-gen-app/build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -999 --disable-png --disable-jpg -strip -zip $file; done
     - name: Run ECT (-30060) on built .jar files
-      run: for file in ./build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -30060 --disable-png --disable-jpg -strip -zip $file; done
+      run: for file in ./mc-texture-gen-app/build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -30060 --disable-png --disable-jpg -strip -zip $file; done
     - name: Run ECT (-90032) on built .jar files
-      run: for file in ./build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -90032 --disable-png --disable-jpg -strip -zip $file; done
+      run: for file in ./mc-texture-gen-app/build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -90032 --disable-png --disable-jpg -strip -zip $file; done
     - name: Run ECT (-9999) on built .jar files
-      run: for file in ./build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -9999 --disable-png --disable-jpg -strip -zip $file; done
+      run: for file in ./mc-texture-gen-app/build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -9999 --disable-png --disable-jpg -strip -zip $file; done
     - name: Draft release
       uses: softprops/action-gh-release@v1
       with:
