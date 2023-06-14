@@ -9,7 +9,7 @@ repositories {
 // All unit tests use JUnit Jupiter
 dependencies {
     testImplementation group: 'org.junit.jupiter',
-    name: 'junit-jupiter', version: '5.9.2'
+    name: 'junit-jupiter', version: '5.9.3'
 }
 
 // Defines a Java 6 compatible JDK
@@ -86,13 +86,13 @@ tasks.withType(AbstractArchiveTask) {
 }
 
 task sourcesJar(type: Jar) {
-    classifier = "sources"
+    archiveClassifier = "sources"
     from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar) {
     from javadoc
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
 }
 
 artifacts {
