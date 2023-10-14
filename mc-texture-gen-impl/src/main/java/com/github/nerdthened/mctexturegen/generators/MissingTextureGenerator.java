@@ -22,7 +22,7 @@ import com.github.nerdthened.mctexturegen.data.TextureGroup;
 public final class MissingTextureGenerator extends AbstractTextureGenerator {
 
     /** The size of the generated text based textures. */
-    private static final int TEXT_TEXTURE_SZIE = STANDARD_IMAGE_SIZE * 4;
+    private static final int TEXT_TEXTURE_SIZE = STANDARD_IMAGE_SIZE * 4;
 
     /** The starting y-position for text-based textures. */
     private static final int TEXT_STARTING_YPOS = 10 * STANDARD_IMAGE_SIZE_MULTIPLIER;
@@ -62,7 +62,7 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
         final BufferedImage[] missingTextureAsArray;
 
         if (shouldGeneratePlatformDependentTextures) {
-            final BufferedImage missingTexture = new BufferedImage(TEXT_TEXTURE_SZIE, TEXT_TEXTURE_SZIE, BufferedImage.TYPE_INT_ARGB);
+            final BufferedImage missingTexture = new BufferedImage(TEXT_TEXTURE_SIZE, TEXT_TEXTURE_SIZE, BufferedImage.TYPE_INT_ARGB);
             final Graphics2D graphics = missingTexture.createGraphics();
             // Really dumb code to use text anti aliasing when running on Apple's legacy java runtime on a Mac with a retina display.
             // TODO I think this should produce the right results but legacy MacOS support is hard.
@@ -74,7 +74,7 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
 
             // Fill background with white
             graphics.setColor(Color.WHITE);
-            graphics.fillRect(0, 0, TEXT_TEXTURE_SZIE, TEXT_TEXTURE_SZIE);
+            graphics.fillRect(0, 0, TEXT_TEXTURE_SIZE, TEXT_TEXTURE_SIZE);
 
             if ((lines != null) && (lines.length > 0)) {
                 // Set color to black for text rendering
@@ -96,7 +96,7 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
                 int yPos = TEXT_STARTING_YPOS;
                 int stringsDrawn = 0;
 
-                while (yPos < TEXT_TEXTURE_SZIE) {
+                while (yPos < TEXT_TEXTURE_SIZE) {
                     final String currentLine = lines[stringsDrawn % lines.length];
                     stringsDrawn++;
                     graphics.drawString(currentLine, 1, yPos);
