@@ -84,7 +84,7 @@ public final class NetherPortalGenerator extends AbstractTextureGenerator {
                     // Construct the ABGR components of the image.
                     final int imageOffset = (portalImageX + (portalImageY * STANDARD_IMAGE_SIZE)) * 4;
                     /*
-                     * Aplha / blue is very common, and has a fairly normal distribution.
+                     * Alpha / blue is very common, and has a fairly normal distribution.
                      * The alpha value is the same as the blue value.
                      * This means that the nether portal is the most transparent at the least blue pixels
                      * / the most opaque at the most blue pixels.
