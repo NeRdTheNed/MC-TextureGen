@@ -71,7 +71,7 @@ public final class NetherPortalGenerator extends AbstractTextureGenerator {
 
                         final float spiralPowerThingy = (currentSpiralX * currentSpiralX) + (currentSpiralY * currentSpiralY);
                         // TODO fix this to actually make more than two spirals work
-                        float currentSpiralIntensity = (float)Math.atan2(currentSpiralY, currentSpiralX) + ((((((float)currentPortalImage / (float)PORTAL_IMAGE_AMOUNT) * (float) Math.PI * 2.0F) - (spiralPowerThingy * 10.0F)) + (currentSpiral * 2)) * ((currentSpiral * 2) - 1));
+                        float currentSpiralIntensity = (float) Math.atan2(currentSpiralY, currentSpiralX) + ((((((float) currentPortalImage / (float) PORTAL_IMAGE_AMOUNT) * (float) Math.PI * 2.0F) - (spiralPowerThingy * 10.0F)) + (currentSpiral * 2)) * ((currentSpiral * 2) - 1));
                         currentSpiralIntensity = (lookupSin(currentSpiralIntensity) + 1.0F) / 2.0F;
                         currentSpiralIntensity /= spiralPowerThingy + 1.0F;
                         currentPixelIntensity += currentSpiralIntensity * (1.0F / SPIRAL_AMOUNT);

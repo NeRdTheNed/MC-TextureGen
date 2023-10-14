@@ -99,7 +99,7 @@ public final class FireGenerator extends AbstractTextureGenerator {
                 }
 
                 // Randomize bottom row of pixels
-                fireImageCurrent[fireX + ((FIRE_TEXTURE_HEIGHT - 1) * FIRE_TEXTURE_WIDTH)] = (float)((rand.nextDouble() * rand.nextDouble() * rand.nextDouble() * (3 + STANDARD_IMAGE_SIZE_MULTIPLIER)) + (rand.nextDouble() * 0.1F) + 0.2F);
+                fireImageCurrent[fireX + ((FIRE_TEXTURE_HEIGHT - 1) * FIRE_TEXTURE_WIDTH)] = (float) ((rand.nextDouble() * rand.nextDouble() * rand.nextDouble() * (3 + STANDARD_IMAGE_SIZE_MULTIPLIER)) + (rand.nextDouble() * 0.1F) + 0.2F);
             }
 
             final float[] fireImageCurrentTemp = fireImageCurrent;
