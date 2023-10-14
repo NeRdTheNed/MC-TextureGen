@@ -49,6 +49,27 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
     }
 
     /**
+     * Generates a "checkerboard" texture with the provided colors, with twice the usual image resolution.
+     *
+     * @param  name the name of the returned texture group
+     * @param  colorOne the first color
+     * @param  colorTwo the second color
+     * @return the generated "checkerboard" texture
+     */
+    private static TextureGroup missingTextureCheckerboard2x(String name, int colorOne, int colorTwo) {
+        final BufferedImage missingTexture = new BufferedImage(STANDARD_IMAGE_SIZE_2X, STANDARD_IMAGE_SIZE_2X, BufferedImage.TYPE_INT_RGB);
+        final int[] textureData = ((DataBufferInt) missingTexture.getRaster().getDataBuffer()).getData();
+
+        for (int xPixel = 0; xPixel < STANDARD_IMAGE_SIZE_2X; ++xPixel) {
+            for (int yPixel = 0; yPixel < STANDARD_IMAGE_SIZE_2X; ++yPixel) {
+                textureData[xPixel + (yPixel * STANDARD_IMAGE_SIZE_2X)] = (xPixel % STANDARD_IMAGE_SIZE < (STANDARD_IMAGE_SIZE / 2)) ^ (yPixel % STANDARD_IMAGE_SIZE < (STANDARD_IMAGE_SIZE / 2)) ? colorOne : colorTwo;
+            }
+        }
+
+        return new TextureGroup("Missing_Texture_2x_" + name, missingTexture);
+    }
+
+    /**
      * Generates a text-based texture with the provided text.
      * The generated TextureGroup is JVM / system dependent:
      * the font / text rendering method chosen will vary across different platforms.
@@ -135,7 +156,8 @@ public final class MissingTextureGenerator extends AbstractTextureGenerator {
                    missingTextureText("Java_b1_4_to_13w01b", false, new String[] { "missingtex" }),
                    missingTextureText("Java_13w02a_to_13w17a", true, new String[] { "missing", "texture"}),
                    missingTextureCheckerboard("Java_13w18a_to_1_12_2", 0x000000, 0xF800F8),
-                   missingTextureCheckerboard("Java_17w43a_to_current", 0xF800F8, 0x000000)
+                   missingTextureCheckerboard("Java_17w43a_to_current", 0xF800F8, 0x000000),
+                   missingTextureCheckerboard2x("Java_13w38a_to_14w21b", 0x000000, 0xF800F8)
                };
     }
 

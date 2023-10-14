@@ -29,6 +29,9 @@ public abstract class AbstractTextureGenerator {
     /** The size of a standard image in pixels. */
     static final int STANDARD_IMAGE_SIZE = 16 * STANDARD_IMAGE_SIZE_MULTIPLIER;
 
+    /** Twice the size of a standard image in pixels. */
+    static final int STANDARD_IMAGE_SIZE_2X = STANDARD_IMAGE_SIZE * 2;
+
     /** A bit mask of the size of a standard image. */
     static final int STANDARD_IMAGE_SIZE_BITMASK = STANDARD_IMAGE_SIZE - 1;
 
