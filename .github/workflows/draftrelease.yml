@@ -53,6 +53,8 @@ jobs:
       run: for file in ./mc-texture-gen-app/build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -90032 --disable-png --disable-jpg -strip -zip $file; done
     - name: Run ECT (-9999) on built .jar files
       run: for file in ./mc-texture-gen-app/build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -9999 --disable-png --disable-jpg -strip -zip $file; done
+    - name: Run JarTighten on built .jar files
+      run: for file in ./mc-texture-gen-app/build/libs/*.jar; do java -jar ./ci-tools/JarTighten-1.2.11-all.jar -x -o -c -E -S -t -z -j --mode=EXTENSIVE --zopfli-iter=9999 $file $file; done
     - name: Draft release
       uses: softprops/action-gh-release@v1
       with:

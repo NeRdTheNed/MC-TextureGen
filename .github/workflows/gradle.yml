@@ -51,6 +51,8 @@ jobs:
       run: for file in ./mc-texture-gen-app/build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -30060 --disable-png --disable-jpg -strip -zip $file; done
     - name: Run ECT (-90032) on built .jar files
       run: for file in ./mc-texture-gen-app/build/libs/*.jar; do ./ci-tools/ect-ubuntu-x86-64 -90032 --disable-png --disable-jpg -strip -zip $file; done
+    - name: Run JarTighten on built .jar files
+      run: for file in ./mc-texture-gen-app/build/libs/*.jar; do java -jar ./ci-tools/JarTighten-1.2.11-all.jar -x -o -c -E -S -t -z -j --mode=MULTI_CHEAP --zopfli-iter=99 $file $file; done
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
